@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">UetSupporter</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="fail_sign_in">Tài khoản sai! vui lòng kiểm tra lại</string>
+    <string name="please_wait">Plesse wait ...</string>
+</resources>
