@@ -14,6 +14,7 @@ import java.io.IOException;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -41,10 +42,7 @@ public class MyFirebaseInstanceId extends FirebaseInstanceIdService {
             });
             thread.start();
         }
-        //sau khi gửi xong lên server thì lưu vào share
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(Config.FIREBASE_TOKEN, token);
-        editor.commit();
+
     }
 
     class SendToken extends AsyncTask<String, Void, Void> {
@@ -55,8 +53,25 @@ public class MyFirebaseInstanceId extends FirebaseInstanceIdService {
             String token = params[0];
             SharedPreferences sharedPreferences = getSharedPreferences(Config.MyPREFERENCES, Context.MODE_PRIVATE);
 
+//            OkHttpClient client = new OkHttpClient();
+//            //tao string json
+//            String json =new String();
+//
+//            RequestBody body = RequestBody.create(Config.JSON, json);
+//            Request request = new Request.Builder()
+//                    .url(Config.POST_TOKEN)
+//                    .post(body)
+//                    .build();
+//            Response response = null;
+            //                response = client.newCall(request).execute();
+//                response.body().string();
+            //xử lý string response
 
-            Log.d("Token2", token);
+            //nếu ok thì lưu vào share
+            //sau khi gửi xong lên server thì lưu vào share
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(Config.FIREBASE_TOKEN, token);
+            editor.commit();
             return null;
         }
     }
