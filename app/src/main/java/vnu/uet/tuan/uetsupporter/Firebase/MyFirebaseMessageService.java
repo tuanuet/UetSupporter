@@ -10,7 +10,6 @@ import android.support.v4.app.TaskStackBuilder;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.ResultActivity;
 import vnu.uet.tuan.uetsupporter.config.Config;
 

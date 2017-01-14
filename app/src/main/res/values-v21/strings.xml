@@ -2,4 +2,6 @@
 <resources>
     <string name="fail_sign_in">Tài khoản sai! vui lòng kiểm tra lại</string>
     <string name="please_wait">Plesse wait ...</string>
+    <string name="tkb">Thời Khóa Biểu</string>
+    <string name="tuyendung">Tuyển Dụng</string>
 </resources>
