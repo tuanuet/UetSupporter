@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,9 +19,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 import vnu.uet.tuan.uetsupporter.Fragment.CongTacFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.DaoTaoFragment;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -122,4 +128,5 @@ public class MainActivity extends AppCompatActivity
         ft.replace(R.id.content_main,fragment).commitAllowingStateLoss();
         getSupportFragmentManager().executePendingTransactions();
     }
+
 }

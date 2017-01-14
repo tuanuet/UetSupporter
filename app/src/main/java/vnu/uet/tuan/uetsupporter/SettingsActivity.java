@@ -21,6 +21,7 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.HashSet;
 import java.util.List;
@@ -84,11 +85,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         preference.setSummary(name);
                     }
                 }
-
-            } else if(preference instanceof MultiSelectListPreference){
-                Log.d("MultiSelect","MultiSelectListPreference");
-                Log.d("MultiSelect",value.toString());
-
 
             }
             else {
@@ -155,7 +151,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         int id = item.getItemId();
-        if(id == android.R.id.home){
+        if (id == android.R.id.home) {
             finish();
         }
 
@@ -194,8 +190,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment {
-
+    public static class GeneralPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
 
 
         @Override
@@ -203,9 +198,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
 
+            Preference daotao = findPreference(getString(R.string.pref_title_daotao));
+            Preference congtac = findPreference(getString(R.string.pref_title_congtac));
 
+            //lắng nghe sự kiện thay đổi
+            daotao.setOnPreferenceChangeListener(this);
+            congtac.setOnPreferenceChangeListener(this);
         }
-
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
@@ -217,6 +216,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return super.onOptionsItemSelected(item);
         }
 
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            Context context = preference.getContext();
+
+            Toast.makeText(context,"Vừa thay đổi tại "+ preference.getKey(),Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     /**

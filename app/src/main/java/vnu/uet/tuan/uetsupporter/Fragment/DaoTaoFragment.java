@@ -51,11 +51,17 @@ public class DaoTaoFragment extends Fragment implements TabLayout.OnTabSelectedL
 
         Fragment fragment_a = PatternFactoryFragment.newInstance(getArr());
         Fragment fragment_b = PatternFactoryFragment.newInstance(getArr());
+        Fragment fragment_c = PatternFactoryFragment.newInstance(getArr());
+        Fragment fragment_d = PatternFactoryFragment.newInstance(getArr());
 
         Log.e("TAG","setupViewPager");
         adapter.addFragment(fragment_a, getResources().getString(R.string.tkb));
         adapter.addFragment(fragment_b, getResources().getString(R.string.tuyendung));
+        adapter.addFragment(fragment_c, getResources().getString(R.string.tuyendung));
+        adapter.addFragment(fragment_d, getResources().getString(R.string.tuyendung));
 
+//        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+//        tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         tabLayout.setupWithViewPager(pager);
         tabLayout.addOnTabSelectedListener(this);
