@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -16,6 +17,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
@@ -29,10 +31,12 @@ public class MyFirebaseInstanceId extends FirebaseInstanceIdService {
         super.onTokenRefresh();
         final String token = FirebaseInstanceId.getInstance().getToken();
         Log.d("Token1", token);
-        SharedPreferences sharedPreferences = getSharedPreferences(Config.MyPREFERENCES, Context.MODE_PRIVATE);
-        //neu nhu token mới thì ko gửi lên server, khi đã ren một token r, sau khi đang nhập sẽ ren ra token khác
+        SharedPreferences sharedPreferences =
+                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        // neu nhu token mới lần đầu thì ko gửi lên server,
+        // khi đã ren một token r, sau khi đang nhập sẽ ren ra token khác
 
-        if (!sharedPreferences.getString(Config.FIREBASE_TOKEN, "").equals("")) {
+        if (Utils.getFirebaseToken(getApplicationContext())!=null) {
             //gửi lên Server lưu lại token
             Thread thread = new Thread(new Runnable() {
                 @Override
@@ -51,7 +55,8 @@ public class MyFirebaseInstanceId extends FirebaseInstanceIdService {
         protected Void doInBackground(String... params) {
             //gửi token lên server
             String token = params[0];
-            SharedPreferences sharedPreferences = getSharedPreferences(Config.MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
 //            OkHttpClient client = new OkHttpClient();
 //            //tao string json

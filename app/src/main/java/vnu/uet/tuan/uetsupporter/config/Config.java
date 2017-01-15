@@ -11,9 +11,10 @@ public class Config {
     public static final String PASSWORD = "password";
     public static final String LOGIN_URL = "abc/login";
     public static final String MyPREFERENCES = "MyPrefs";
-    public static final String FIREBASE_TOKEN = "TOKEN";
+    public static final String FIREBASE_TOKEN = "firebase_token";
     public static final String POST_TOKEN = "abc/xyz";
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
     public static final int IDNOTICATION = 9011;
+    public static final String USER_TOKEN = "user_token";
 }

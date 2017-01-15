@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
 
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 
@@ -23,7 +25,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     static  TextView email,password;
     Button btnSignIn;
-    SharedPreferences sharedpreferences;
 
     ;
     @Override
@@ -34,11 +35,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         email = (TextView) findViewById(R.id.email);
         password = (TextView) findViewById(R.id.password);
         btnSignIn = (Button) findViewById(R.id.btn_sign_in);
-        sharedpreferences = getSharedPreferences(Config.MyPREFERENCES, Context.MODE_PRIVATE);
         btnSignIn.setOnClickListener(this);
 
         //neu da dang nhap tai khoan roi thi finish luon
-        if(!sharedpreferences.getString(Config.EMAIL,"").equals("")){
+        if(Utils.getEmailUser(getApplicationContext())!=null){
             Intent intent =new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intent);
             finish();
@@ -66,10 +66,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //post email and password
 
             if(true){
+
                 //luu vao shareprefer
-                SharedPreferences.Editor editor = sharedpreferences.edit();
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString(Config.EMAIL,email.getText().toString());
                 editor.putString(Config.PASSWORD,password.getText().toString());
+                editor.putString(Config.USER_TOKEN,"");
                 editor.commit();
 
                 //cap nhật lại token
@@ -102,12 +105,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
     @Override
     public void onClick(View v) {
-
-
-        //fake du lieu
-        String str_email = email.getText().toString();
-        String str_pass = password.getText().toString();
-
         //xu ly asyn tai day
         runOnUiThread(new Runnable() {
             @Override

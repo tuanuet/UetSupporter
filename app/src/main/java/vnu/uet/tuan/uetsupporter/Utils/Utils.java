@@ -12,6 +12,7 @@ import java.util.Set;
 
 import vnu.uet.tuan.uetsupporter.MainActivity;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * Created by Administrator on 14/01/2017.
@@ -40,5 +41,18 @@ public class Utils {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         int str = sharedPreferences.getInt(key,-1);
         return str;
+    }
+    public static String getUserToken(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(Config.USER_TOKEN,null);
+    }
+    public static String getFirebaseToken(Context context){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(Config.FIREBASE_TOKEN,null);
+    }
+
+    public static String getEmailUser(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(Config.EMAIL,null);
     }
 }

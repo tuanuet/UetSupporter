@@ -25,5 +25,17 @@
     <string name="pref_title_daotao">Đào tạo</string>
     <string name="pref_title_congtac">Công tác</string>
     <string name="pref_ringtone_silent">Câm lặng</string>
+    <string name="nav_user">Tài Khoản</string>
+    <string name="nav_daotao">Đào Tạo</string>
+    <string name="nav_congtac">Công Tác</string>
+    <string name="nav_mynotification">Hộp Thư</string>
+    <string name="nav_share">Share</string>
+    <string name="nav_send">Send</string>
+    <string name="contact">Liên lạc</string>
+    <string name="pref_header_user">Tài Khoản</string>
+    <string name="logout">Đăng xuất</string>
+    <string name="message_logout">Bạn thật sự muốn đăng xuất ?</string>
+    <string name="action_ok">Ok</string>
+    <string name="action_cancel">Cancel</string>
 
 </resources>

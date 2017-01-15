@@ -2,8 +2,10 @@ package vnu.uet.tuan.uetsupporter;
 
 
 import android.annotation.TargetApi;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -17,6 +19,7 @@ import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,7 +30,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import vnu.uet.tuan.uetsupporter.Fragment.DialogLogoutFragment;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -182,7 +187,50 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
+                || UserPreferenceFragment.class.getName().equals(fragmentName)
                 || NotificationPreferenceFragment.class.getName().equals(fragmentName);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class UserPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceClickListener {
+
+        @Override
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_user);
+            setHasOptionsMenu(true);
+            Preference preference = findPreference(getString(R.string.logout));
+            String email = Utils.getEmailUser(context);
+            Toast.makeText(context,email,Toast.LENGTH_LONG).show();
+            preference.setSummary(email);
+            preference.setOnPreferenceClickListener(this);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+            if (id == android.R.id.home) {
+                startActivity(new Intent(getActivity(), SettingsActivity.class));
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
+
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+
+            DialogFragment dialogFragment = new DialogLogoutFragment();
+            dialogFragment.show(getFragmentManager(),"Logout");
+
+            return false;
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     /**
