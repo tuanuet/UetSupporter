@@ -1,9 +1,15 @@
 package vnu.uet.tuan.uetsupporter.Fragment;
 
 
+import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +17,9 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.Toast;
 
+import vnu.uet.tuan.uetsupporter.LoginActivity;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,7 +31,6 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
     public DialogLogoutFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +48,7 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        getDialog().setTitle(getString(R.string.logout));
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -51,8 +58,18 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
         switch (v.getId()){
             case R.id.btn_dialog_logout_submit : {
                 isLogout = true;
+                //chay ve m.h login
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                sharedPreferences.edit()
+                        .remove(Config.EMAIL)
+                        .remove(Config.PASSWORD)
+                        .remove(Config.USER_TOKEN)
+                        .apply();
+
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 this.dismiss();
-                Toast.makeText(getActivity().getApplicationContext(),"OK",Toast.LENGTH_LONG).show();
                 break;
             }
             case R.id.btn_dialog_logout_cancel : {

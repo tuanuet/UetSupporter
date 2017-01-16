@@ -223,15 +223,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             DialogFragment dialogFragment = new DialogLogoutFragment();
             dialogFragment.show(getFragmentManager(),"Logout");
 
+
             return false;
         }
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
 
     /**
      * This fragment shows general preferences only. It is used when the
