@@ -17,6 +17,16 @@ public class Config {
             = MediaType.parse("application/json; charset=utf-8");
     public static final int IDNOTICATION = 9011;
     public static final String USER_TOKEN = "user_token";
+    /**
+     * ===================================================
+     */
     public static final int daotao = 0;
     public static final int tuyendung = 7;
+    /**
+     * ===================================================
+     */
+
+    public static final String KEY_URL = "keyurl";
+
+    public static final String API_HOSTNAME = "http://192.168.1.3:3000";
 }

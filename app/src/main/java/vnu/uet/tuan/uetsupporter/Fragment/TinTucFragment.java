@@ -10,14 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Adapter.TabAdapter;
 import vnu.uet.tuan.uetsupporter.Model.Notification;
-import vnu.uet.tuan.uetsupporter.Model.TinTuc;
+
 import vnu.uet.tuan.uetsupporter.R;
-import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**

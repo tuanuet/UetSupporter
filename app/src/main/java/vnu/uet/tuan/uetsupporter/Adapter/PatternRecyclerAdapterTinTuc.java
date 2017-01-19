@@ -116,13 +116,6 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
             txt_postat = (TextView) itemView.findViewById(R.id.recycle_item_postat);
             txt_content = (TextView) itemView.findViewById(R.id.recycle_item_content);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(itemView.getContext(), getAdapterPosition() + "", Toast.LENGTH_SHORT).show();
-                }
-            });
-
         }
     }
 }
