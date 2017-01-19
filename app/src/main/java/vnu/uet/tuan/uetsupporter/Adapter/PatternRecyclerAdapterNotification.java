@@ -18,14 +18,14 @@ import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;
 import vnu.uet.tuan.uetsupporter.Model.Notification;
 import vnu.uet.tuan.uetsupporter.R;
 
-public class PatternRecyclerAdapter extends RecyclerView.Adapter{
+public class PatternRecyclerAdapterNotification extends RecyclerView.Adapter {
     private Notification[] list;
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
     private int previousposition = -1;
 
-    public PatternRecyclerAdapter(Context context, Notification[] list) {
+    public PatternRecyclerAdapterNotification(Context context, Notification[] list) {
         this.context = context;
         this.list = list;
     }

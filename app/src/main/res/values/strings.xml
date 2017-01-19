@@ -37,5 +37,9 @@
     <string name="message_logout">Bạn thật sự muốn đăng xuất ?</string>
     <string name="action_ok">Ok</string>
     <string name="action_cancel">Cancel</string>
+    <string name="nav_thongbao">Thông báo</string>
+    <string name="nav_tintuc">Tin Tức</string>
+    <string name="daotao">Đào Tạo</string>
+    <string name="congtac">Công Tác</string>
 
 </resources>

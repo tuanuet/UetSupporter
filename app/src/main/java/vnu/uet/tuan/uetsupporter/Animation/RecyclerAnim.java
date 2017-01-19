@@ -2,15 +2,15 @@ package vnu.uet.tuan.uetsupporter.Animation;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.support.v7.widget.RecyclerView;
 
-import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapter;
 
 /**
  * Created by Administrator on 13/01/2017.
  */
 
 public class RecyclerAnim {
-    public static void animate(PatternRecyclerAdapter.ItemViewHolder holder, boolean isdown) {
+    public static void animate(RecyclerView.ViewHolder holder, boolean isdown) {
         AnimatorSet animatorSet = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.HONEYCOMB) {
             animatorSet = new AnimatorSet();

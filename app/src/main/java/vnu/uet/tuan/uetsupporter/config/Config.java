@@ -17,4 +17,6 @@ public class Config {
             = MediaType.parse("application/json; charset=utf-8");
     public static final int IDNOTICATION = 9011;
     public static final String USER_TOKEN = "user_token";
+    public static final int daotao = 0;
+    public static final int tuyendung = 7;
 }

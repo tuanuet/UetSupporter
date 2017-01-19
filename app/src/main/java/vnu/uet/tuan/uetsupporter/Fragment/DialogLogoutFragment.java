@@ -59,14 +59,11 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
             case R.id.btn_dialog_logout_submit : {
                 isLogout = true;
                 //chay ve m.h login
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                sharedPreferences.edit()
-                        .remove(Config.EMAIL)
-                        .remove(Config.PASSWORD)
-                        .remove(Config.USER_TOKEN)
-                        .apply();
+
+                deleteUserFromPrefer();
 
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
+                //xóa hết các activity chạy trc đó
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 this.dismiss();
@@ -78,5 +75,15 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
                 break;
             }
         }
+    }
+
+    //xóa hết Email,passwword,token cua nuoguoif dung
+    private void deleteUserFromPrefer() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPreferences.edit()
+                .remove(Config.EMAIL)
+                .remove(Config.PASSWORD)
+                .remove(Config.USER_TOKEN)
+                .apply();
     }
 }

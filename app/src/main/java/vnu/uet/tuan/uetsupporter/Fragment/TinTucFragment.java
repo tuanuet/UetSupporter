@@ -10,21 +10,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
+import retrofit2.Call;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Adapter.TabAdapter;
 import vnu.uet.tuan.uetsupporter.Model.Notification;
+import vnu.uet.tuan.uetsupporter.Model.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
+import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DaoTaoFragment extends Fragment implements TabLayout.OnTabSelectedListener {
+public class TinTucFragment extends Fragment implements TabLayout.OnTabSelectedListener {
 
     TabLayout tabLayout;
     ViewPager pager;
 
-    public DaoTaoFragment() {
+    public TinTucFragment() {
         // Required empty public constructor
     }
 
@@ -33,10 +37,10 @@ public class DaoTaoFragment extends Fragment implements TabLayout.OnTabSelectedL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_dao_tao, container, false);
+        View view = inflater.inflate(R.layout.fragment_tin_tuc, container, false);
         // khoi tao Tab, ViewPager
-        tabLayout = (TabLayout) view.findViewById(R.id.tablayout_daotao);
-        pager = (ViewPager) view.findViewById(R.id.viewPager_daotao);
+        tabLayout = (TabLayout) view.findViewById(R.id.tablayout_tintuc);
+        pager = (ViewPager) view.findViewById(R.id.viewPager_tintuc);
         setupViewPager(pager);
         return view;
     }
@@ -49,19 +53,14 @@ public class DaoTaoFragment extends Fragment implements TabLayout.OnTabSelectedL
     private void setupViewPager(ViewPager pager) {
         TabAdapter adapter = new TabAdapter(getChildFragmentManager());
 
-        Fragment fragment_a = PatternFactoryFragment.newInstance(getArr());
-        Fragment fragment_b = PatternFactoryFragment.newInstance(getArr());
-        Fragment fragment_c = PatternFactoryFragment.newInstance(getArr());
-        Fragment fragment_d = PatternFactoryFragment.newInstance(getArr());
+        Fragment fragment_a = PatternFactoryFragmentTinTuc.newInstance(Config.daotao);
+        Fragment fragment_b = PatternFactoryFragmentTinTuc.newInstance(Config.tuyendung);
+
 
         Log.e("TAG","setupViewPager");
-        adapter.addFragment(fragment_a, getResources().getString(R.string.tkb));
+        adapter.addFragment(fragment_a, getResources().getString(R.string.daotao));
         adapter.addFragment(fragment_b, getResources().getString(R.string.tuyendung));
-        adapter.addFragment(fragment_c, getResources().getString(R.string.tuyendung));
-        adapter.addFragment(fragment_d, getResources().getString(R.string.tuyendung));
 
-//        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-//        tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         tabLayout.setupWithViewPager(pager);
         tabLayout.addOnTabSelectedListener(this);

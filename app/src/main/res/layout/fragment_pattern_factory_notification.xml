@@ -2,12 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="vnu.uet.tuan.uetsupporter.Fragment.CongTacFragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
+    tools:context="vnu.uet.tuan.uetsupporter.Fragment.PatternFactoryFragmentNotification">
+    <android.support.v7.widget.RecyclerView
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+        android:id="@+id/recycleview_pattern"
+        android:layout_width="match_parent"/>
 </FrameLayout>
