@@ -84,6 +84,7 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
                 .remove(Config.EMAIL)
                 .remove(Config.PASSWORD)
                 .remove(Config.USER_TOKEN)
+                .remove(Config.CAN_BE_FIREBASE_TOKEN)
                 .apply();
     }
 }

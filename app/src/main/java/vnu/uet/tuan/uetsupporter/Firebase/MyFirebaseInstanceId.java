@@ -11,6 +11,9 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
 import okhttp3.OkHttpClient;
@@ -29,10 +32,8 @@ public class MyFirebaseInstanceId extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh();
-        final String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d("Token1", token);
-        SharedPreferences sharedPreferences =
-                PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        final String tokenFirebase = FirebaseInstanceId.getInstance().getToken();
+        Log.d("Token1", tokenFirebase);
         // neu nhu token mới lần đầu thì ko gửi lên server,
         // khi đã ren một token r, sau khi đang nhập sẽ ren ra token khác
 
@@ -41,10 +42,19 @@ public class MyFirebaseInstanceId extends FirebaseInstanceIdService {
             Thread thread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    new SendToken().execute(token);
+                    new SendToken().execute(tokenFirebase);
                 }
             });
             thread.start();
+        }
+
+        if (Utils.getFirebaseToken(getApplicationContext()) == null) {
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean(Config.CAN_BE_FIREBASE_TOKEN, false);
+            editor.putString(Config.FIREBASE_TOKEN, tokenFirebase);
+            editor.commit();
         }
 
     }
@@ -54,30 +64,46 @@ public class MyFirebaseInstanceId extends FirebaseInstanceIdService {
         @Override
         protected Void doInBackground(String... params) {
             //gửi token lên server
-            String token = params[0];
+            String tokenFirebase = params[0];
             SharedPreferences sharedPreferences =
                     PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-//            OkHttpClient client = new OkHttpClient();
-//            //tao string json
-//            String json =new String();
-//
-//            RequestBody body = RequestBody.create(Config.JSON, json);
-//            Request request = new Request.Builder()
-//                    .url(Config.POST_TOKEN)
-//                    .post(body)
-//                    .build();
-//            Response response = null;
-            //                response = client.newCall(request).execute();
-//                response.body().string();
-            //xử lý string response
-
-            //nếu ok thì lưu vào share
-            //sau khi gửi xong lên server thì lưu vào share
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(Config.FIREBASE_TOKEN, token);
-            editor.commit();
+            OkHttpClient client = new OkHttpClient();
+            //tao string json
+            String json = getJSONString(tokenFirebase);
+            Log.e("POST_TOKEN", json);
+            RequestBody body = RequestBody.create(Config.JSON, json);
+            Request request = new Request.Builder()
+                    .url(Config.POST_TOKEN)
+                    .post(body)
+                    .build();
+            Response response = null;
+            try {
+                response = client.newCall(request).execute();
+                //xử lý string response
+                JSONObject object = new JSONObject(response.body().string());
+                Boolean success = object.getBoolean("success");
+                if (success) {
+                    //nếu ok thì lưu vào share
+                    //sau khi gửi xong lên server thì lưu vào share
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean(Config.CAN_BE_FIREBASE_TOKEN, true);
+                    editor.putString(Config.FIREBASE_TOKEN, tokenFirebase);
+                    editor.commit();
+                } else {
+                    // Chua biet lam cai gi
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
             return null;
         }
+    }
+
+    public String getJSONString(String tokenFirebase) {
+        return "{ \"token\" : \"" + Utils.getUserToken(getApplicationContext())
+                + "\", \"tokenFirebase\" : \"" + tokenFirebase + "\"}";
     }
 }

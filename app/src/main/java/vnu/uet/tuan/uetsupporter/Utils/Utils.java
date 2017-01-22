@@ -55,4 +55,9 @@ public class Utils {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString(Config.EMAIL,null);
     }
+
+    public static Boolean canGetFirebaseToken(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(Config.CAN_BE_FIREBASE_TOKEN, false);
+    }
 }
