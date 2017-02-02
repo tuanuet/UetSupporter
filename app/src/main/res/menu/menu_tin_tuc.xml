@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_congtac"
+        android:icon="@drawable/fab_add_clear_selector"
+        android:title="@string/congtac" />
+    <item
+        android:id="@+id/action_daotao"
+        android:icon="@drawable/ic_add_black_48dp_00"
+        android:title="@string/daotao" />
+</menu>

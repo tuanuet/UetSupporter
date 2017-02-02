@@ -1,4 +1,4 @@
-package vnu.uet.tuan.uetsupporter.Fragment;
+package vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc;
 
 
 import android.app.Activity;
@@ -28,6 +28,7 @@ public class DetailTinTucFragment extends Fragment {
     public DetailTinTucFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -1,4 +1,4 @@
-package vnu.uet.tuan.uetsupporter;
+package vnu.uet.tuan.uetsupporter.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import vnu.uet.tuan.uetsupporter.Fragment.TinTucFragment;
+import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.TinTucFragment;
+import vnu.uet.tuan.uetsupporter.R;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -112,8 +113,7 @@ public class MainActivity extends AppCompatActivity
 
     public void showChangeFragment(Fragment fragment) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_main,fragment).commitAllowingStateLoss();
-        getSupportFragmentManager().executePendingTransactions();
+        ft.replace(R.id.content_main, fragment).commit();
     }
 
 }

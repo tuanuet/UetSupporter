@@ -59,7 +59,6 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
             itemViewHolder.txt_title.setText(list[position].getTitle());
-            itemViewHolder.txt_content.setText(list[position].getContent());
             itemViewHolder.txt_postat.setText(list[position].getPostAt());
 
             //animation
@@ -107,14 +106,12 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView txt_title;
         TextView txt_postat;
-        TextView txt_content;
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
 
             txt_title = (TextView) itemView.findViewById(R.id.recycle_item_title);
             txt_postat = (TextView) itemView.findViewById(R.id.recycle_item_postat);
-            txt_content = (TextView) itemView.findViewById(R.id.recycle_item_content);
 
         }
     }

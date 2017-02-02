@@ -3,16 +3,16 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="vnu.uet.tuan.uetsupporter.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="vnu.uet.tuan.uetsupporter.Activities.SettingsActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="vnu.uet.tuan.uetsupporter.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="vnu.uet.tuan.uetsupporter.Activities.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />
     <header
-        android:fragment="vnu.uet.tuan.uetsupporter.SettingsActivity$UserPreferenceFragment"
+        android:fragment="vnu.uet.tuan.uetsupporter.Activities.SettingsActivity$UserPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_user" />
 

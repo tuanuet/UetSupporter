@@ -1,10 +1,10 @@
-package vnu.uet.tuan.uetsupporter;
+package vnu.uet.tuan.uetsupporter.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Window;
 
-import vnu.uet.tuan.uetsupporter.Fragment.DetailTinTucFragment;
+import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.DetailTinTucFragment;
+import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 public class ResultActivity extends AppCompatActivity {

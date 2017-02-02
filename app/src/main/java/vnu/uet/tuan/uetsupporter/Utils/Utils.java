@@ -3,16 +3,20 @@ package vnu.uet.tuan.uetsupporter.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
+import android.util.Log;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
-import vnu.uet.tuan.uetsupporter.MainActivity;
-import vnu.uet.tuan.uetsupporter.R;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import vnu.uet.tuan.uetsupporter.config.Config;
+
+import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
+import static vnu.uet.tuan.uetsupporter.config.Config.LOGIN_URL;
 
 /**
  * Created by Administrator on 14/01/2017.
@@ -59,5 +63,31 @@ public class Utils {
     public static Boolean canGetFirebaseToken(Context context) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getBoolean(Config.CAN_BE_FIREBASE_TOKEN, false);
+    }
+
+    public static String getJSONFromSever(String stringbody) {
+
+        //post email and password
+        OkHttpClient client = new OkHttpClient();
+        String json = stringbody;
+
+        Log.e("json", json);
+        RequestBody body = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(LOGIN_URL)
+                .post(body)
+                .build();
+        Response response = null;
+
+        try {
+            response = client.newCall(request).execute();
+            String jsonObj = response.body().string();
+            Log.e("response", jsonObj);
+
+            return jsonObj;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

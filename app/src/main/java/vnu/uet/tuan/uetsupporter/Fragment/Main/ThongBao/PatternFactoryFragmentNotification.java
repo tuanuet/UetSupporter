@@ -1,4 +1,4 @@
-package vnu.uet.tuan.uetsupporter.Fragment;
+package vnu.uet.tuan.uetsupporter.Fragment.Main.ThongBao;
 
 
 import android.os.Bundle;

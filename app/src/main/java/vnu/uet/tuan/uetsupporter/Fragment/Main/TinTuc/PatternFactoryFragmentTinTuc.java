@@ -1,7 +1,6 @@
-package vnu.uet.tuan.uetsupporter.Fragment;
+package vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc;
 
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,12 +18,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapterNotification;
 import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapterTinTuc;
 import vnu.uet.tuan.uetsupporter.Listener.RecyclerItemClickListener;
 import vnu.uet.tuan.uetsupporter.Model.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;
-import vnu.uet.tuan.uetsupporter.ResultActivity;
+import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -39,29 +37,13 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-//    OnUrlChoosen mCallback;
-//
-//    public interface OnUrlChoosen{
-//        public void setUrl(String url);
-//    }
+
 
     // TODO: Rename and change types of parameters
-    private TinTuc[] listTinTuc = new TinTuc[500];
+    private TinTuc[] listTinTuc;
     private int loaiTinTuc;
 
 
-    //    @Override
-//    public void onAttach(Activity activity) {
-//        super.onAttach(activity);
-//        // This makes sure that the container activity has implemented
-//        // the callback interface. If not, it throws an exception
-//        try {
-//            mCallback = (OnUrlChoosen) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnHeadlineSelectedListener");
-//        }
-//    }
     public PatternFactoryFragmentTinTuc() {
         // Required empty public constructor
     }
@@ -88,6 +70,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
         Log.e("TAG", "onCreate");
         if (getArguments() != null) {
             loaiTinTuc = getArguments().getInt(ARG_PARAM1);
+            listTinTuc = new TinTuc[1000];
             Log.e("pattern", loaiTinTuc + "");
             getTinTucByLoaiTinTuc(loaiTinTuc);
         }

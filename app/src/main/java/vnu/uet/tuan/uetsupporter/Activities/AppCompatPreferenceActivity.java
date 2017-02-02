@@ -1,4 +1,4 @@
-package vnu.uet.tuan.uetsupporter;
+package vnu.uet.tuan.uetsupporter.Activities;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

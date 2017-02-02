@@ -15,6 +15,7 @@ public class Config {
 
     public static final int IDNOTICATION = 9011;
     public static final String USER_TOKEN = "user_token";
+    public static final String CAN_BE_FIREBASE_TOKEN = "can be firebase token";
     /**
      * ===================================================
      */
@@ -23,15 +24,15 @@ public class Config {
     /**
      * ===================================================
      */
+    public static String hostname = "http://192.168.1.6:3000";
 
     public static final String KEY_URL = "keyurl";
-
-    public static final String POST_TOKEN = "http://192.168.1.3:3000/users/tokenfirebase";
-    public static final String API_HOSTNAME = "http://192.168.1.3:3000";
-    public static final String LOGIN_URL = "http://192.168.1.3:3000/users/authenticate";
+    public static final String POST_TOKEN = hostname + "/sinhvien/guitokenfirebase";
+    public static final String API_HOSTNAME = hostname;
+    public static final String LOGIN_URL = hostname + "/users/authenticate";
 
 
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
-    public static final String CAN_BE_FIREBASE_TOKEN = "can be firebase token";
+
 }

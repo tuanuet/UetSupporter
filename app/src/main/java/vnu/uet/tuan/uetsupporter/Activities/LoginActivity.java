@@ -1,6 +1,5 @@
-package vnu.uet.tuan.uetsupporter;
+package vnu.uet.tuan.uetsupporter.Activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -19,18 +18,9 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
-
-import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
-import static vnu.uet.tuan.uetsupporter.config.Config.LOGIN_URL;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -69,29 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected String doInBackground(Void... params) {
 
-
-            //post email and password
-            OkHttpClient client = new OkHttpClient();
-            String json = getBodyRequest();
-
-            Log.e("json", json);
-            RequestBody body = RequestBody.create(JSON, json);
-            Request request = new Request.Builder()
-                    .url(LOGIN_URL)
-                    .post(body)
-                    .build();
-            Response response = null;
-
-            try {
-                response = client.newCall(request).execute();
-                String jsonObj = response.body().string();
-                Log.e("response", jsonObj);
-
-                return jsonObj;
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+            return Utils.getJSONFromSever(getBodyRequest());
         }
 
         @Override
@@ -99,11 +67,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             super.onPostExecute(json);
             if (json != null) {
                 try {
-                    JSONObject object = new JSONObject(json);
+                    final JSONObject object = new JSONObject(json);
                     Boolean success = object.getBoolean("success");
-
                     if (success) {
+
                         String token = object.getString("token");
+
 
                         //luu vao shareprefer
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
@@ -125,6 +94,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 }
                             }
                         });
+
                         //cho den khi token đc cập nhận thì mới đăng nhập
                         Thread checkToken = new Thread(new Runnable() {
                             @Override
@@ -139,6 +109,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         e.printStackTrace();
                                     }
                                 }
+
+
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -146,7 +118,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         });
                         thread.start();
                         checkToken.start();
-
 
                     } else {
                         //mat khau hoac tai khoan sai
