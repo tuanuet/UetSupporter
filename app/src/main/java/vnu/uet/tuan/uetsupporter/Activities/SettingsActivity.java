@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -19,10 +20,13 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import vnu.uet.tuan.uetsupporter.Fragment.Main.LinhTinh.DialogLogoutFragment;
 import vnu.uet.tuan.uetsupporter.R;
@@ -238,6 +242,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             Preference daotao = findPreference(getString(R.string.pref_title_daotao));
             Preference congtac = findPreference(getString(R.string.pref_title_congtac));
+            //MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
+
 
             //lắng nghe sự kiện thay đổi
             daotao.setOnPreferenceChangeListener(this);
@@ -257,9 +263,25 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
             Context context = preference.getContext();
+            MultiSelectListPreference mul = (MultiSelectListPreference) preference;
 
-            Toast.makeText(context,"Vừa thay đổi tại "+ preference.getKey(),Toast.LENGTH_SHORT).show();
-            return false;
+            //phần nãy vẫn đang lỗi nặng
+            Set values = mul.getValues();
+            Set set = mul.getSharedPreferences().getStringSet(getString(R.string.pref_title_daotao),null);
+
+            String valueString = new String();
+            String setString = new String();
+
+            valueString += values.toString();
+
+            Object[] str = set.toArray();
+            for (int i = 0; i <str.length ; i++) {
+                setString+=str[i].toString();
+            }
+            Log.e("prefer","valueString : "+ valueString);
+            Log.e("prefer","setString : "+ setString);
+//            Toast.makeText(context,"Vừa thay đổi tại "+ str,Toast.LENGTH_LONG).show();
+            return true;
         }
     }
 

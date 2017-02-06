@@ -41,5 +41,6 @@
     <string name="nav_tintuc">Tin Tức</string>
     <string name="daotao">Đào Tạo</string>
     <string name="congtac">Công Tác</string>
+    <string name="pref_title_tintuc">Tin Tức</string>
 
 </resources>

@@ -2,20 +2,6 @@
 <resources>
     <!--day la phan cua setting general-->
     <string-array name="empty_array" />
-
-    <string-array name="type_data_notifi_values">
-        <item>Tất cả</item>
-        <item>Thời khóa biểu</item>
-        <item>Nghỉ học</item>
-        <item>Tuyển dụng</item>
-        <item>Học bổng</item>
-        <item>Trợ cấp</item>
-        <item>Điểm</item>
-        <item>Cảnh báo học vụ</item>
-        <item>Kết quả xem lại bài thi</item>
-
-
-    </string-array>
     <string-array name="type_data_notifi_lables">
         <item>Tất cả</item>
         <item>Thời khóa biểu</item>
@@ -26,9 +12,19 @@
         <item>Điểm</item>
         <item>Cảnh báo học vụ</item>
         <item>Kết quả xem lại bài thi</item>
-
+    </string-array>
+    <string-array name="type_data_notifi_values">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
     </string-array>
     <string-array name="type_data_notifi_default">
-        <item>Tất cả</item>
+        <item>2</item>
     </string-array>
 </resources>

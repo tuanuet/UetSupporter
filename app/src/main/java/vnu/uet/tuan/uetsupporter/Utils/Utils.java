@@ -65,7 +65,22 @@ public class Utils {
         return sharedPreferences.getBoolean(Config.CAN_BE_FIREBASE_TOKEN, false);
     }
 
-    public static String getJSONFromSever(String stringbody) {
+    public static String getJSONFromSever(String url){
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        Response response = null;
+        try {
+            response = client.newCall(request).execute();
+            return response.body().string();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static String getJSONFromSever(String stringbody,String url) {
 
         //post email and password
         OkHttpClient client = new OkHttpClient();
@@ -74,7 +89,7 @@ public class Utils {
         Log.e("json", json);
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
-                .url(LOGIN_URL)
+                .url(url)
                 .post(body)
                 .build();
         Response response = null;

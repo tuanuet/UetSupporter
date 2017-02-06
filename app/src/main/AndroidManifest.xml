@@ -26,7 +26,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
@@ -43,8 +43,8 @@
 
         <activity
             android:name=".Activities.ResultActivity"
-            android:theme="@style/MyMaterialThemeActionBar"
-            android:parentActivityName=".Activities.MainActivity">
+            android:parentActivityName=".Activities.MainActivity"
+            android:theme="@style/MyMaterialThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Activities.MainActivity" />
@@ -52,11 +52,18 @@
         <activity
             android:name=".Activities.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:theme="@style/MyMaterialThemeActionBar"
-            android:parentActivityName=".Activities.MainActivity">
+            android:parentActivityName=".Activities.MainActivity"
+            android:theme="@style/MyMaterialThemeActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="vnu.uet.tuan.uetsupporter.Activities.MainActivity" />
+        </activity>
+        <activity android:name=".Activities.LoadingActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

@@ -18,9 +18,9 @@
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_item"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:id="@+id/recycle_item_img"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
                 android:src="@drawable/uet_logo"
                 app:civ_border_width="1dp"
                 android:layout_gravity="top|center"
@@ -31,25 +31,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="5dp"
-            android:orientation="vertical">
-
-            <TextView
+            android:orientation="vertical"
+            android:layout_gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Title"
+                    android:id="@+id/recycle_item_title"
+                    android:textSize="16sp" />
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Title"
-                android:id="@+id/recycle_item_title"
-                android:singleLine="true"
-                android:textSize="16sp" />
+                android:orientation="horizontal"
+                android:paddingTop="10dp"
+                android:weightSum="10">
+                <TextView
+                    android:text="TextView"
+                    android:layout_width="0dp"
+                    android:layout_weight="7"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recycle_item_loaitintuc" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="20h30"
+                    android:id="@+id/recycle_item_postat"
+                    android:textSize="10sp" />
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="20h30"
-                android:id="@+id/recycle_item_postat"
-                android:singleLine="true"
-                android:textSize="10sp" />
+
+
+
+
 
         </LinearLayout>
     </LinearLayout>

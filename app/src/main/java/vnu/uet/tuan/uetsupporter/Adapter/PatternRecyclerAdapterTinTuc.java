@@ -9,10 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;
 import vnu.uet.tuan.uetsupporter.Model.Notification;
 import vnu.uet.tuan.uetsupporter.Model.TinTuc;
@@ -60,6 +64,20 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
 
             itemViewHolder.txt_title.setText(list[position].getTitle());
             itemViewHolder.txt_postat.setText(list[position].getPostAt());
+            itemViewHolder.txt_loaitintuc.setText(list[position].getLoaiTinTuc().getKind());
+
+            if (list[position].getImageLink() != null) {
+                Glide.with(context)
+                        .load(list[position].getImageLink())
+                        .thumbnail(0.5f)
+                        .crossFade()
+                        .into(itemViewHolder.img_picture);
+            } else {
+                // make sure Glide doesn't load anything into this view until told otherwise
+                Glide.clear(itemViewHolder.img_picture);
+                // remove the placeholder (optional); read comments below
+                itemViewHolder.img_picture.setImageDrawable(null);
+            }
 
             //animation
             if (position >= previousposition) {
@@ -106,12 +124,16 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
     public class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView txt_title;
         TextView txt_postat;
+        TextView txt_loaitintuc;
+        CircleImageView img_picture;
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
 
             txt_title = (TextView) itemView.findViewById(R.id.recycle_item_title);
             txt_postat = (TextView) itemView.findViewById(R.id.recycle_item_postat);
+            txt_loaitintuc = (TextView) itemView.findViewById(R.id.recycle_item_loaitintuc);
+            img_picture = (CircleImageView) itemView.findViewById(R.id.recycle_item_img);
 
         }
     }

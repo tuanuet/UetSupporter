@@ -24,6 +24,14 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Thread loadingThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent = new Intent(getApplicationContext(),LoadingActivity.class);
+                startActivity(intent);
+            }
+        });
+        loadingThread.start();
         init();
 
         showChangeFragment(new TinTucFragment());

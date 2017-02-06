@@ -14,5 +14,8 @@
         android:entries="@array/type_data_notifi_lables"
         android:entryValues="@array/type_data_notifi_values"
         android:defaultValue="@array/type_data_notifi_default"/>
+    <!--<MultiSelectListPreference-->
+        <!--android:key="@string/pref_title_tintuc"-->
+        <!--android:title="@string/pref_title_tintuc"/>-->
 
 </PreferenceScreen>

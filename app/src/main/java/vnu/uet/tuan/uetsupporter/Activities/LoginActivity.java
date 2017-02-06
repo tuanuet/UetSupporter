@@ -22,6 +22,8 @@ import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
+import static vnu.uet.tuan.uetsupporter.config.Config.LOGIN_URL;
+
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -59,7 +61,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         @Override
         protected String doInBackground(Void... params) {
 
-            return Utils.getJSONFromSever(getBodyRequest());
+            return Utils.getJSONFromSever(getBodyRequest(),LOGIN_URL);
         }
 
         @Override
