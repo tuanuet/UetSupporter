@@ -1,5 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Retrofit;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -12,7 +14,7 @@ import vnu.uet.tuan.uetsupporter.Model.TinTuc;
 
 public interface ApiTinTuc {
     @GET("/tintuc/test")
-    Call<TinTuc[]> getDataTinTuc(@Query("loaitintuc") int loaitintuc);
+    Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") int loaitintuc);
 
     @GET("/loaitintuc")
     Call<LoaiTinTuc[]> getAllLoaiTinTuc();

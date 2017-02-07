@@ -13,6 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,6 +24,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapterTinTuc;
 import vnu.uet.tuan.uetsupporter.Listener.RecyclerItemClickListener;
+import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
@@ -32,7 +37,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  * create an instance of this fragment.
  */
 public class PatternFactoryFragmentTinTuc extends Fragment implements
-        Callback<TinTuc[]> {
+        Callback<ArrayList<TinTuc>> {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,7 +45,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
 
 
     // TODO: Rename and change types of parameters
-    private TinTuc[] listTinTuc;
+    private ArrayList<TinTuc> listTinTuc;
     private int loaiTinTuc;
 
 
@@ -70,7 +75,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
         Log.e("TAG", "onCreate");
         if (getArguments() != null) {
             loaiTinTuc = getArguments().getInt(ARG_PARAM1);
-            listTinTuc = new TinTuc[1000];
+            listTinTuc = new ArrayList<>();
             Log.e("pattern", loaiTinTuc + "");
             getTinTucByLoaiTinTuc(loaiTinTuc);
         }
@@ -78,7 +83,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
     }
 
     public void getTinTucByLoaiTinTuc(int loaitintuc) {
-        Call<TinTuc[]> call;
+        Call<ArrayList<TinTuc>> call;
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Config.API_HOSTNAME)
                 // Sử dụng GSON cho việc parse và maps JSON data tới Object
@@ -123,11 +128,11 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
                         // do whatever
                         Toast.makeText(
                                 getActivity(),
-                                listTinTuc[position].getTitle(),
+                                listTinTuc.get(position).getTitle(),
                                 Toast.LENGTH_SHORT).show();
 
                         Intent intent = new Intent(getActivity(), ResultActivity.class);
-                        intent.putExtra(Config.KEY_URL, listTinTuc[position].getLink());
+                        intent.putExtra(Config.KEY_URL, listTinTuc.get(position).getLink());
                         startActivity(intent);
                     }
 
@@ -141,7 +146,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
     }
 
     @Override
-    public void onResponse(Call<TinTuc[]> call, Response<TinTuc[]> response) {
+    public void onResponse(Call<ArrayList<TinTuc>> call, Response<ArrayList<TinTuc>> response) {
         listTinTuc = response.body();
 
         adapter = new PatternRecyclerAdapterTinTuc(getActivity(), listTinTuc);
@@ -149,7 +154,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
     }
 
     @Override
-    public void onFailure(Call<TinTuc[]> call, Throwable t) {
+    public void onFailure(Call<ArrayList<TinTuc>> call, Throwable t) {
         Toast.makeText(getActivity(), "Đường truyền gặp lỗi!", Toast.LENGTH_SHORT).show();
     }
 

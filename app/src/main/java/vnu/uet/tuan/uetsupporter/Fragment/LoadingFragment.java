@@ -1,6 +1,8 @@
 package vnu.uet.tuan.uetsupporter.Fragment;
 
 
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,9 +16,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiTinTucSQLHelper;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+
 
 
 import static vnu.uet.tuan.uetsupporter.config.Config.GET_LOAITINTUC;
@@ -27,11 +34,8 @@ import static vnu.uet.tuan.uetsupporter.config.Config.GET_LOAITINTUC;
 public class LoadingFragment extends Fragment {
 
     public static final String LOAI_TIN_TUC = "loaitintuc";
-    public static final String _ID = "_id";
-    public static final String LINKPAGE = "linkPage";
-    public static final String KIND = "kind";
     private static final String SUCCESS = "success";
-
+    private LoaiTinTucSQLHelper db;
     public LoadingFragment() {
         // Required empty public constructor
     }
@@ -43,13 +47,13 @@ public class LoadingFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_loading, container, false);
 
+        db = new LoaiTinTucSQLHelper(getActivity());
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 new Setup().execute();
             }
         });
-
         return view;
     }
 
@@ -63,30 +67,35 @@ public class LoadingFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            LoaiTinTuc[] arrLoaiTinTuc = parseJsonResponse(s);
-            if (arrLoaiTinTuc!=null){
-
+            if (s!=null){
+                ArrayList<LoaiTinTuc> arrLoaiTinTuc = parseJsonResponse(s);
+                if (arrLoaiTinTuc!=null){
+                    int count = db.insertBulkLoaiTinTuc(arrLoaiTinTuc);
+                    Log.e("Loading",count+"");
+                }
+                else {
+                    Toast.makeText(getActivity(),"Đường truyền lỗi kiểm tra lại",Toast.LENGTH_LONG).show();
+                }
             }
             else {
-                Toast.makeText(getActivity(),"đường truyền lỗi kiểm tra lại",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),"Đường truyền lỗi kiểm tra lại",Toast.LENGTH_LONG).show();
             }
         }
     }
-    private LoaiTinTuc[] parseJsonResponse(String s){
+    private ArrayList<LoaiTinTuc> parseJsonResponse(String s){
         try {
             JSONObject object = new JSONObject(s);
-            LoaiTinTuc[] arrLoaiTinTuc = new LoaiTinTuc[10];
+            ArrayList<LoaiTinTuc> arrLoaiTinTuc = new ArrayList<>();
 
             if(object.getBoolean(SUCCESS)){
                 JSONArray jsonArray = object.getJSONArray(LOAI_TIN_TUC);
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject json = jsonArray.getJSONObject(i);
-                    int id = json.getInt(_ID);
-                    String kind = json.getString(KIND);
-                    String linkPage = json.getString(LINKPAGE);
+                    int id = json.getInt(Contract.LoaiTinTuc._ID);
+                    String kind = json.getString(Contract.LoaiTinTuc.KIND);
+                    String linkPage = json.getString(Contract.LoaiTinTuc.LINKPAGE);
                     LoaiTinTuc loaitintuc = new LoaiTinTuc(id,kind,linkPage);
-                    Log.e("Loading",loaitintuc.getKind());
-                    arrLoaiTinTuc[i] = loaitintuc;
+                    arrLoaiTinTuc.add(loaitintuc);
                 }
                 return arrLoaiTinTuc;
 

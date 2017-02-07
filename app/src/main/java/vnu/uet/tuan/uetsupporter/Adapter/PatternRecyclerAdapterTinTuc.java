@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;
 import vnu.uet.tuan.uetsupporter.Model.Notification;
@@ -23,13 +25,13 @@ import vnu.uet.tuan.uetsupporter.Model.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;
 
 public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
-    private TinTuc[] list;
+    private ArrayList<TinTuc> list;
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
     private int previousposition = -1;
 
-    public PatternRecyclerAdapterTinTuc(Context context, TinTuc[] list) {
+    public PatternRecyclerAdapterTinTuc(Context context, ArrayList<TinTuc> list) {
         this.context = context;
         this.list = list;
     }
@@ -62,13 +64,13 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
-            itemViewHolder.txt_title.setText(list[position].getTitle());
-            itemViewHolder.txt_postat.setText(list[position].getPostAt());
-            itemViewHolder.txt_loaitintuc.setText(list[position].getLoaiTinTuc().getKind());
+            itemViewHolder.txt_title.setText(list.get(position).getTitle());
+            itemViewHolder.txt_postat.setText(list.get(position).getPostAt());
+            itemViewHolder.txt_loaitintuc.setText(list.get(position).getLoaiTinTuc().getKind());
 
-            if (list[position].getImageLink() != null) {
+            if (list.get(position).getImageLink() != null) {
                 Glide.with(context)
-                        .load(list[position].getImageLink())
+                        .load(list.get(position).getImageLink())
                         .thumbnail(0.5f)
                         .crossFade()
                         .into(itemViewHolder.img_picture);
@@ -109,7 +111,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return list == null ? 0 : list.length;
+        return list == null ? 0 : list.size();
     }
 
 

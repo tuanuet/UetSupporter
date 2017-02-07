@@ -2,6 +2,7 @@ package vnu.uet.tuan.uetsupporter.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -13,6 +14,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiTinTucSQLHelper;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
@@ -104,5 +108,21 @@ public class Utils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static ArrayList<LoaiTinTuc> getAllLoaiTinTuc(Context context){
+        LoaiTinTucSQLHelper db = new LoaiTinTucSQLHelper(context);
+        Cursor cursor = db.getArrayLoaiTinTuc();
+        ArrayList<LoaiTinTuc> list = new ArrayList<>();
+        cursor.moveToFirst();
+        while (cursor.moveToNext()){
+            LoaiTinTuc loaiTinTuc = new LoaiTinTuc();
+            loaiTinTuc.set_id(cursor.getInt(Contract.LoaiTinTuc._id));
+            loaiTinTuc.setLinkPage(cursor.getString(Contract.LoaiTinTuc.linkpage));
+            loaiTinTuc.setKind(cursor.getString(Contract.LoaiTinTuc.kind));
+            list.add(loaiTinTuc);
+
+        }
+        return list;
     }
 }

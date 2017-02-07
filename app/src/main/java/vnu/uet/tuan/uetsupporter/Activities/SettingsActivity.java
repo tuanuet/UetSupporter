@@ -24,11 +24,13 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import vnu.uet.tuan.uetsupporter.Fragment.Main.LinhTinh.DialogLogoutFragment;
+import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
@@ -244,11 +246,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Preference congtac = findPreference(getString(R.string.pref_title_congtac));
             //MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
 
+            //lấy được tất cả tin tức
+            ArrayList<LoaiTinTuc> loaiTinTucArrayList = Utils.getAllLoaiTinTuc(getActivity());
+            Log.d("Setting",loaiTinTucArrayList.get(0).getKind());
 
             //lắng nghe sự kiện thay đổi
             daotao.setOnPreferenceChangeListener(this);
             congtac.setOnPreferenceChangeListener(this);
         }
+
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
