@@ -21,12 +21,14 @@ public class Config {
      */
     public static final int daotao = 0;
     public static final int tuyendung = 7;
+
     /**
      * ===================================================
      */
     public static String hostname = "http://192.168.0.6:3000";
 
     public static final String KEY_URL = "keyurl";
+    public static final String GET_INFORMATION_USER = hostname + "/sinhvien/profile";
     public static final String POST_TOKEN = hostname + "/sinhvien/guitokenfirebase";
     public static final String API_HOSTNAME = hostname;
     public static final String LOGIN_URL = hostname + "/users/authenticate";

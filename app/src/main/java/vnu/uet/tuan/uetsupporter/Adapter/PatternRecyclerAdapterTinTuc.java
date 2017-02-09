@@ -5,8 +5,10 @@ package vnu.uet.tuan.uetsupporter.Adapter;
  */
 
 import android.content.Context;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -62,7 +64,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
-            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+            final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
             itemViewHolder.txt_title.setText(list.get(position).getTitle());
             itemViewHolder.txt_postat.setText(list.get(position).getPostAt());
@@ -80,6 +82,16 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
                 // remove the placeholder (optional); read comments below
                 itemViewHolder.img_picture.setImageDrawable(null);
             }
+            //onClick tool
+            //show popUp
+            itemViewHolder.tool.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopup(itemViewHolder.tool);
+                }
+            });
+
+
 
             //animation
             if (position >= previousposition) {
@@ -123,11 +135,22 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
 //            progressBar = (ProgressBar) itemView.findViewById(R.id.progressbar);
 //        }
 //    }
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+
+    private void showPopup(View v){
+        PopupMenu popupMenu = new PopupMenu(context,v);
+        popupMenu.inflate(R.menu.tintuc_popup_menu);
+        popupMenu.show();
+    }
+
+
+    public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView txt_title;
         TextView txt_postat;
         TextView txt_loaitintuc;
         CircleImageView img_picture;
+        ImageView tool;
+
+
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
@@ -136,7 +159,31 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
             txt_postat = (TextView) itemView.findViewById(R.id.recycle_item_postat);
             txt_loaitintuc = (TextView) itemView.findViewById(R.id.recycle_item_loaitintuc);
             img_picture = (CircleImageView) itemView.findViewById(R.id.recycle_item_img);
+            tool = (ImageView) itemView.findViewById(R.id.recycle_item_tool);
 
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            clickListener.onItemClick(getAdapterPosition(), v);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            clickListener.onItemLongClick(getAdapterPosition(), v);
+            return false;
+        }
+    }
+
+    //Listener
+    public interface ClickListener {
+        void onItemClick(int position, View v);
+        void onItemLongClick(int position, View v);
+    }
+    public ClickListener clickListener;
+    public void setOnItemClickListener(ClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }

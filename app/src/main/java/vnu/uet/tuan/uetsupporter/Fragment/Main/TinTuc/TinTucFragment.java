@@ -10,9 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import io.github.yavski.fabspeeddial.FabSpeedDial;
-import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
+import java.util.ArrayList;
+
+import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
@@ -20,8 +22,9 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  */
 public class TinTucFragment extends Fragment {
 
-    FabSpeedDial fabSpeedDial;
 
+
+    ArrayList<LoaiTinTuc> loaiTinTucArrayList;
     public TinTucFragment() {
         // Required empty public constructor
     }
@@ -33,7 +36,9 @@ public class TinTucFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tin_tuc, container, false);
 
-        fabSpeedDial = (FabSpeedDial) view.findViewById(R.id.fab_tintuc);
+
+
+        initUI();
 
         getChildFragmentManager()
                 .beginTransaction()
@@ -42,15 +47,15 @@ public class TinTucFragment extends Fragment {
         return view;
     }
 
+    private void initUI() {
+        loaiTinTucArrayList = Utils.getAllLoaiTinTuc(getActivity());
+
+
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
-            @Override
-            public boolean onMenuItemSelected(MenuItem menuItem) {
-                Toast.makeText(getActivity(), "select", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
+
     }
 }

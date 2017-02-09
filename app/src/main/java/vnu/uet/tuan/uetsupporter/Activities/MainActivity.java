@@ -10,9 +10,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import vnu.uet.tuan.uetsupporter.Fragment.Main.Profile.ProfileFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.TinTucFragment;
 import vnu.uet.tuan.uetsupporter.R;
 
@@ -34,7 +36,9 @@ public class MainActivity extends AppCompatActivity
         loadingThread.start();
         init();
 
-        showChangeFragment(new TinTucFragment());
+
+        Fragment tintuc = new TinTucFragment();
+        showChangeFragment(tintuc,tintuc.getClass().getName());
     }
 
     private void init() {
@@ -68,7 +72,12 @@ public class MainActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(getSupportFragmentManager().getBackStackEntryCount()>0){
+                finish();
+            }
+            else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -103,11 +112,15 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_thongbao) {
-            showChangeFragment(new TinTucFragment());
-        } else if (id == R.id.nav_tintuc) {
 
+        } else if (id == R.id.nav_tintuc) {
+            Fragment tintuc = new TinTucFragment();
+            showChangeFragment(tintuc,tintuc.getClass().getName());
         } else if (id == R.id.nav_mynotification) {
 
+        } else if (id == R.id.nav_myprofile) {
+            Fragment profile = new ProfileFragment();
+            showChangeFragment(profile,profile.getClass().getName());
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -119,9 +132,22 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void showChangeFragment(Fragment fragment) {
+    public void showChangeFragment(Fragment fragment,String name) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.content_main, fragment).commit();
+
+        Fragment fragmentInStack = getSupportFragmentManager().findFragmentByTag(name);
+        if(fragmentInStack!=null){
+            //Có fragment trong stack
+            ft.replace(R.id.content_main,fragmentInStack,name);
+            ft.addToBackStack(null);
+            ft.commit();
+            Log.e("MainActi","Fragment in Stack");
+        }else{
+            ft.replace(R.id.content_main, fragment,name);
+            ft.addToBackStack(name);
+            ft.commit();
+            Log.e("MainActi","Fragment not in Stack");
+        }
     }
 
 }

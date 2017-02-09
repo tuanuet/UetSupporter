@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -114,6 +115,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
+
         Log.e("TAG", "onCreateView");
         return view;
     }
@@ -121,28 +123,23 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        // do whatever
-                        Toast.makeText(
-                                getActivity(),
-                                listTinTuc.get(position).getTitle(),
-                                Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getActivity(), ResultActivity.class);
-                        intent.putExtra(Config.KEY_URL, listTinTuc.get(position).getLink());
-                        startActivity(intent);
-                    }
 
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-                        // do whatever
+//        recyclerView.addOnItemTouchListener(
+//                new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(View view, int position) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onLongItemClick(View view, int position) {
+//                        // do whatever
+//
+//                    }
+//                })
+//        );
 
-                    }
-                })
-        );
     }
 
     @Override
@@ -150,6 +147,25 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
         listTinTuc = response.body();
 
         adapter = new PatternRecyclerAdapterTinTuc(getActivity(), listTinTuc);
+        adapter.setOnItemClickListener(new PatternRecyclerAdapterTinTuc.ClickListener() {
+            @Override
+            public void onItemClick(int position, View v) {
+                // do whatever
+                Toast.makeText(
+                        getActivity(),
+                        listTinTuc.get(position).getTitle(),
+                        Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getActivity(), ResultActivity.class);
+                intent.putExtra(Config.KEY_URL, listTinTuc.get(position).getLink());
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(int position, View v) {
+
+            }
+        });
         recyclerView.setAdapter(adapter);
     }
 

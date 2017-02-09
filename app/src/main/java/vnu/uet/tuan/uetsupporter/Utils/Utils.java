@@ -8,6 +8,7 @@ import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 
 import okhttp3.OkHttpClient;
@@ -85,7 +86,6 @@ public class Utils {
         }
     }
     public static String getJSONFromSever(String stringbody,String url) {
-
         //post email and password
         OkHttpClient client = new OkHttpClient();
         String json = stringbody;
@@ -115,14 +115,33 @@ public class Utils {
         Cursor cursor = db.getArrayLoaiTinTuc();
         ArrayList<LoaiTinTuc> list = new ArrayList<>();
         cursor.moveToFirst();
-        while (cursor.moveToNext()){
+        while (!cursor.isAfterLast()){
             LoaiTinTuc loaiTinTuc = new LoaiTinTuc();
             loaiTinTuc.set_id(cursor.getInt(Contract.LoaiTinTuc._id));
             loaiTinTuc.setLinkPage(cursor.getString(Contract.LoaiTinTuc.linkpage));
             loaiTinTuc.setKind(cursor.getString(Contract.LoaiTinTuc.kind));
             list.add(loaiTinTuc);
-
+            cursor.moveToNext();
         }
         return list;
+    }
+
+
+    public static ArrayList<Integer> getArrayFromString(String s){
+        ArrayList<Integer> arr = new ArrayList<>();
+        s = s.trim().substring(1,s.length()-1); //bo di dau []
+        Log.e("utils",s);
+        String[] list = s.split(",");
+        for (int i = 0; i < list.length; i++) {
+            arr.add(Integer.valueOf(list[i].trim()));
+            Log.e("utils",arr.get(i)+"");
+        }
+        return arr;
+
+    }
+
+    public static String getUrlWithToken(String url,Context context){
+        String s = url + "?token="+ getUserToken(context);
+        return s;
     }
 }

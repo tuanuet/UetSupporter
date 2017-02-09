@@ -242,17 +242,48 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_general);
 
-            Preference daotao = findPreference(getString(R.string.pref_title_daotao));
-            Preference congtac = findPreference(getString(R.string.pref_title_congtac));
-            //MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
+            initPreference();
+
+//            Preference daotao = findPreference(getString(R.string.pref_title_daotao));
+//            Preference congtac = findPreference(getString(R.string.pref_title_congtac));
+
+
+            //lắng nghe sự kiện thay đổi
+//            daotao.setOnPreferenceChangeListener(this);
+//            congtac.setOnPreferenceChangeListener(this);
+        }
+
+        private void initPreference(){
+            MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
 
             //lấy được tất cả tin tức
             ArrayList<LoaiTinTuc> loaiTinTucArrayList = Utils.getAllLoaiTinTuc(getActivity());
-            Log.d("Setting",loaiTinTucArrayList.get(0).getKind());
 
-            //lắng nghe sự kiện thay đổi
-            daotao.setOnPreferenceChangeListener(this);
-            congtac.setOnPreferenceChangeListener(this);
+            CharSequence[] entriesTinTuc = new CharSequence[loaiTinTucArrayList.size()];
+            CharSequence[] entriesValueTinTuc = new CharSequence[loaiTinTucArrayList.size()];
+            Set<String> value = new HashSet<>(); //setValue ~ check cai nao dung ID
+
+            for (int i = 0; i < loaiTinTucArrayList.size(); i++) {
+                entriesTinTuc[i] = (loaiTinTucArrayList.get(i).getKind());
+                entriesValueTinTuc[i] = (String.valueOf(loaiTinTucArrayList.get(i).get_id()));
+                value.add(String.valueOf(loaiTinTucArrayList.get(i).get_id()));
+            }
+            tintuc.setEntries(entriesTinTuc);
+            tintuc.setEntryValues(entriesValueTinTuc);
+            tintuc.setValues(value);
+
+            tintuc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Log.e("prefer","valueString : "+ newValue.toString());
+                    ArrayList<Integer> arrValue  = Utils.getArrayFromString(newValue.toString());
+                    //đưa lên server
+
+
+                    //
+                    return true;
+                }
+            });
         }
 
 
