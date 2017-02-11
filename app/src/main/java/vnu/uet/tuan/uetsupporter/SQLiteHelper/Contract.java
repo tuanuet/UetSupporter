@@ -17,4 +17,13 @@ public class Contract {
         public static final String LINKPAGE = "linkPage";
         public static final int VERSION = 1;
     }
+
+    public class LoaiThongBao implements BaseColumns {
+        public static final int _id = 0;
+        public static final int tenLoaiThongBao = 1;
+        public static final String NAME_TABLE = "loaithongbao";
+        public static final String _ID = "_id";
+        public static final String TENLOAITHONGBAO = "tenloaithongbao";
+        public static final int VERSION = 1;
+    }
 }

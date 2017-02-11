@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?><!-- item_feed.xml -->
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="0dp"
+    android:elevation="0dp"
+    card_view:cardCornerRadius="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp"
+            android:paddingTop="12dp">
+
+            <TextView
+                android:id="@+id/item_lopmonhoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:text="Lop Mon Hoc: INT 2203 1 (Toán rời rạc)"
+                android:textColor="#090808"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/item_thoigian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:textSize="15sp"
+                android:visibility="gone"
+                android:text="56/12/1005" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/item_tengiangvien"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:textSize="15sp"
+                android:text="Giảng viên: Tô Văn Khánh" />
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:paddingTop="4dp"
+            android:layout_marginRight="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/item_siso"
+                android:text="Sĩ số : 58" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="4dp"
+                android:layout_toLeftOf="@+id/item_kihoc"
+                android:src="@drawable/feed_like_small" />
+
+            <TextView
+                android:id="@+id/item_kihoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="4dp"
+                android:text="Kì học: III"
+                android:textColor="#2d5d82"
+                android:textSize="15sp" />
+        </RelativeLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

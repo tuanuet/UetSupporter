@@ -10,6 +10,7 @@ public class Config {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
 
+    public static final String SINHVIEN = "sinhvien";
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String FIREBASE_TOKEN = "firebase_token";
 

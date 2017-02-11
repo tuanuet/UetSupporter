@@ -50,11 +50,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
     class SignIn extends AsyncTask<Void,Void,String>{
-        //        ProgressDialog progressDialog = new ProgressDialog(getApplicationContext());
         @Override
         protected void onPreExecute() {
-//            progressDialog.setMessage(getString(R.string.please_wait));
-//            progressDialog.show();
+
             super.onPreExecute();
         }
 
@@ -74,7 +72,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if (success) {
 
                         String token = object.getString("token");
-
 
                         //luu vao shareprefer
                         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
@@ -152,4 +149,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String json = "{ \"username\" : \"" + username + "\",\"password\" : \"" + pass + "\"}";
         return json;
     }
+
+
+    //Luu
 }

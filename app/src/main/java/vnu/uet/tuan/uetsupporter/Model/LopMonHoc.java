@@ -1,70 +1,46 @@
 package vnu.uet.tuan.uetsupporter.Model;
 
-import java.util.ArrayList;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.List;
 
 /**
- * Created by Vu Minh Tuan on 2/9/2017.
+ * Created by Vu Minh Tuan on 2/11/2017.
  */
 
-public class LopMonHoc {
+public class LopMonHoc implements Parcelable {
+    /**
+     * _id : INT1001
+     * tenLopMonHoc : co so du lieu
+     * __v : 0
+     * idGiangVien : [{"_id":"tokhanh","tenGiangVien":"To Van Khanh","idKhoa":"cntt","__v":0,"idLopMonHoc":[]}]
+     * thoiGian : 2017-02-04T14:17:05.370Z
+     */
+
     private String _id;
     private String tenLopMonHoc;
-    private ArrayList<GiangVien> giangVienArrayList;
     private String thoiGian;
-    private int diemGiuaKi;
-    private int diemCuoiKi;
+    private List<GiangVien> idGiangVien;
 
-    public LopMonHoc(String _id, String tenLopMonHoc, ArrayList<GiangVien> giangVienArrayList, String thoiGian) {
-        this._id = _id;
-        this.tenLopMonHoc = tenLopMonHoc;
-        this.giangVienArrayList = giangVienArrayList;
-        this.thoiGian = thoiGian;
+    protected LopMonHoc(Parcel in) {
+        _id = in.readString();
+        tenLopMonHoc = in.readString();
+        thoiGian = in.readString();
+        idGiangVien = in.createTypedArrayList(GiangVien.CREATOR);
     }
 
-    public int getDiemGiuaKi() {
-        return diemGiuaKi;
-    }
+    public static final Creator<LopMonHoc> CREATOR = new Creator<LopMonHoc>() {
+        @Override
+        public LopMonHoc createFromParcel(Parcel in) {
+            return new LopMonHoc(in);
+        }
 
-    public void setDiemGiuaKi(int diemGiuaKi) {
-        this.diemGiuaKi = diemGiuaKi;
-    }
-
-    public int getDiemCuoiKi() {
-        return diemCuoiKi;
-    }
-
-    public void setDiemCuoiKi(int diemCuoiKi) {
-        this.diemCuoiKi = diemCuoiKi;
-    }
-
-    public ArrayList<GiangVien> getGiangVienArrayList() {
-        return giangVienArrayList;
-    }
-
-    public void setGiangVienArrayList(ArrayList<GiangVien> giangVienArrayList) {
-        this.giangVienArrayList = giangVienArrayList;
-    }
-
-    public String getThoiGian() {
-
-        return thoiGian;
-    }
-
-    public void setThoiGian(String thoiGian) {
-        this.thoiGian = thoiGian;
-    }
-
-    public LopMonHoc(String _id, String tenLopMonHoc, String thoiGian) {
-        this._id = _id;
-        this.tenLopMonHoc = tenLopMonHoc;
-        this.thoiGian = thoiGian;
-
-    }
-
-    public LopMonHoc(String _id, String tenLopMonHoc) {
-        this._id = _id;
-        this.tenLopMonHoc = tenLopMonHoc;
-    }
+        @Override
+        public LopMonHoc[] newArray(int size) {
+            return new LopMonHoc[size];
+        }
+    };
 
     public String get_id() {
         return _id;
@@ -80,5 +56,34 @@ public class LopMonHoc {
 
     public void setTenLopMonHoc(String tenLopMonHoc) {
         this.tenLopMonHoc = tenLopMonHoc;
+    }
+
+    public String getThoiGian() {
+        return thoiGian;
+    }
+
+    public void setThoiGian(String thoiGian) {
+        this.thoiGian = thoiGian;
+    }
+
+    public List<GiangVien> getIdGiangVien() {
+        return idGiangVien;
+    }
+
+    public void setIdGiangVien(List<GiangVien> idGiangVien) {
+        this.idGiangVien = idGiangVien;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(tenLopMonHoc);
+        dest.writeString(thoiGian);
+        dest.writeTypedList(idGiangVien);
     }
 }

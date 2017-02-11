@@ -13,10 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-import vnu.uet.tuan.uetsupporter.Fragment.Main.Profile.ProfileFragment;
+import vnu.uet.tuan.uetsupporter.Fragment.Profile.ProfileFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.TinTucFragment;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,15 +49,28 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        initNavHead();
+
+
+    }
+
+    private void initNavHead() {
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+        TextView txt_Ten = (TextView) header.findViewById(R.id.nav_head_name);
+        TextView txt_email = (TextView) header.findViewById(R.id.nav_head_email);
+        txt_Ten.setText(Utils.getEmailUser(getApplicationContext()));
+        txt_email.setText(Utils.getEmailUser(getApplicationContext()));
 
         //load dau cham
         setupNumberForNav(navigationView);
@@ -119,8 +135,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_mynotification) {
 
         } else if (id == R.id.nav_myprofile) {
-            Fragment profile = new ProfileFragment();
-            showChangeFragment(profile,profile.getClass().getName());
+            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

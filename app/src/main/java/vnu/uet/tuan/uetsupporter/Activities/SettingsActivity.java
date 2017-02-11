@@ -29,10 +29,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.LinhTinh.DialogLogoutFragment;
+import vnu.uet.tuan.uetsupporter.Model.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
+import vnu.uet.tuan.uetsupporter.Model.Message;
+import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+import vnu.uet.tuan.uetsupporter.Model.Subcribe;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -234,7 +245,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      * activity is showing a two-pane settings UI.
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public static class GeneralPreferenceFragment extends PreferenceFragment implements Preference.OnPreferenceChangeListener {
+    public static class GeneralPreferenceFragment extends PreferenceFragment {
 
 
         @Override
@@ -244,16 +255,40 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             initPreference();
 
-//            Preference daotao = findPreference(getString(R.string.pref_title_daotao));
-//            Preference congtac = findPreference(getString(R.string.pref_title_congtac));
+            getRegister();
 
-
-            //lắng nghe sự kiện thay đổi
-//            daotao.setOnPreferenceChangeListener(this);
-//            congtac.setOnPreferenceChangeListener(this);
+            listenUI();
         }
 
+        private void listenUI() {
+            MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
+            MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
+            tintuc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Log.e("prefer", "valueString : " + newValue.toString());
+//                    ArrayList<Integer> arrValue  = Utils.getArrayFromString(newValue.toString());
+
+                    //đưa lên server
+                    postLoaiTinTuc(newValue.toString());
+
+                    //
+                    return true;
+                }
+            });
+            thongbao.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    postLoaiThongBao(newValue.toString());
+                    return true;
+                }
+            });
+        }
+
+
         private void initPreference(){
+
+            //init tintuc
             MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
 
             //lấy được tất cả tin tức
@@ -261,27 +296,120 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             CharSequence[] entriesTinTuc = new CharSequence[loaiTinTucArrayList.size()];
             CharSequence[] entriesValueTinTuc = new CharSequence[loaiTinTucArrayList.size()];
-            Set<String> value = new HashSet<>(); //setValue ~ check cai nao dung ID
+
 
             for (int i = 0; i < loaiTinTucArrayList.size(); i++) {
                 entriesTinTuc[i] = (loaiTinTucArrayList.get(i).getKind());
                 entriesValueTinTuc[i] = (String.valueOf(loaiTinTucArrayList.get(i).get_id()));
-                value.add(String.valueOf(loaiTinTucArrayList.get(i).get_id()));
+
             }
             tintuc.setEntries(entriesTinTuc);
             tintuc.setEntryValues(entriesValueTinTuc);
-            tintuc.setValues(value);
 
-            tintuc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            //=============================================================================
+            //initThongBao
+            MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
+
+            //lấy được tất cả tin tức
+            ArrayList<LoaiThongBao> loaiThongBaoArrayList = Utils.getAllLoaiThongBao(getActivity());
+
+            CharSequence[] entriesThongBao = new CharSequence[loaiThongBaoArrayList.size()];
+            CharSequence[] entriesValueThongBao = new CharSequence[loaiThongBaoArrayList.size()];
+
+
+            for (int i = 0; i < loaiThongBaoArrayList.size(); i++) {
+                entriesThongBao[i] = (loaiThongBaoArrayList.get(i).getTenLoaiThongBao());
+                entriesValueThongBao[i] = (String.valueOf(loaiThongBaoArrayList.get(i).get_id()));
+
+            }
+            thongbao.setEntries(entriesThongBao);
+            thongbao.setEntryValues(entriesValueThongBao);
+
+
+        }
+
+        private void getRegister() {
+            Call<Subcribe> call;
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.API_HOSTNAME)
+                    // Sử dụng GSON cho việc parse và maps JSON data tới Object
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
+            call = apiTinTuc.getSubcribeLoaiTinTuc(Utils.getUserToken(getActivity()));
+            call.enqueue(new Callback<Subcribe>() {
                 @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    Log.e("prefer","valueString : "+ newValue.toString());
-                    ArrayList<Integer> arrValue  = Utils.getArrayFromString(newValue.toString());
-                    //đưa lên server
+                public void onResponse(Call<Subcribe> call, Response<Subcribe> response) {
 
+                    //check Id
+                    MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
+                    Set<String> valueTinTuc = new HashSet<>(); //setValue ~ check cai nao dung ID
+                    for (int i = 0; i < response.body().getIdLoaiTinTuc().size(); i++) {
+                        valueTinTuc.add(String.valueOf(response.body().getIdLoaiTinTuc().get(i)));
+                    }
+                    tintuc.setValues(valueTinTuc);
 
-                    //
-                    return true;
+                    //==============================================================================
+                    MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
+                    Set<String> valueThongBao = new HashSet<>(); //setValue ~ check cai nao dung ID
+                    for (int i = 0; i < response.body().getIdLoaiThongBao().size(); i++) {
+                        valueThongBao.add(String.valueOf(response.body().getIdLoaiThongBao().get(i)));
+                    }
+                    thongbao.setValues(valueThongBao);
+                }
+
+                @Override
+                public void onFailure(Call<Subcribe> call, Throwable t) {
+
+                }
+            });
+        }
+
+        private void postLoaiThongBao(String value) {
+
+            Call<Message> call;
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.API_HOSTNAME)
+                    // Sử dụng GSON cho việc parse và maps JSON data tới Object
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
+            call = apiTinTuc.postLoaiThongBao(value, Utils.getUserToken(getActivity()));
+            call.enqueue(new Callback<Message>() {
+                @Override
+                public void onResponse(Call<Message> call, Response<Message> response) {
+//                    int statusCode = response.code();
+                    Message message = response.body();
+                    Toast.makeText(getActivity(), message.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Message> call, Throwable t) {
+
+                }
+            });
+        }
+
+        private void postLoaiTinTuc(String value) {
+            Call<Message> call;
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.API_HOSTNAME)
+                    // Sử dụng GSON cho việc parse và maps JSON data tới Object
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
+            call = apiTinTuc.postLoaiTinTuc(value, Utils.getUserToken(getActivity()));
+            call.enqueue(new Callback<Message>() {
+                @Override
+                public void onResponse(Call<Message> call, Response<Message> response) {
+//                    int statusCode = response.code();
+                    Message message = response.body();
+                    Toast.makeText(getActivity(), message.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Message> call, Throwable t) {
+
                 }
             });
         }
@@ -295,30 +423,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 return true;
             }
             return super.onOptionsItemSelected(item);
-        }
-
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object newValue) {
-            Context context = preference.getContext();
-            MultiSelectListPreference mul = (MultiSelectListPreference) preference;
-
-            //phần nãy vẫn đang lỗi nặng
-            Set values = mul.getValues();
-            Set set = mul.getSharedPreferences().getStringSet(getString(R.string.pref_title_daotao),null);
-
-            String valueString = new String();
-            String setString = new String();
-
-            valueString += values.toString();
-
-            Object[] str = set.toArray();
-            for (int i = 0; i <str.length ; i++) {
-                setString+=str[i].toString();
-            }
-            Log.e("prefer","valueString : "+ valueString);
-            Log.e("prefer","setString : "+ setString);
-//            Toast.makeText(context,"Vừa thay đổi tại "+ str,Toast.LENGTH_LONG).show();
-            return true;
         }
     }
 

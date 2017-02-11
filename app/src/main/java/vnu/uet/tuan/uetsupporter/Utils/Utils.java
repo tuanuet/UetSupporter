@@ -9,14 +9,19 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import vnu.uet.tuan.uetsupporter.Model.GiangVien;
+import vnu.uet.tuan.uetsupporter.Model.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
+import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiThongBaoSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiTinTucSQLHelper;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -126,6 +131,20 @@ public class Utils {
         return list;
     }
 
+    public static ArrayList<LoaiThongBao> getAllLoaiThongBao(Context context) {
+        LoaiThongBaoSQLHelper db = new LoaiThongBaoSQLHelper(context);
+        Cursor cursor = db.getArrayLoaiThongBao();
+        ArrayList<LoaiThongBao> list = new ArrayList<>();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            LoaiThongBao loaiThongBao = new LoaiThongBao();
+            loaiThongBao.set_id(cursor.getInt(Contract.LoaiThongBao._id));
+            loaiThongBao.setTenLoaiThongBao(cursor.getString(Contract.LoaiThongBao.tenLoaiThongBao));
+            list.add(loaiThongBao);
+            cursor.moveToNext();
+        }
+        return list;
+    }
 
     public static ArrayList<Integer> getArrayFromString(String s){
         ArrayList<Integer> arr = new ArrayList<>();
@@ -142,6 +161,30 @@ public class Utils {
 
     public static String getUrlWithToken(String url,Context context){
         String s = url + "?token="+ getUserToken(context);
+        return s;
+    }
+
+    public static String getTenGiangVien(List<GiangVien> list) {
+        String str = "Giảng viên: ";
+        for (int i = 0; i < list.size(); i++) {
+            if (i == list.size() - 1) {
+                str += list.get(i).getTenGiangVien();
+            } else {
+                str += list.get(i).getTenGiangVien() + ", ";
+            }
+        }
+        return str;
+    }
+
+    public static String getTenLopMonHoc(LopMonHoc lopMonHoc) {
+        String str = "Lớp: ";
+
+        return str + "(" + lopMonHoc.get_id() + ") " + lopMonHoc.getTenLopMonHoc();
+
+    }
+
+    public static String getThoiGian(String s) {
+
         return s;
     }
 }

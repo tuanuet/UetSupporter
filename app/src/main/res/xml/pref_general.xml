@@ -18,5 +18,9 @@
         android:key="@string/pref_title_tintuc"
         android:title="@string/pref_title_tintuc"
         android:icon="@mipmap/ic_launcher"/>
+    <MultiSelectListPreference
+        android:key="@string/pref_title_thongbao"
+        android:title="@string/pref_title_thongbao"
+        android:icon="@mipmap/ic_launcher" />
 
 </PreferenceScreen>
