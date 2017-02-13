@@ -42,14 +42,13 @@ public class TinTucFragment extends Fragment {
 
         getChildFragmentManager()
                 .beginTransaction()
-                .replace(R.id.tintuc_contentview, PatternFactoryFragmentTinTuc.newInstance(Config.daotao))
+                .replace(R.id.tintuc_contentview, PatternFactoryFragmentTinTuc.newInstance(-1))
                 .commit();
         return view;
     }
 
     private void initUI() {
         loaiTinTucArrayList = Utils.getAllLoaiTinTuc(getActivity());
-
 
     }
 

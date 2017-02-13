@@ -26,7 +26,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 
 public interface ApiTinTuc {
     @GET("/tintuc/test")
-    Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") int loaitintuc);
+    Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") int loaitintuc, @Query("offset") int offset);
 
     @GET("/loaitintuc")
     Call<ArrayList<LoaiTinTuc>> getAllLoaiTinTuc();
@@ -38,7 +38,7 @@ public interface ApiTinTuc {
     Call<Subcribe> getSubcribeLoaiTinTuc(@Header("Authorization") String authorization);
 
     @GET("/sinhvien/profile")
-    Call<SinhVien> getInformationSinhVien(@Query("token") String token);
+    Call<SinhVien> getInformationSinhVien(@Header("Authorization") String authorization);
 
     @FormUrlEncoded
     @POST("/sinhvien/guiloaitintuc")

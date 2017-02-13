@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PopupMenu;
+
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,8 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,8 +22,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapterTinTuc;
-import vnu.uet.tuan.uetsupporter.Listener.RecyclerItemClickListener;
-import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
+import vnu.uet.tuan.uetsupporter.Listener.EndlessRecyclerOnScrollListener;
+
 import vnu.uet.tuan.uetsupporter.Model.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
@@ -78,12 +76,12 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
             loaiTinTuc = getArguments().getInt(ARG_PARAM1);
             listTinTuc = new ArrayList<>();
             Log.e("pattern", loaiTinTuc + "");
-            getTinTucByLoaiTinTuc(loaiTinTuc);
+            getTinTucByLoaiTinTuc(loaiTinTuc, 0);
         }
 
     }
 
-    public void getTinTucByLoaiTinTuc(int loaitintuc) {
+    public void getTinTucByLoaiTinTuc(int loaitintuc, int offsetPage) {
         Call<ArrayList<TinTuc>> call;
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Config.API_HOSTNAME)
@@ -91,7 +89,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        call = apiTinTuc.getDataTinTuc(loaitintuc);
+        call = apiTinTuc.getDataTinTuc(loaitintuc, offsetPage * 10);
         call.enqueue(this);
 
     }
@@ -114,38 +112,6 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-
-
-        Log.e("TAG", "onCreateView");
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-
-//        recyclerView.addOnItemTouchListener(
-//                new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(View view, int position) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onLongItemClick(View view, int position) {
-//                        // do whatever
-//
-//                    }
-//                })
-//        );
-
-    }
-
-    @Override
-    public void onResponse(Call<ArrayList<TinTuc>> call, Response<ArrayList<TinTuc>> response) {
-        listTinTuc = response.body();
-
         adapter = new PatternRecyclerAdapterTinTuc(getActivity(), listTinTuc);
         adapter.setOnItemClickListener(new PatternRecyclerAdapterTinTuc.ClickListener() {
             @Override
@@ -167,6 +133,37 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
             }
         });
         recyclerView.setAdapter(adapter);
+
+        Log.e("TAG", "onCreateView");
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        recyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                getTinTucByLoaiTinTuc(loaiTinTuc, current_page);
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onResponse(Call<ArrayList<TinTuc>> call, Response<ArrayList<TinTuc>> response) {
+        int lastPosition = 0;
+        if (listTinTuc == null) {
+            lastPosition = 0;
+            listTinTuc = response.body();
+        } else {
+            lastPosition = listTinTuc.size();
+            listTinTuc.addAll(response.body());
+        }
+        adapter.notifyItemInserted(lastPosition);
     }
 
     @Override
