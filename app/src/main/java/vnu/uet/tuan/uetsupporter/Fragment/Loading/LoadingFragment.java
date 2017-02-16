@@ -1,12 +1,17 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Loading;
 
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -17,13 +22,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import vnu.uet.tuan.uetsupporter.Activities.LoadingActivity;
+import vnu.uet.tuan.uetsupporter.Activities.MainActivity;
 import vnu.uet.tuan.uetsupporter.Model.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
-import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiThongBaoSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiTinTucSQLHelper;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
@@ -31,8 +38,12 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  */
 public class LoadingFragment extends Fragment {
 
+    private int currentTask = 0;
+    private int maxTask = 2;
     private LoaiTinTucSQLHelper loaiTinTucSQLHelper;
     private LoaiThongBaoSQLHelper loaiThongBaoSQLHelper;
+    private ProgressBar progressBar;
+    private TextView txt_percent;
 
     public LoadingFragment() {
         // Required empty public constructor
@@ -47,6 +58,13 @@ public class LoadingFragment extends Fragment {
 
         loaiTinTucSQLHelper = new LoaiTinTucSQLHelper(getActivity());
         loaiThongBaoSQLHelper = new LoaiThongBaoSQLHelper(getActivity());
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        txt_percent = (TextView) view.findViewById(R.id.txt_percent);
+        progressBar.setMax(maxTask);
+
+        Thread runCheck = new Thread(new RunCheck());
+        runCheck.start();
+
 
         insertDBLoaiTinTuc();
         insertDBLoaiThongBao();
@@ -69,10 +87,11 @@ public class LoadingFragment extends Fragment {
                 List<LoaiThongBao> arrLoaiThongBao = response.body();
                 if (arrLoaiThongBao != null) {
                     int count = loaiThongBaoSQLHelper.insertBulkLoaiThongBao(arrLoaiThongBao);
-                    Log.e("Loading", count + "");
+                    increasingTask();
                 } else {
                     Toast.makeText(getActivity(), "Đường truyền lỗi kiểm tra lại", Toast.LENGTH_LONG).show();
                 }
+
             }
 
             @Override
@@ -98,7 +117,7 @@ public class LoadingFragment extends Fragment {
                 ArrayList<LoaiTinTuc> arrLoaiTinTuc = response.body();
                 if (arrLoaiTinTuc != null) {
                     int count = loaiTinTucSQLHelper.insertBulkLoaiTinTuc(arrLoaiTinTuc);
-                    Log.e("Loading", count + "");
+                    increasingTask();
                 } else {
                     Toast.makeText(getActivity(), "Đường truyền lỗi kiểm tra lại", Toast.LENGTH_LONG).show();
                 }
@@ -111,5 +130,50 @@ public class LoadingFragment extends Fragment {
         });
     }
 
+    class RunCheck implements Runnable {
+
+        @Override
+        public void run() {
+            while (currentTask != maxTask) {
+                //wait
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                progressBar.setProgress(currentTask);
+
+//                try{
+//                    txt_percent.setText(getPercen());
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                }
+
+                //update progress
+            }
+            //cai dat lai bien IsRunFirstTime thanh false
+            setIsRunFirstTime(false);
+            getActivity().finish();
+            Intent login = new Intent(getActivity(), LoadingActivity.class);
+            startActivity(login);
+        }
+    }
+
+    private void setIsRunFirstTime(Boolean value) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(Config.IS_RUN_FIRST_TIME, value);
+        editor.commit();
+    }
+
+    private synchronized void increasingTask() {
+        currentTask++;
+    }
+
+    private String getPercen() {
+        double doubl = currentTask / maxTask;
+        return doubl + " %";
+    }
 
 }

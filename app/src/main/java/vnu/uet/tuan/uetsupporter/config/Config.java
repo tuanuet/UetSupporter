@@ -9,24 +9,28 @@ import okhttp3.MediaType;
 public class Config {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
-
+    public static final String TENSINHVIEN = "tenSinhVien";
     public static final String SINHVIEN = "sinhvien";
-    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String KEY_PUSHNOTIFICATION = "key_pushnotification";
+
+
     public static final String FIREBASE_TOKEN = "firebase_token";
 
     public static final int IDNOTICATION = 9011;
     public static final String USER_TOKEN = "user_token";
     public static final String CAN_BE_FIREBASE_TOKEN = "can be firebase token";
-    /**
+    public static final String IS_RUN_FIRST_TIME = "run first time";
+    /**í
      * ===================================================
      */
     public static final int daotao = 0;
     public static final int tuyendung = 7;
 
+
     /**
      * ===================================================
      */
-    public static String hostname = "http://192.168.0.2:3000";
+    public static String hostname = "http://192.168.0.3:3000";
 
     public static final String KEY_URL = "keyurl";
     public static final String GET_INFORMATION_USER = hostname + "/sinhvien/profile";
@@ -37,5 +41,12 @@ public class Config {
 
     public static final MediaType JSON
             = MediaType.parse("application/json; charset=utf-8");
+    /**
+     * ===================================================
+     */
+    public static final String ACTION_CHITIET = "vnu.uet.tuan.uetsupporter.chitiet";
+    public static final String ACTION_XEMSAU = "vnu.uet.tuan.uetsupporter.xemsau";
+    public static final String ACTION_DAXEM = "vnu.uet.tuan.uetsupporter.daxem";
+    public static final String ACTION_CLOSE = "vnu.uet.tuan.uetsupporter.close";
 
 }

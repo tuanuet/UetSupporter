@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import me.leolin.shortcutbadger.ShortcutBadger;
+import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.HopThuFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Profile.ProfileFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.TinTucFragment;
 import vnu.uet.tuan.uetsupporter.R;
@@ -23,20 +25,12 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    NavigationView navigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Thread loadingThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(getApplicationContext(),LoadingActivity.class);
-                startActivity(intent);
-            }
-        });
-        loadingThread.start();
         init();
 
 
@@ -58,29 +52,42 @@ public class MainActivity extends AppCompatActivity
 
         initNavHead();
 
+    }
+
+    private void initShortcutBadger() {
+        int badgeCount = Utils.getNumberOnNav(getApplicationContext());
+        ShortcutBadger.applyCount(getApplicationContext(), badgeCount); //for 1.1.4+
 
     }
 
     private void initNavHead() {
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
         TextView txt_Ten = (TextView) header.findViewById(R.id.nav_head_name);
         TextView txt_email = (TextView) header.findViewById(R.id.nav_head_email);
-        txt_Ten.setText(Utils.getEmailUser(getApplicationContext()));
+        txt_Ten.setText(Utils.getUsername(getApplicationContext()));
         txt_email.setText(Utils.getEmailUser(getApplicationContext()));
 
-        //load dau cham
-        setupNumberForNav(navigationView);
     }
 
     //load số lượng các notifi chưa được đọc
-    private void setupNumberForNav(NavigationView nv) {
-        nv.getMenu().getItem(2).setActionView(R.layout.nav_item_number);
+    private void setupNumberForNav() {
+        navigationView.getMenu().getItem(2).setActionView(R.layout.nav_item_number);
+        TextView homthu_number = (TextView) navigationView.getMenu().getItem(2)
+                .getActionView().findViewById(R.id.hopthu_number);
+        homthu_number.setText(String.valueOf(Utils.getNumberOnNav(getApplicationContext())));
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupNumberForNav();
+        initShortcutBadger();
+    }
 
     @Override
     public void onBackPressed() {
@@ -130,13 +137,17 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_thongbao) {
 
         } else if (id == R.id.nav_tintuc) {
-            Fragment tintuc = new TinTucFragment();
-            showChangeFragment(tintuc,tintuc.getClass().getName());
-        } else if (id == R.id.nav_mynotification) {
 
+            Fragment tintuc = new TinTucFragment();
+            showChangeFragment(tintuc, getString(R.string.nav_tintuc));
+
+        } else if (id == R.id.nav_mynotification) {
+            Fragment hopthu = new HopThuFragment();
+            showChangeFragment(hopthu, getString(R.string.nav_mynotification));
         } else if (id == R.id.nav_myprofile) {
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
             startActivity(intent);
+            return false;
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -164,6 +175,7 @@ public class MainActivity extends AppCompatActivity
             ft.commit();
             Log.e("MainActi","Fragment not in Stack");
         }
+        getSupportActionBar().setTitle(name);
     }
 
 }

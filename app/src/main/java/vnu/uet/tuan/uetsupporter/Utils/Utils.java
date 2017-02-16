@@ -3,7 +3,9 @@ package vnu.uet.tuan.uetsupporter.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.preference.RingtonePreference;
 import android.util.Log;
 
 import java.io.IOException;
@@ -20,9 +22,12 @@ import vnu.uet.tuan.uetsupporter.Model.GiangVien;
 import vnu.uet.tuan.uetsupporter.Model.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
+import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiThongBaoSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiTinTucSQLHelper;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
@@ -41,6 +46,13 @@ public class Utils {
 
         return listString;
     }
+
+    public static String getUsername(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String str = sharedPreferences.getString(Config.TENSINHVIEN, null);
+        return str;
+    }
+
     public static Boolean getBoolenSetting(Context context,String key){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Boolean aBoolean = sharedPreferences.getBoolean(key,false);
@@ -59,6 +71,13 @@ public class Utils {
     public static String getUserToken(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         return sharedPreferences.getString(Config.USER_TOKEN,null);
+    }
+
+    public static Uri getSoundNotification(Context context) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+        String strRingtonePreference = preference.getString(context.getString(R.string.sound_notification),
+                context.getString(R.string.sound_notification_default));
+        return Uri.parse(strRingtonePreference);
     }
     public static String getFirebaseToken(Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -146,6 +165,31 @@ public class Utils {
         return list;
     }
 
+    public static ArrayList<PushNotification> getPushNotification(Context context) {
+        PushNotificationSQLHelper db = new PushNotificationSQLHelper(context);
+        Cursor cursor = db.getArrayPushNotification();
+
+        ArrayList<PushNotification> list = new ArrayList<>();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            PushNotification pushNotification = new PushNotification();
+            pushNotification.setTieuDe(cursor.getString(Contract.PushNotification.tieu_de));
+            pushNotification.setNoiDung(cursor.getString(Contract.PushNotification.noi_dung));
+            pushNotification.setKind(cursor.getInt(Contract.PushNotification.kind));
+            pushNotification.setLink(cursor.getString(Contract.PushNotification.link_page));
+            pushNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
+            int isRead = cursor.getInt(Contract.PushNotification.is_read);
+            if (isRead == 1) {
+                pushNotification.setRead(true);
+            } else {
+                pushNotification.setRead(false);
+            }
+            list.add(pushNotification);
+            cursor.moveToNext();
+        }
+        return list;
+    }
+
     public static ArrayList<Integer> getArrayFromString(String s){
         ArrayList<Integer> arr = new ArrayList<>();
         s = s.trim().substring(1,s.length()-1); //bo di dau []
@@ -186,5 +230,15 @@ public class Utils {
     public static String getThoiGian(String s) {
 
         return s;
+    }
+
+    public static boolean isRunFirstTime(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getBoolean(Config.IS_RUN_FIRST_TIME, true);
+    }
+
+    public static int getNumberOnNav(Context context) {
+        PushNotificationSQLHelper db = new PushNotificationSQLHelper(context);
+        return db.getCountNotificationNotRead();
     }
 }

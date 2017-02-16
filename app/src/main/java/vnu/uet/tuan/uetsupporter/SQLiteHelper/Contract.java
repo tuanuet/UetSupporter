@@ -26,4 +26,25 @@ public class Contract {
         public static final String TENLOAITHONGBAO = "tenloaithongbao";
         public static final int VERSION = 1;
     }
+
+    public class PushNotification implements BaseColumns {
+        public static final int _id = 0;
+        public static final int tieu_de = 1;
+        public static final int noi_dung = 2;
+        public static final int kind = 3;
+        public static final int link_page = 4;
+        public static final int is_read = 5;
+        public static final int thoi_gian_nhan = 6;
+        public static final int VERSION = 1;
+
+        public static final String NAME_TABLE = "pushnotification";
+        public static final String _ID = "id";
+        public static final String TIEU_DE = "tieude";
+        public static final String NOI_DUNG = "noidung";
+        public static final String KIND = "loai";
+        public static final String LINK = "link";
+        public static final String ISREAD = "isread";
+        public static final String THOIGIANNHAN = "thoigiannhan";
+
+    }
 }

@@ -40,4 +40,10 @@
     <string name="tinhoatdongdoanthe">Tin Hoạt Động Đoàn Thể</string>
     <string name="tinvanhoathethao">Tin Văn Hóa, Thể Thao</string>
     <string name="tinall">Tất cả</string>
+    <string name="chitiet">Chi tiết</string>
+    <string name="xemsau">Xem sau</string>
+    <string name="daxem">Đã xem</string>
+    <string name="sound_notification">soundnotification</string>
+    <string name="vibrate">rung</string>
+    <string name="sound_notification_default">content://settings/system/notification_sound</string>
 </resources>

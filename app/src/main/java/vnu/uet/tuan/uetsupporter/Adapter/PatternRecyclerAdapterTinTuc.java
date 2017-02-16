@@ -38,7 +38,6 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
     public PatternRecyclerAdapterTinTuc(Context context, ArrayList<TinTuc> list) {
         this.context = context;
         this.list = list;
-
     }
 
 

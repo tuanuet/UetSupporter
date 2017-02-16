@@ -4,6 +4,7 @@ package vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.MediaBrowserCompat;
 import android.view.LayoutInflater;
@@ -40,7 +41,12 @@ public class DetailTinTucFragment extends Fragment {
         dialog.setMessage(getString(R.string.please_wait));
         dialog.show();
 
+        return view;
+    }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         String urlQuery = getArguments().getString(Config.KEY_URL, "");
 
         webView = (WebView) view.findViewById(R.id.frag_webview);
@@ -63,7 +69,7 @@ public class DetailTinTucFragment extends Fragment {
                 // The progress meter will automatically disappear when we reach 100%
 
                 // Here you can check if the progress is = 40% or not
-                if (progress == 40) {
+                if (progress >= 30) {
                     // hide the progress bar
                     // show the webview
                     dialog.dismiss();
@@ -75,7 +81,6 @@ public class DetailTinTucFragment extends Fragment {
                 Toast.makeText(getActivity(), "Oh no! " + description, Toast.LENGTH_SHORT).show();
             }
         });
-        return view;
     }
 
     public String getURL(String hostname, String query) {

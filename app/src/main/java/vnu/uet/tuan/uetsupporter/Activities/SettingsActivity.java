@@ -212,9 +212,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_user);
             setHasOptionsMenu(true);
             Preference preference = findPreference(getString(R.string.logout));
-            String email = Utils.getEmailUser(context);
-            Toast.makeText(context,email,Toast.LENGTH_LONG).show();
-            preference.setSummary(email);
+            String username = Utils.getUsername(context);
+            preference.setSummary(username);
             preference.setOnPreferenceClickListener(this);
         }
 
@@ -442,7 +441,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
-            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+            bindPreferenceSummaryToValue(findPreference(context.getString(R.string.sound_notification)));
         }
 
         @Override
