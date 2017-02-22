@@ -27,6 +27,15 @@ public class Contract {
         public static final int VERSION = 1;
     }
 
+    public class MucDoThongBao implements BaseColumns {
+        public static final int _id = 0;
+        public static final int tenMucDoThongBao = 1;
+        public static final String NAME_TABLE = "mucdothongbao";
+        public static final String _ID = "_id";
+        public static final String TENMUCDOTHONGBAO = "tenmucdothongbao";
+        public static final int VERSION = 1;
+    }
+
     public class PushNotification implements BaseColumns {
         public static final int _id = 0;
         public static final int tieu_de = 1;

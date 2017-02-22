@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapterTinTuc;
 import vnu.uet.tuan.uetsupporter.Listener.EndlessRecyclerOnScrollListener;
 
-import vnu.uet.tuan.uetsupporter.Model.TinTuc;
+import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;

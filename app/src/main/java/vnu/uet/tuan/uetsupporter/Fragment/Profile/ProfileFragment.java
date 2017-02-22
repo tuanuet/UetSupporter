@@ -1,15 +1,10 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Profile;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,24 +16,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Activities.SettingsActivity;
-import vnu.uet.tuan.uetsupporter.Adapter.ProfileRecyclerLopMonHoc;
-import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
 import vnu.uet.tuan.uetsupporter.Model.SinhVien;
-import vnu.uet.tuan.uetsupporter.Model.TinTuc;
-import vnu.uet.tuan.uetsupporter.Model.Users;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;

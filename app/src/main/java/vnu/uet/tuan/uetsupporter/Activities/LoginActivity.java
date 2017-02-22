@@ -148,11 +148,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // progressDialog.dismiss();
             while (!Utils.canGetFirebaseToken(getApplicationContext())) {
                 Log.e("Login", Utils.canGetFirebaseToken(getApplicationContext()) + "");
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
 
             dialog.dismiss();

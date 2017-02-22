@@ -4,18 +4,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.util.List;
 
-import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 
 /**
  * Created by Vu Minh Tuan on 2/7/2017.
  */
 
-public class LoaiTinTucSQLHelper extends SQLiteOpenHelper {
+public class LoaiTinTucSQLHelper extends SQLFather {
 
     Context context;
     public LoaiTinTucSQLHelper(Context context) {
@@ -36,7 +35,9 @@ public class LoaiTinTucSQLHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
     }
 
-    public int insertBulkLoaiTinTuc(ArrayList<LoaiTinTuc> arr){
+    @Override
+    public int insertBulk(List list) {
+        List<LoaiTinTuc> arr = list;
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         int countNumber= 0;
@@ -63,8 +64,8 @@ public class LoaiTinTucSQLHelper extends SQLiteOpenHelper {
 
     }
 
-    public Cursor getArrayLoaiTinTuc(){
-
+    @Override
+    public Cursor getAll() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select * from "+ Contract.LoaiTinTuc.NAME_TABLE + " order by " + Contract.LoaiTinTuc._ID + " asc";
         Log.e("sql",query);

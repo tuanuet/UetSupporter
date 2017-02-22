@@ -50,7 +50,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setLink((String) data.get(PushNotification.LINK));
         push.setNoiDung((String) data.get(PushNotification.NOIDUNG));
         push.setRead(false);
-        push.setThoiGianNhan("12:30");
+        push.setThoiGianNhan(Utils.getThoiGian(System.currentTimeMillis()));
         push.setTieuDe((String) data.get(PushNotification.TIEUDE));
         return push;
     }

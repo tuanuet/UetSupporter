@@ -5,12 +5,12 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.preference.RingtonePreference;
 import android.util.Log;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,8 +19,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import vnu.uet.tuan.uetsupporter.Model.GiangVien;
-import vnu.uet.tuan.uetsupporter.Model.LoaiThongBao;
-import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.R;
@@ -31,7 +31,6 @@ import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
-import static vnu.uet.tuan.uetsupporter.config.Config.LOGIN_URL;
 
 /**
  * Created by Administrator on 14/01/2017.
@@ -136,7 +135,7 @@ public class Utils {
 
     public static ArrayList<LoaiTinTuc> getAllLoaiTinTuc(Context context){
         LoaiTinTucSQLHelper db = new LoaiTinTucSQLHelper(context);
-        Cursor cursor = db.getArrayLoaiTinTuc();
+        Cursor cursor = db.getAll();
         ArrayList<LoaiTinTuc> list = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
@@ -152,7 +151,7 @@ public class Utils {
 
     public static ArrayList<LoaiThongBao> getAllLoaiThongBao(Context context) {
         LoaiThongBaoSQLHelper db = new LoaiThongBaoSQLHelper(context);
-        Cursor cursor = db.getArrayLoaiThongBao();
+        Cursor cursor = db.getAll();
         ArrayList<LoaiThongBao> list = new ArrayList<>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
@@ -228,8 +227,15 @@ public class Utils {
     }
 
     public static String getThoiGian(String s) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+        Date date = new Date(s);
+        return sdf.format(date);
+    }
 
-        return s;
+    public static String getThoiGian(long i) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+        Date resultdate = new Date(i);
+        return sdf.format(resultdate);
     }
 
     public static boolean isRunFirstTime(Context context) {

@@ -8,13 +8,11 @@ import android.content.Context;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.bumptech.glide.Glide;
@@ -24,7 +22,7 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;
 
-import vnu.uet.tuan.uetsupporter.Model.TinTuc;
+import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;
 
 public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {

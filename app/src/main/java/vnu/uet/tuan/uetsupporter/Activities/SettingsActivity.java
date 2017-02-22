@@ -35,10 +35,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.LinhTinh.DialogLogoutFragment;
-import vnu.uet.tuan.uetsupporter.Model.LoaiThongBao;
-import vnu.uet.tuan.uetsupporter.Model.LoaiTinTuc;
-import vnu.uet.tuan.uetsupporter.Model.Message;
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
+import vnu.uet.tuan.uetsupporter.Model.Response.Message;
 import vnu.uet.tuan.uetsupporter.Model.Subcribe;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
@@ -232,8 +231,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             DialogFragment dialogFragment = new DialogLogoutFragment();
             dialogFragment.show(getFragmentManager(),"Logout");
-
-
             return false;
         }
     }
@@ -324,7 +321,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             thongbao.setEntries(entriesThongBao);
             thongbao.setEntryValues(entriesValueThongBao);
 
-
         }
 
         private void getRegister() {
@@ -359,7 +355,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 @Override
                 public void onFailure(Call<Subcribe> call, Throwable t) {
-
+                    Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show();
                 }
             });
         }

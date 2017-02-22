@@ -1,7 +1,9 @@
-package vnu.uet.tuan.uetsupporter.Model;
+package vnu.uet.tuan.uetsupporter.Model.Response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 
 /**
  * Created by Administrator on 19/01/2017.

@@ -8,34 +8,34 @@ import android.util.Log;
 
 import java.util.List;
 
-import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
+import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 
 /**
- * Created by Vu Minh Tuan on 2/11/2017.
+ * Created by Vu Minh Tuan on 2/22/2017.
  */
 
-public class LoaiThongBaoSQLHelper extends SQLFather {
+public class MucDoThongBaoSQLHelper extends SQLFather {
     Context context;
 
-    public LoaiThongBaoSQLHelper(Context context) {
-        super(context, Contract.LoaiThongBao.NAME_TABLE, null, Contract.LoaiThongBao.VERSION);
+    public MucDoThongBaoSQLHelper(Context context) {
+        super(context, Contract.MucDoThongBao.NAME_TABLE, null, Contract.MucDoThongBao.VERSION);
         this.context = context;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table " + Contract.LoaiThongBao.NAME_TABLE + " ( " +
-                Contract.LoaiThongBao._ID + " integer primary key, " +
-                Contract.LoaiThongBao.TENLOAITHONGBAO + " text not null, " +
+                Contract.MucDoThongBao._ID + " integer primary key, " +
+                Contract.MucDoThongBao.TENMUCDOTHONGBAO + " text not null, " +
 
-                " UNIQUE ( " + Contract.LoaiThongBao.TENLOAITHONGBAO + ") ON CONFLICT REPLACE);";
+                " UNIQUE ( " + Contract.MucDoThongBao._ID + ") ON CONFLICT REPLACE);";
 
         db.execSQL(sql);
     }
 
     @Override
     public int insertBulk(List list) {
-        List<LoaiThongBao> arr = list;
+        List<MucDoThongBao> arr = list;
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         int countNumber = 0;
@@ -43,12 +43,12 @@ public class LoaiThongBaoSQLHelper extends SQLFather {
 
             for (int i = 0; i < arr.size(); i++) {
                 ContentValues values = new ContentValues();
-                LoaiThongBao loaiThongBao = arr.get(i);
+                MucDoThongBao mucDoThongBao = arr.get(i);
 
-                values.put(Contract.LoaiThongBao._ID, loaiThongBao.get_id());
-                values.put(Contract.LoaiThongBao.TENLOAITHONGBAO, loaiThongBao.getTenLoaiThongBao());
+                values.put(Contract.MucDoThongBao._ID, mucDoThongBao.get_id());
+                values.put(Contract.MucDoThongBao.TENMUCDOTHONGBAO, mucDoThongBao.getTenMucDoThongBao());
 
-                long _id = db.insert(Contract.LoaiThongBao.NAME_TABLE, null, values);
+                long _id = db.insert(Contract.MucDoThongBao.NAME_TABLE, null, values);
                 if (_id != -1) {
                     countNumber++;
                 }
@@ -63,7 +63,7 @@ public class LoaiThongBaoSQLHelper extends SQLFather {
     @Override
     public Cursor getAll() {
         SQLiteDatabase db = this.getReadableDatabase();
-        String query = "select * from " + Contract.LoaiThongBao.NAME_TABLE + " order by " + Contract.LoaiThongBao._ID + " asc";
+        String query = "select * from " + Contract.MucDoThongBao.NAME_TABLE + " order by " + Contract.MucDoThongBao._ID + " asc";
         Log.e("sql", query);
 
         Cursor cursor = db.rawQuery(query, null);
@@ -72,6 +72,6 @@ public class LoaiThongBaoSQLHelper extends SQLFather {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + Contract.LoaiThongBao.NAME_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.MucDoThongBao.NAME_TABLE);
     }
 }

@@ -1,4 +1,4 @@
-package vnu.uet.tuan.uetsupporter.Model;
+package vnu.uet.tuan.uetsupporter.Model.Response;
 
 /**
  * Created by Vu Minh Tuan on 2/11/2017.

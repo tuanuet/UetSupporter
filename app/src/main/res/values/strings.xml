@@ -61,5 +61,6 @@
     <string name="sound_notification">soundnotification</string>
     <string name="vibrate">rung</string>
     <string name="sound_notification_default">content://settings/system/notification_sound</string>
+    <string name="please_exit">Mời bạn vui lòng thoát ra và vào lại!</string>
 
 </resources>

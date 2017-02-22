@@ -1,4 +1,4 @@
-package vnu.uet.tuan.uetsupporter.Model;
+package vnu.uet.tuan.uetsupporter.Model.Download;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -46,6 +46,7 @@ public class LoaiTinTuc implements Parcelable{
         this.kind = kind;
         this.linkPage = linkPage;
     }
+
 
     public LoaiTinTuc() {
     }
