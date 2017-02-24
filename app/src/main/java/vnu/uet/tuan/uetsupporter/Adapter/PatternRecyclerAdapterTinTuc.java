@@ -24,6 +24,7 @@ import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;
 
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
 public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
     private ArrayList<TinTuc> list;
@@ -64,7 +65,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
             itemViewHolder.txt_title.setText(list.get(position).getTitle());
-            itemViewHolder.txt_postat.setText(list.get(position).getPostAt());
+            itemViewHolder.txt_postat.setText(Utils.getThoiGian(list.get(position).getPostAt()));
             itemViewHolder.txt_loaitintuc.setText(list.get(position).getLoaiTinTuc().getKind());
 
             if (list.get(position).getImageLink() != null) {

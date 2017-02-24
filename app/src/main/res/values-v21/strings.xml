@@ -47,4 +47,6 @@
     <string name="vibrate">rung</string>
     <string name="sound_notification_default">content://settings/system/notification_sound</string>
     <string name="please_exit">Mời bạn vui lòng thoát ra và vào lại!</string>
+    <string name="action_delete">Xóa</string>
+    <string name="fail_download">Lỗi trong khi tải tài nguyên</string>
 </resources>

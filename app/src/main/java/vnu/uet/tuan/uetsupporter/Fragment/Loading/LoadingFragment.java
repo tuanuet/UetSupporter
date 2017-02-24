@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,7 +81,7 @@ public class LoadingFragment extends Fragment {
         });
     }
 
-    class RunLoading extends AsyncTask<Void, Integer, Void> {
+    class RunLoading extends AsyncTask<Void, Integer, Boolean> {
 
         @Override
         protected void onPreExecute() {
@@ -89,45 +90,51 @@ public class LoadingFragment extends Fragment {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             try {
                 //insert LoaiThongBao
                 Call<List<LoaiThongBao>> call = getLoaiThongBao();
                 Response<List<LoaiThongBao>> responseThongBao = call.execute();
-                if (responseThongBao.isSuccessful()) {
+                if (responseThongBao.isSuccessful() && responseThongBao.body() != null) {
                     List<LoaiThongBao> list = responseThongBao.body();
                     int count = loaiThongBaoSQLHelper.insertBulk(list);
                     currentTask++;
                     publishProgress(currentTask);
+                } else {
+                    return false;
                 }
 
                 //insert LoaiTinTuc
                 Call<ArrayList<LoaiTinTuc>> callTinTuc = getLoaiTinTuc();
                 Response<ArrayList<LoaiTinTuc>> responseLoaiTinTuc = callTinTuc.execute();
-                if (responseLoaiTinTuc.isSuccessful()) {
+                if (responseLoaiTinTuc.isSuccessful() && responseLoaiTinTuc.body() != null) {
                     ArrayList<LoaiTinTuc> list = responseLoaiTinTuc.body();
                     int count = loaiTinTucSQLHelper.insertBulk(list);
                     currentTask++;
                     publishProgress(currentTask);
+                } else {
+                    return false;
                 }
 
                 //insert MucDoThongBao
                 Call<List<MucDoThongBao>> callMucDoThongBao = getMucDoThongBao();
                 Response<List<MucDoThongBao>> responseMucDoThongBao = callMucDoThongBao.execute();
-                if (responseMucDoThongBao.isSuccessful()) {
+                if (responseMucDoThongBao.isSuccessful() && responseMucDoThongBao.body() != null) {
                     List<MucDoThongBao> list = responseMucDoThongBao.body();
+                    Log.e("Loading", "Size muc do: " + list.size());
                     int count = mucDoThongBaoSQLHelper.insertBulk(list);
                     currentTask++;
                     publishProgress(currentTask);
+                } else {
+                    return false;
                 }
-
                 //.......
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return null;
+            return true;
         }
 
 
@@ -139,13 +146,17 @@ public class LoadingFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
+        protected void onPostExecute(Boolean isSuccess) {
+            super.onPostExecute(isSuccess);
             //cai dat lai bien IsRunFirstTime thanh false
-            if (currentTask == maxTask) {
-                setIsRunFirstTime(false);
-                getPercen();
-                Toast.makeText(getActivity(), getString(R.string.please_exit), Toast.LENGTH_LONG).show();
+            if (isSuccess) {
+                if (currentTask == maxTask) {
+                    setIsRunFirstTime(false);
+                    getPercen();
+                    Toast.makeText(getActivity(), getString(R.string.please_exit), Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(getActivity(), getString(R.string.fail_download), Toast.LENGTH_LONG).show();
             }
 
         }
@@ -188,7 +199,7 @@ public class LoadingFragment extends Fragment {
     }
 
     private String getPercen() {
-        float doubl = currentTask / maxTask;
+        float doubl = (float) currentTask / maxTask;
         return doubl + " %";
     }
     private void setIsRunFirstTime(Boolean value) {

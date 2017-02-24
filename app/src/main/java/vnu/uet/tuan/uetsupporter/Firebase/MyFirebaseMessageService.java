@@ -23,6 +23,7 @@ import vnu.uet.tuan.uetsupporter.Broascast.BroadcastNotification;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
+import vnu.uet.tuan.uetsupporter.TemplateNotification.ThongBaoMessageNotification;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -39,7 +40,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         Map data = remoteMessage.getData();
         PushNotification pushNotification = getPushNotification(data);
 
-        setupNoti(pushNotification);
+        ThongBaoMessageNotification.notify(getApplicationContext(), pushNotification);
         //lưu vao database
 
     }
@@ -52,71 +53,16 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setRead(false);
         push.setThoiGianNhan(Utils.getThoiGian(System.currentTimeMillis()));
         push.setTieuDe((String) data.get(PushNotification.TIEUDE));
+        push.setHasFile(false); //fix lai
+        push.setIdLoaiThongBao(Integer.parseInt(String.valueOf(data.get(PushNotification.IDLOAITHONGBAO))));
+        push.setIdMucDoThongBao(Integer.parseInt(String.valueOf(data.get(PushNotification.IDMUCDOTHONGBAO))));
         return push;
     }
 
-    protected PendingIntent getPendingIntent(String action, PushNotification notification) {
-        Intent intent = new Intent(MyFirebaseMessageService.this,
-                BroadcastNotification.class);
-
-        intent.putExtra(Config.KEY_PUSHNOTIFICATION, notification);
-        intent.setAction(action);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        return PendingIntent.getBroadcast(MyFirebaseMessageService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 
 
-    private void setupNoti(PushNotification notification) {
-        Uri sound = Utils.getSoundNotification(getApplicationContext());
-
-        long when = System.currentTimeMillis();
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_notifications_black_24dp)
-                        .setContentTitle(notification.getTieuDe())
-                        .setSound(sound)
-                        .setWhen(when)
-                        .setAutoCancel(true)
-                        .setOngoing(true)
-                        .setContentText(notification.getNoiDung());
-
-//        // Creates an explicit intent for an Activity in your app
-//        Intent resultIntent = new Intent(this, ResultActivity.class);
-//
-//        // The stack builder object will contain an artificial back stack for the
-//        // started Activity.
-//        // This ensures that navigating backward from the Activity leads out of
-//        // your application to the Home screen.
-//        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-//        // Adds the back stack for the Intent (but not the Intent itself)
-//        stackBuilder.addParentStack(ResultActivity.class);
-//        // Adds the Intent that starts the Activity to the top of the stack
-//        stackBuilder.addNextIntent(resultIntent);
-//
-//        PendingIntent resultPendingIntent =
-//                stackBuilder.getPendingIntent(
-//                        0,
-//                        PendingIntent.FLAG_IMMUTABLE
-//                );
-//        mBuilder.setContentIntent(resultPendingIntent);
-        mBuilder.addAction(R.drawable.ic_notifications_black_24dp,
-                getString(R.string.chitiet),
-                getPendingIntent(Config.ACTION_CHITIET, notification));
-
-        mBuilder.addAction(R.drawable.ic_history_black_24dp,
-                getString(R.string.xemsau),
-                getPendingIntent(Config.ACTION_XEMSAU, notification));
-        mBuilder.addAction(R.drawable.ic_check_circle_black_24dp,
-                getString(R.string.daxem),
-                getPendingIntent(Config.ACTION_DAXEM, notification));
 
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
-        mNotificationManager.notify(Config.IDNOTICATION, mBuilder.build());
-    }
 
     //    private PendingIntent setPendingIntent(int id) {
 //

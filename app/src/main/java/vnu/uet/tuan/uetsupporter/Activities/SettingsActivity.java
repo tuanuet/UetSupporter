@@ -34,7 +34,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vnu.uet.tuan.uetsupporter.Fragment.Main.LinhTinh.DialogLogoutFragment;
+import vnu.uet.tuan.uetsupporter.Fragment.LinhTinh.DialogLogoutFragment;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.Response.Message;

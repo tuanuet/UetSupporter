@@ -17,8 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
-import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.HopThuFragment;
-import vnu.uet.tuan.uetsupporter.Fragment.Profile.ProfileFragment;
+import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.HopThongBaoFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.TinTucFragment;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
@@ -142,7 +141,7 @@ public class MainActivity extends AppCompatActivity
             showChangeFragment(tintuc, getString(R.string.nav_tintuc));
 
         } else if (id == R.id.nav_mynotification) {
-            Fragment hopthu = new HopThuFragment();
+            Fragment hopthu = new HopThongBaoFragment();
             showChangeFragment(hopthu, getString(R.string.nav_mynotification));
         } else if (id == R.id.nav_myprofile) {
             Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);

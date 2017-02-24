@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btnSignIn.setOnClickListener(this);
 
         //neu da dang nhap tai khoan roi thi finish luon
-        if(Utils.getEmailUser(getApplicationContext())!=null){
+        if (Utils.getUserToken(getApplicationContext()) != null) {
             Intent intent =new Intent(getApplicationContext(),MainActivity.class);
             startActivity(intent);
             finish();

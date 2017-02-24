@@ -44,6 +44,9 @@ public class Contract {
         public static final int link_page = 4;
         public static final int is_read = 5;
         public static final int thoi_gian_nhan = 6;
+        public static final int has_file = 7;
+        public static final int id_loai_thong_bao = 8;
+        public static final int id_muc_mo_thong_bao = 9;
         public static final int VERSION = 1;
 
         public static final String NAME_TABLE = "pushnotification";
@@ -54,6 +57,9 @@ public class Contract {
         public static final String LINK = "link";
         public static final String ISREAD = "isread";
         public static final String THOIGIANNHAN = "thoigiannhan";
+        public static final String HASFILE = "hasfile";
+        public static final String IDLOAITHONGBAO = "idloaithongbao";
+        public static final String IDMUCHOTHONGBAO = "idmucdothongbao";
 
     }
 }

@@ -1,4 +1,4 @@
-package vnu.uet.tuan.uetsupporter.Fragment.Main.LinhTinh;
+package vnu.uet.tuan.uetsupporter.Fragment.LinhTinh;
 
 
 import android.app.DialogFragment;

@@ -3,6 +3,9 @@ package vnu.uet.tuan.uetsupporter.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -18,6 +21,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 import vnu.uet.tuan.uetsupporter.Model.GiangVien;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
@@ -27,7 +31,9 @@ import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiThongBaoSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiTinTucSQLHelper;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.MucDoThongBaoSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.SQLFather;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
@@ -68,8 +74,9 @@ public class Utils {
         return str;
     }
     public static String getUserToken(Context context){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString(Config.USER_TOKEN,null);
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        return sharedPreferences.getString(Config.USER_TOKEN,null);
+        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwiZ2V0dGVycyI6e30sIndhc1BvcHVsYXRlZCI6ZmFsc2UsImFjdGl2ZVBhdGhzIjp7InBhdGhzIjp7InBhc3N3b3JkIjoiaW5pdCIsIl9pZCI6ImluaXQiLCJyb2xlIjoiaW5pdCIsIl9fdiI6ImluaXQifSwic3RhdGVzIjp7Imlnbm9yZSI6e30sImRlZmF1bHQiOnt9LCJpbml0Ijp7Il9fdiI6dHJ1ZSwicm9sZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sImVtaXR0ZXIiOnsiZG9tYWluIjpudWxsLCJfZXZlbnRzIjp7fSwiX2V2ZW50c0NvdW50IjowLCJfbWF4TGlzdGVuZXJzIjowfX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJyb2xlIjoiU2luaFZpZW4iLCJfX3YiOjAsInBhc3N3b3JkIjoiJDJhJDEwJG1LWUpUWjJxdnd4ZDlmczVRWlRZWC5xbWI4RjlTQXlsRXl2NFIuYVQ3NzV6STRvNElVcTdlIiwiX2lkIjoiMTQwMjAyMzQifSwiaWF0IjoxNDg3NzU1OTIwfQ.jNIuWAW-9qj-ywSJyKNOMIdlpmnIHHOozJiCCKaMbUA";
     }
 
     public static Uri getSoundNotification(Context context) {
@@ -177,8 +184,15 @@ public class Utils {
             pushNotification.setKind(cursor.getInt(Contract.PushNotification.kind));
             pushNotification.setLink(cursor.getString(Contract.PushNotification.link_page));
             pushNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
-            int isRead = cursor.getInt(Contract.PushNotification.is_read);
-            if (isRead == 1) {
+            pushNotification.setIdLoaiThongBao(cursor.getInt(Contract.PushNotification.id_loai_thong_bao));
+            pushNotification.setIdMucDoThongBao(cursor.getInt(Contract.PushNotification.id_muc_mo_thong_bao));
+
+            if (cursor.getInt(Contract.PushNotification.is_read) == 1) {
+                pushNotification.setRead(true);
+            } else {
+                pushNotification.setRead(false);
+            }
+            if (cursor.getInt(Contract.PushNotification.has_file) == 1) {
                 pushNotification.setRead(true);
             } else {
                 pushNotification.setRead(false);
@@ -227,9 +241,11 @@ public class Utils {
     }
 
     public static String getThoiGian(String s) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
-        Date date = new Date(s);
-        return sdf.format(date);
+        String str = s.split("T")[0];
+//        SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy");
+//        Date date = new Date(str);
+//        return sdf.format(date);
+        return str;
     }
 
     public static String getThoiGian(long i) {
@@ -246,5 +262,35 @@ public class Utils {
     public static int getNumberOnNav(Context context) {
         PushNotificationSQLHelper db = new PushNotificationSQLHelper(context);
         return db.getCountNotificationNotRead();
+    }
+
+
+    public static ArrayList<MucDoThongBao> getAllMucDoThongBao(Context context) {
+        SQLFather sql = new MucDoThongBaoSQLHelper(context);
+        Cursor cursor = sql.getAll();
+        ArrayList<MucDoThongBao> list = new ArrayList<>();
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            MucDoThongBao mucDoThongBao = new MucDoThongBao();
+            mucDoThongBao.set_id(cursor.getInt(Contract.MucDoThongBao._id));
+            mucDoThongBao.setTenMucDoThongBao(cursor.getString(Contract.MucDoThongBao.tenMucDoThongBao));
+            list.add(mucDoThongBao);
+            cursor.moveToNext();
+        }
+        return list;
+    }
+
+    public static int renderColorMucDo(int idMucDoThongBao, ArrayList<MucDoThongBao> mucDoThongBaoList) {
+        for (MucDoThongBao item : mucDoThongBaoList) {
+            if (idMucDoThongBao == item.get_id()) {
+                if (item.get_id() == 1)
+                    return Color.RED;           //QuAN TROGG
+                else if (item.get_id() == 2)
+                    return Color.YELLOW;          //KhanCap
+                else if (item.get_id() == 3)
+                    return Color.BLUE;        // binh thuong
+            }
+        }
+        return 0;
     }
 }

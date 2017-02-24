@@ -24,7 +24,7 @@ public class MucDoThongBaoSQLHelper extends SQLFather {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String sql = "create table " + Contract.LoaiThongBao.NAME_TABLE + " ( " +
+        String sql = "create table " + Contract.MucDoThongBao.NAME_TABLE + " ( " +
                 Contract.MucDoThongBao._ID + " integer primary key, " +
                 Contract.MucDoThongBao.TENMUCDOTHONGBAO + " text not null, " +
 
@@ -40,7 +40,6 @@ public class MucDoThongBaoSQLHelper extends SQLFather {
         db.beginTransaction();
         int countNumber = 0;
         try {
-
             for (int i = 0; i < arr.size(); i++) {
                 ContentValues values = new ContentValues();
                 MucDoThongBao mucDoThongBao = arr.get(i);

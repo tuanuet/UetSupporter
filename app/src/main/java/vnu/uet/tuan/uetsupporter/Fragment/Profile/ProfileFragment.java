@@ -1,11 +1,13 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Profile;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +44,7 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
     DialogLopMonHocFragment dialog;
 
     public ProfileFragment() {
-        // Required empty public constructor
+        getInformationSinhVien();
     }
 
 
@@ -57,7 +59,8 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
 
         listenerUI();
 
-        getInformationSinhVien();
+        updateUI(mSinhVien);
+
 
         return view;
     }
@@ -79,10 +82,6 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
         txt_khoa = (TextView) view.findViewById(R.id.txt_profile_Khoa);
         txt_lopChinh = (TextView) view.findViewById(R.id.txt_profile_tenlopchinh);
         profile_action_lopmonhoc = (RelativeLayout) view.findViewById(R.id.profile_action_lopmonhoc);
-        //init actionBar
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dialog = new DialogLopMonHocFragment();
     }
@@ -126,14 +125,14 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
     @Override
     public void onResponse(Call<SinhVien> call, Response<SinhVien> response) {
         mSinhVien = response.body();
-        updateUI(mSinhVien);
-
-
+        Log.e("profile", "onResponse");
+        onDataRecived.onRecived(true);
     }
 
     @Override
     public void onFailure(Call<SinhVien> call, Throwable t) {
-        Toast.makeText(getActivity(), "Đường truyền có lỗi", Toast.LENGTH_SHORT).show();
+
+        onDataRecived.onRecived(false);
     }
 
     @Override
@@ -148,5 +147,15 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
             android.app.FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
             dialog.show(transaction, "ahihi");
         }
+    }
+
+    public interface OnDataRecived {
+        void onRecived(Boolean isRecived);
+    }
+
+    private OnDataRecived onDataRecived;
+
+    public void setOnDataRecived(OnDataRecived onDataRecived) {
+        this.onDataRecived = onDataRecived;
     }
 }

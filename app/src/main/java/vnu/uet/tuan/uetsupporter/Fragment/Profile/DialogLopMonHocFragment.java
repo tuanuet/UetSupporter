@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Profile;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 
+import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
+import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
 import vnu.uet.tuan.uetsupporter.Adapter.ProfileRecyclerLopMonHoc;
 import vnu.uet.tuan.uetsupporter.Model.SinhVien;
 import vnu.uet.tuan.uetsupporter.R;
@@ -19,10 +22,10 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  * Created by Vu Minh Tuan on 2/11/2017.
  */
 
-public class DialogLopMonHocFragment extends DialogFragment {
+public class DialogLopMonHocFragment extends DialogFragment implements ProfileRecyclerLopMonHoc.ClickListener {
     RecyclerView recycler;
     SinhVien mSinhVien;
-
+    ProfileRecyclerLopMonHoc adapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +46,20 @@ public class DialogLopMonHocFragment extends DialogFragment {
 
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        adapter.setOnItemClickListener(this);
+    }
+
     private void initUI(View view) {
 
         recycler = (RecyclerView) view.findViewById(R.id.recycle_profile);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(mLayoutManager);
 
-        ProfileRecyclerLopMonHoc adapter = new ProfileRecyclerLopMonHoc(getActivity(), mSinhVien.getIdLopMonHoc());
+        adapter = new ProfileRecyclerLopMonHoc(getActivity(), mSinhVien.getIdLopMonHoc());
         recycler.setAdapter(adapter);
     }
 
@@ -59,4 +69,16 @@ public class DialogLopMonHocFragment extends DialogFragment {
         super.onActivityCreated(savedInstanceState);
     }
 
+    @Override
+    public void onItemClick(int position, View v) {
+        Intent intent = new Intent(getActivity(), Result2Activity.class);
+        intent.putExtra(Config.SINHVIEN, mSinhVien);
+        intent.putExtra(Config.POSITION_LOPMONHOC, position);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onItemLongClick(int position, View v) {
+
+    }
 }

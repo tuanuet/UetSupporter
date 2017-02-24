@@ -81,18 +81,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
 
     }
 
-    public void getTinTucByLoaiTinTuc(int loaitintuc, int offsetPage) {
-        Call<ArrayList<TinTuc>> call;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.API_HOSTNAME)
-                // Sử dụng GSON cho việc parse và maps JSON data tới Object
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        call = apiTinTuc.getDataTinTuc(loaitintuc, offsetPage * 10);
-        call.enqueue(this);
 
-    }
 
     RecyclerView recyclerView;
     LinearLayoutManager mLayoutManager;
@@ -153,6 +142,18 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
 
     }
 
+    public void getTinTucByLoaiTinTuc(int loaitintuc, int offsetPage) {
+        Call<ArrayList<TinTuc>> call;
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Config.API_HOSTNAME)
+                // Sử dụng GSON cho việc parse và maps JSON data tới Object
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
+        call = apiTinTuc.getDataTinTuc(loaitintuc, offsetPage * 10);
+        call.enqueue(this);
+
+    }
     @Override
     public void onResponse(Call<ArrayList<TinTuc>> call, Response<ArrayList<TinTuc>> response) {
         int lastPosition = 0;

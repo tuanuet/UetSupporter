@@ -32,7 +32,9 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
                 Contract.PushNotification.LINK + " text not null, " +
                 Contract.PushNotification.ISREAD + " integer not null, " +
                 Contract.PushNotification.THOIGIANNHAN + " text not null, " +
-
+                Contract.PushNotification.HASFILE + " integer not null, " +
+                Contract.PushNotification.IDLOAITHONGBAO + " integer not null, " +
+                Contract.PushNotification.IDMUCHOTHONGBAO + " integer not null, " +
                 " UNIQUE (" + Contract.PushNotification._ID + ") ON CONFLICT REPLACE);";
 
         db.execSQL(sql);
@@ -45,13 +47,22 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         values.put(Contract.PushNotification.LINK, notification.getLink());
         values.put(Contract.PushNotification.TIEU_DE, notification.getTieuDe());
         values.put(Contract.PushNotification.NOI_DUNG, notification.getNoiDung());
+        values.put(Contract.PushNotification.THOIGIANNHAN, notification.getThoiGianNhan());
+        values.put(Contract.PushNotification.KIND, notification.getKind());
+        values.put(Contract.PushNotification.IDLOAITHONGBAO, notification.getIdLoaiThongBao());
+        values.put(Contract.PushNotification.IDMUCHOTHONGBAO, notification.getIdMucDoThongBao());
+
         if (notification.getRead()) {
             values.put(Contract.PushNotification.ISREAD, 1);
         } else {
             values.put(Contract.PushNotification.ISREAD, 0);
         }
-        values.put(Contract.PushNotification.THOIGIANNHAN, notification.getThoiGianNhan());
-        values.put(Contract.PushNotification.KIND, notification.getKind());
+        if (notification.getHasFile()) {
+            values.put(Contract.PushNotification.HASFILE, 1);
+        } else {
+            values.put(Contract.PushNotification.HASFILE, 0);
+        }
+
 
         return (int) db.insert(Contract.PushNotification.NAME_TABLE, null, values);
     }
