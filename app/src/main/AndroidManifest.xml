@@ -27,7 +27,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" /> <!-- LAUCHER -->
             </intent-filter>
         </activity>
 
@@ -85,6 +85,14 @@
         </receiver>
 
         <activity android:name=".Activities.Result2Activity" />
+        <activity android:name=".Activities.test">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Activities.NewMailActivity"></activity>
     </application>
 
 </manifest>

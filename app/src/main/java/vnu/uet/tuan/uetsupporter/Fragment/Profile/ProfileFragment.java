@@ -44,7 +44,6 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
     DialogLopMonHocFragment dialog;
 
     public ProfileFragment() {
-        getInformationSinhVien();
     }
 
 
@@ -54,9 +53,7 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        setHasOptionsMenu(true);
         initUI(view);
-
         listenerUI();
 
         updateUI(mSinhVien);
@@ -65,7 +62,7 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
         return view;
     }
 
-    private void getInformationSinhVien() {
+    public void getInformationSinhVien(Context context) {
         Call<SinhVien> call;
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Config.API_HOSTNAME)
@@ -73,7 +70,7 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        call = apiTinTuc.getInformationSinhVien(Utils.getUserToken(getActivity()));
+        call = apiTinTuc.getInformationSinhVien(Utils.getUserToken(context));
         call.enqueue(this);
     }
 
@@ -83,6 +80,10 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
         txt_lopChinh = (TextView) view.findViewById(R.id.txt_profile_tenlopchinh);
         profile_action_lopmonhoc = (RelativeLayout) view.findViewById(R.id.profile_action_lopmonhoc);
 
+        setHasOptionsMenu(true);
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         dialog = new DialogLopMonHocFragment();
     }
 

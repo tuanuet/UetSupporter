@@ -49,4 +49,16 @@
     <string name="please_exit">Mời bạn vui lòng thoát ra và vào lại!</string>
     <string name="action_delete">Xóa</string>
     <string name="fail_download">Lỗi trong khi tải tài nguyên</string>
+    <string name="msv">Mã</string>
+    <string name="ten">Họ và tên</string>
+    <string name="diemgiuaky">Giũa kỳ</string>
+    <string name="diemcuoiky">Cuối kỳ</string>
+    <string name="diemtong">Tổng</string>
+    <string name="xemthem">Xem thêm</string>
+    <string name="thugon">Thu gọn</string>
+    <string name="nav_hopthongbao">Hộp thông báo</string>
+    <string name="nav_hopthu">Hộp thư</string>
+    <string name="title_sent">Thư đã gửi</string>
+    <string name="title_drafts">Thư Nháp</string>
+    <string name="title_trash">Trash</string>
 </resources>

@@ -74,9 +74,8 @@ public class Utils {
         return str;
     }
     public static String getUserToken(Context context){
-//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        return sharedPreferences.getString(Config.USER_TOKEN,null);
-        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwiZ2V0dGVycyI6e30sIndhc1BvcHVsYXRlZCI6ZmFsc2UsImFjdGl2ZVBhdGhzIjp7InBhdGhzIjp7InBhc3N3b3JkIjoiaW5pdCIsIl9pZCI6ImluaXQiLCJyb2xlIjoiaW5pdCIsIl9fdiI6ImluaXQifSwic3RhdGVzIjp7Imlnbm9yZSI6e30sImRlZmF1bHQiOnt9LCJpbml0Ijp7Il9fdiI6dHJ1ZSwicm9sZSI6dHJ1ZSwicGFzc3dvcmQiOnRydWUsIl9pZCI6dHJ1ZX0sIm1vZGlmeSI6e30sInJlcXVpcmUiOnt9fSwic3RhdGVOYW1lcyI6WyJyZXF1aXJlIiwibW9kaWZ5IiwiaW5pdCIsImRlZmF1bHQiLCJpZ25vcmUiXX0sImVtaXR0ZXIiOnsiZG9tYWluIjpudWxsLCJfZXZlbnRzIjp7fSwiX2V2ZW50c0NvdW50IjowLCJfbWF4TGlzdGVuZXJzIjowfX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJyb2xlIjoiU2luaFZpZW4iLCJfX3YiOjAsInBhc3N3b3JkIjoiJDJhJDEwJG1LWUpUWjJxdnd4ZDlmczVRWlRZWC5xbWI4RjlTQXlsRXl2NFIuYVQ3NzV6STRvNElVcTdlIiwiX2lkIjoiMTQwMjAyMzQifSwiaWF0IjoxNDg3NzU1OTIwfQ.jNIuWAW-9qj-ywSJyKNOMIdlpmnIHHOozJiCCKaMbUA";
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(Config.USER_TOKEN, null);
     }
 
     public static Uri getSoundNotification(Context context) {
@@ -186,6 +185,7 @@ public class Utils {
             pushNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
             pushNotification.setIdLoaiThongBao(cursor.getInt(Contract.PushNotification.id_loai_thong_bao));
             pushNotification.setIdMucDoThongBao(cursor.getInt(Contract.PushNotification.id_muc_mo_thong_bao));
+            pushNotification.setHasFile(cursor.getInt(Contract.PushNotification.has_file) == 1);
 
             if (cursor.getInt(Contract.PushNotification.is_read) == 1) {
                 pushNotification.setRead(true);
@@ -241,6 +241,7 @@ public class Utils {
     }
 
     public static String getThoiGian(String s) {
+        if (s == null) return new Date(System.currentTimeMillis()).toString();
         String str = s.split("T")[0];
 //        SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy");
 //        Date date = new Date(str);
@@ -293,4 +294,5 @@ public class Utils {
         }
         return 0;
     }
+
 }

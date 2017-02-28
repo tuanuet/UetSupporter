@@ -9,10 +9,12 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
+import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
 import vnu.uet.tuan.uetsupporter.Model.Response.Message;
 import vnu.uet.tuan.uetsupporter.Model.SinhVien;
 import vnu.uet.tuan.uetsupporter.Model.Subcribe;
@@ -40,6 +42,9 @@ public interface ApiTinTuc {
 
     @GET("/sinhvien/profile")
     Call<SinhVien> getInformationSinhVien(@Header("Authorization") String authorization);
+
+    @GET("/diemmonhoc/lop/{id}")
+    Call<List<DiemResponse>> getDiemOneSinhVien(@Path("id") String id, @Header("Authorization") String authorization);
 
     @FormUrlEncoded
     @POST("/sinhvien/guiloaitintuc")

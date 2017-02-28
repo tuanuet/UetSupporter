@@ -13,8 +13,12 @@ public class DiemResponse {
 
     /**
      * _id : 58b04dbd8b48950a64195ce6
-     * idSinhVien : {"_id":"14020234","tenSinhVien":"duc khanh","idLopChinh":{"_id":"1","tenLopChinh":"K59CLC","idKhoa":{"_id":"cntt","tenKhoa":"cong nghe thong tin","__v":0},"__v":0},"nhanLoaiThongBao":[],"__v":0,"tokenFirebase":"cJ4fE-Pgj6c:APA91bE_r2hSqTSV9ifWm9q960pF2EGrpFfS7PGBYNERP6z9fq4uQhpt2JGCPBsG55k8uw9pNCBKjISQv7T2-DuorY11dUoZj6BhTpsCp34SzvHw8-lqbyqkHr9L8TojkV40qR-Vt5SA","idLopMonHoc":["INT1001"]}
-     * idLopMonHoc : {"_id":"INT2204 1","tenLopMonHoc":"Lap Trinh","idGiangVien":[{"_id":"tokhanh","tenGiangVien":"To Van Khanh","idKhoa":"cntt","__v":0,"idLopMonHoc":[]}],"thoiGian":null}
+     * idSinhVien : {"_id":"14020234","tenSinhVien":"duc khanh","idLopChinh":{"_id":"1",
+     * "tenLopChinh":"K59CLC","idKhoa":{"_id":"cntt","tenKhoa":"cong nghe thong tin","__v":0},"__v":0}
+     * ,"nhanLoaiThongBao":[],"__v":0,
+     * "tokenFirebase":"*******","idLopMonHoc":["INT1001"]}
+     * idLopMonHoc : {"_id":"INT2204 1","tenLopMonHoc":"Lap Trinh","idGiangVien":[{"_id":"tokhanh",
+     * "tenGiangVien":"To Van Khanh","idKhoa":"cntt","__v":0,"idLopMonHoc":[]}],"thoiGian":null}
      * diemThanhPhan : 1.8
      * diemCuoiKy : 3
      * __v : 0
@@ -23,7 +27,7 @@ public class DiemResponse {
     private SinhVien idSinhVien;
     private LopMonHoc idLopMonHoc;
     private double diemThanhPhan;
-    private int diemCuoiKy;
+    private double diemCuoiKy;
 
     public String get_id() {
         return _id;
@@ -57,11 +61,11 @@ public class DiemResponse {
         this.diemThanhPhan = diemThanhPhan;
     }
 
-    public int getDiemCuoiKy() {
+    public double getDiemCuoiKy() {
         return diemCuoiKy;
     }
 
-    public void setDiemCuoiKy(int diemCuoiKy) {
+    public void setDiemCuoiKy(double diemCuoiKy) {
         this.diemCuoiKy = diemCuoiKy;
     }
 

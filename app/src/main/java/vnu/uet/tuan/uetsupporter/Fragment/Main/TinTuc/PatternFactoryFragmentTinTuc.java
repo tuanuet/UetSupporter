@@ -169,7 +169,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
 
     @Override
     public void onFailure(Call<ArrayList<TinTuc>> call, Throwable t) {
-        Toast.makeText(getActivity(), "Đường truyền gặp lỗi!", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(), "Đường truyền gặp lỗi!", Toast.LENGTH_SHORT).show();
     }
 
 

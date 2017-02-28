@@ -22,15 +22,14 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         initUI();
 
         fragment = new ProfileFragment();
+        fragment.getInformationSinhVien(getApplicationContext());
         fragment.setOnDataRecived(this);
         showChangeFragment(new WaitingFragment(), "Waiting");
     }
 
     private void initUI() {
         //init actionBar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     public void showChangeFragment(Fragment fragment, String name) {

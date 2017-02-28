@@ -97,6 +97,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         editor.putString(Config.TENSINHVIEN, tenSinhVien);
                         editor.putString(Config.PASSWORD, password.getText().toString());
                         editor.putString(Config.USER_TOKEN, token);
+                        Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
                         editor.commit();
 
                         //cap nhật lại token

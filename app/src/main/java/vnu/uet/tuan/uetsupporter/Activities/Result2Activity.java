@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoDiemFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Profile.DetailLopMonHocFragment;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
@@ -40,7 +41,21 @@ public class Result2Activity extends AppCompatActivity {
             PushNotification notification = (PushNotification) getIntent().getSerializableExtra(Config.KEY_PUSHNOTIFICATION);
             Bundle bundle = new Bundle();
             bundle.putSerializable(Config.KEY_PUSHNOTIFICATION, notification);
-            fragment = new DetailHopThongBaoFragment();
+
+            switch (notification.getKind()) {
+                case 1: {
+                    fragment = new DetailHopThongBaoFragment();
+                    break;
+                }
+                case 2: {
+                    fragment = new DetailHopThongBaoDiemFragment();
+                    break;
+                }
+                case 3: {
+                    break;
+                }
+            }
+
             fragment.setArguments(bundle);
             name = notification.getTieuDe();
         }
