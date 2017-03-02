@@ -6,6 +6,7 @@ import okhttp3.MediaType;
  * Created by Administrator on 12/01/2017.
  */
 
+
 public class Config {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
@@ -49,5 +50,15 @@ public class Config {
     public static final String ACTION_XEMSAU = "vnu.uet.tuan.uetsupporter.xemsau";
     public static final String ACTION_DAXEM = "vnu.uet.tuan.uetsupporter.daxem";
     public static final String ACTION_CLOSE = "vnu.uet.tuan.uetsupporter.close";
+
+    /**
+     * Mail Box
+     */
+    public enum MailBox {
+        Inbox,
+        Drafts,
+        Sent,
+        Trash
+    }
 
 }

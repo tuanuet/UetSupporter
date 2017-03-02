@@ -2,6 +2,7 @@ package vnu.uet.tuan.uetsupporter.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
@@ -10,11 +11,14 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.amulyakhare.textdrawable.util.ColorGenerator;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import okhttp3.OkHttpClient;
@@ -58,6 +62,11 @@ public class Utils {
         return str;
     }
 
+    public static String getPassword(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String str = sharedPreferences.getString(Config.PASSWORD, null);
+        return str;
+    }
     public static Boolean getBoolenSetting(Context context,String key){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Boolean aBoolean = sharedPreferences.getBoolean(key,false);
@@ -142,7 +151,7 @@ public class Utils {
     public static ArrayList<LoaiTinTuc> getAllLoaiTinTuc(Context context){
         LoaiTinTucSQLHelper db = new LoaiTinTucSQLHelper(context);
         Cursor cursor = db.getAll();
-        ArrayList<LoaiTinTuc> list = new ArrayList<>();
+        ArrayList<LoaiTinTuc> list = new ArrayList<LoaiTinTuc>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             LoaiTinTuc loaiTinTuc = new LoaiTinTuc();
@@ -158,7 +167,7 @@ public class Utils {
     public static ArrayList<LoaiThongBao> getAllLoaiThongBao(Context context) {
         LoaiThongBaoSQLHelper db = new LoaiThongBaoSQLHelper(context);
         Cursor cursor = db.getAll();
-        ArrayList<LoaiThongBao> list = new ArrayList<>();
+        ArrayList<LoaiThongBao> list = new ArrayList<LoaiThongBao>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             LoaiThongBao loaiThongBao = new LoaiThongBao();
@@ -174,7 +183,7 @@ public class Utils {
         PushNotificationSQLHelper db = new PushNotificationSQLHelper(context);
         Cursor cursor = db.getArrayPushNotification();
 
-        ArrayList<PushNotification> list = new ArrayList<>();
+        ArrayList<PushNotification> list = new ArrayList<PushNotification>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             PushNotification pushNotification = new PushNotification();
@@ -204,7 +213,7 @@ public class Utils {
     }
 
     public static ArrayList<Integer> getArrayFromString(String s){
-        ArrayList<Integer> arr = new ArrayList<>();
+        ArrayList<Integer> arr = new ArrayList<Integer>();
         s = s.trim().substring(1,s.length()-1); //bo di dau []
         Log.e("utils",s);
         String[] list = s.split(",");
@@ -269,7 +278,7 @@ public class Utils {
     public static ArrayList<MucDoThongBao> getAllMucDoThongBao(Context context) {
         SQLFather sql = new MucDoThongBaoSQLHelper(context);
         Cursor cursor = sql.getAll();
-        ArrayList<MucDoThongBao> list = new ArrayList<>();
+        ArrayList<MucDoThongBao> list = new ArrayList<MucDoThongBao>();
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             MucDoThongBao mucDoThongBao = new MucDoThongBao();
@@ -295,4 +304,37 @@ public class Utils {
         return 0;
     }
 
+    private static final String TAG = "Utils";
+
+    public static String getFirstChar(String title) {
+        if (title.contains("@")) {
+            String before = title.split("@")[0];
+            if (!before.contains("1")) {
+                return String.valueOf(before.trim().charAt(0));
+            }
+        }
+        Random r = new Random();
+        return String.valueOf((char) (r.nextInt(26) + 'a'));
+    }
+
+    public static int getRandomColor(String username) {
+        ColorGenerator generator = ColorGenerator.MATERIAL; // or use DEFAULT
+        // generate random color
+        int color2 = generator.getColor(username);
+        return color2;
+    }
+
+    public static int getRandomColor(Context context, String typeColor) {
+
+        int returnColor = Color.BLACK;
+        int arrayId = context.getResources().getIdentifier("mdcolor_" + typeColor, "array", context.getPackageName());
+
+        if (arrayId != 0) {
+            TypedArray colors = context.getResources().obtainTypedArray(arrayId);
+            int index = (int) (Math.random() * colors.length());
+            returnColor = colors.getColor(index, Color.BLACK);
+            colors.recycle();
+        }
+        return returnColor;
+    }
 }

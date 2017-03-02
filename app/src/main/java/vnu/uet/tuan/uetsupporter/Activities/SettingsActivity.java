@@ -338,7 +338,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                     //check Id
                     MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
-                    Set<String> valueTinTuc = new HashSet<>(); //setValue ~ check cai nao dung ID
+                    Set<String> valueTinTuc = new HashSet<String>(); //setValue ~ check cai nao dung ID
                     for (int i = 0; i < response.body().getIdLoaiTinTuc().size(); i++) {
                         valueTinTuc.add(String.valueOf(response.body().getIdLoaiTinTuc().get(i)));
                     }
@@ -346,7 +346,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                     //==============================================================================
                     MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
-                    Set<String> valueThongBao = new HashSet<>(); //setValue ~ check cai nao dung ID
+                    Set<String> valueThongBao = new HashSet<String>(); //setValue ~ check cai nao dung ID
                     for (int i = 0; i < response.body().getIdLoaiThongBao().size(); i++) {
                         valueThongBao.add(String.valueOf(response.body().getIdLoaiThongBao().get(i)));
                     }

@@ -74,7 +74,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
         Log.e("TAG", "onCreate");
         if (getArguments() != null) {
             loaiTinTuc = getArguments().getInt(ARG_PARAM1);
-            listTinTuc = new ArrayList<>();
+            listTinTuc = new ArrayList<TinTuc>();
             Log.e("pattern", loaiTinTuc + "");
             getTinTucByLoaiTinTuc(loaiTinTuc, 0);
         }

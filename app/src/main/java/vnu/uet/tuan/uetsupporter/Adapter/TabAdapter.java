@@ -16,8 +16,8 @@ public class TabAdapter extends FragmentPagerAdapter {
     private ArrayList<String> mName_Fragment;
     public TabAdapter(FragmentManager fm) {
         super(fm);
-        mArray_Fragments=new ArrayList<>();
-        mName_Fragment=new ArrayList<>();
+        mArray_Fragments = new ArrayList<Fragment>();
+        mName_Fragment = new ArrayList<String>();
     }
 
     public void addFragment(Fragment fragment,String name){

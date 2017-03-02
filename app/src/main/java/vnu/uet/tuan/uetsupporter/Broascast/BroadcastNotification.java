@@ -30,43 +30,22 @@ public class BroadcastNotification extends BroadcastReceiver {
         PushNotification notification = (PushNotification) intent.getSerializableExtra(Config.KEY_PUSHNOTIFICATION);
         if (notification != null) {
             db = new PushNotificationSQLHelper(context);
-            switch (action) {
-                case Config.ACTION_CHITIET: {
-                    /**
-                     * lưu vào co sở dũ liệu với trg isRead = true;
-                     * open resultActivity
-                     * vẫn chưa xong
-                     */
-
-                    notification.setRead(true);
-                    int pos = db.insertOne(notification);
-                    Log.e("db", "Save: " + pos);
-                    //====================================
-                    Intent i = new Intent(context, MainActivity.class);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    i.putExtras(new Bundle());
-                    context.startActivity(i);
-                    break;
-                }
-                case Config.ACTION_DAXEM: {
-                    /**
-                     * lưu vào co sở dũ liệu với trg isRead = true;
-                     */
-                    notification.setRead(true);
-                    int pos = db.insertOne(notification);
-                    Log.e("db", "Save: " + pos);
-                    break;
-                }
-                case Config.ACTION_XEMSAU: {
-                    /**
-                     * lưu vào co sở dũ liệu với trg isRead = false;
-                     */
-                    notification.setRead(false);
-                    int pos = db.insertOne(notification);
-                    Log.e("db", "Save: " + pos);
-                    break;
-                }
-
+            if (action.equals(Config.ACTION_CHITIET)) {
+                notification.setRead(true);
+                int pos = db.insertOne(notification);
+                Log.e("db", "Save: " + pos);
+                Intent i = new Intent(context, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtras(new Bundle());
+                context.startActivity(i);
+            } else if (action.equals(Config.ACTION_DAXEM)) {
+                notification.setRead(true);
+                int pos = db.insertOne(notification);
+                Log.e("db", "Save: " + pos);
+            } else if (action.equals(Config.ACTION_XEMSAU)) {
+                notification.setRead(false);
+                int pos = db.insertOne(notification);
+                Log.e("db", "Save: " + pos);
             }
         } else {
             Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show();
