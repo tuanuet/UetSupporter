@@ -243,6 +243,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
 
+        private final String TAG = "General";
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -355,6 +356,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
                 @Override
                 public void onFailure(Call<Subcribe> call, Throwable t) {
+                    Log.e(TAG, t.getMessage());
                     Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show();
                 }
             });

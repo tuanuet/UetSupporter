@@ -2,6 +2,7 @@ package vnu.uet.tuan.uetsupporter.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import me.leolin.shortcutbadger.ShortcutBadger;
+import vnu.uet.tuan.uetsupporter.Async.EmailSyncAdapter;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.HopThongBaoFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.HopThuFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.TinTucFragment;
@@ -40,12 +42,16 @@ public class MainActivity extends AppCompatActivity
         //chay luon fragment tintuc
         Fragment tintuc = new TinTucFragment();
         showChangeFragment(tintuc, getString(R.string.nav_tintuc));
-        int postionNav = R.id.nav_tintuc;
+        postionNav = R.id.nav_tintuc;
         //
     }
 
     private void init() {
+        //setINTERVAL
+        EmailSyncAdapter.initializeSyncAdapter(this);
 
+
+        //================
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -139,10 +145,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.closeDrawer(GravityCompat.START);
+            }
+        }, 0);
         return setFragment(id);
     }
 
@@ -155,9 +164,8 @@ public class MainActivity extends AppCompatActivity
      * @param fragment
      * @param name
      */
-    public void showChangeFragment(Fragment fragment,String name) {
+    public void showChangeFragment(final Fragment fragment, final String name) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-
         Fragment fragmentInStack = getSupportFragmentManager().findFragmentByTag(name);
         if(fragmentInStack!=null){
             //Có fragment trong stack
@@ -172,6 +180,7 @@ public class MainActivity extends AppCompatActivity
             Log.e("MainActi","Fragment not in Stack");
         }
         getSupportActionBar().setTitle(name);
+
     }
 
     @Override
@@ -219,6 +228,7 @@ public class MainActivity extends AppCompatActivity
             showChangeFragment(hopthu, getString(R.string.nav_hopthu));
             postionNav = R.id.nav_hopthu;
         }
+
         return true;
     }
 }

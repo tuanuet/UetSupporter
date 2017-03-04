@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import vnu.uet.tuan.uetsupporter.Activities.MainActivity;
+import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
@@ -34,9 +35,9 @@ public class BroadcastNotification extends BroadcastReceiver {
                 notification.setRead(true);
                 int pos = db.insertOne(notification);
                 Log.e("db", "Save: " + pos);
-                Intent i = new Intent(context, MainActivity.class);
+                Intent i = new Intent(context, Result2Activity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtras(new Bundle());
+                i.putExtra(Config.KEY_PUSHNOTIFICATION, notification);
                 context.startActivity(i);
             } else if (action.equals(Config.ACTION_DAXEM)) {
                 notification.setRead(true);

@@ -1,10 +1,17 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,7 +22,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.MPPointF;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,13 +53,22 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailHopThongBaoDiemFragment extends Fragment {
+public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartValueSelectedListener {
     PushNotification notification;
     List<DiemResponse> listDiem;
     Call<List<DiemResponse>> call;
     Button btn_xemthem;
     LinearLayout table;
     TextView txt_msv, txt_ten, txt_giuaky, txt_cuoiky, txt_tong;
+    PieChart pieChart1;
+
+    protected String[] mParties = new String[]{
+            "Party A", "Party B", "Party C", "Party D", "Party E", "Party F", "Party G", "Party H",
+            "Party I", "Party J", "Party K", "Party L", "Party M", "Party N", "Party O", "Party P",
+            "Party Q", "Party R", "Party S", "Party T", "Party U", "Party V", "Party W", "Party X",
+            "Party Y", "Party Z"
+    };
+
     private boolean isShow = false;
 
 
@@ -54,6 +84,127 @@ public class DetailHopThongBaoDiemFragment extends Fragment {
         txt_giuaky = (TextView) view.findViewById(R.id.giuaky);
         txt_cuoiky = (TextView) view.findViewById(R.id.cuoiky);
         txt_tong = (TextView) view.findViewById(R.id.tong);
+        pieChart1 = (PieChart) view.findViewById(R.id.chart);
+
+        initPieChart(pieChart1);
+    }
+
+    private void initPieChart(PieChart mChart) {
+        mChart.setUsePercentValues(true);
+        mChart.getDescription().setEnabled(false);
+        mChart.setExtraOffsets(5, 10, 5, 5);
+
+        mChart.setDragDecelerationFrictionCoef(0.95f);
+
+        mChart.setCenterText(generateCenterSpannableText());
+
+        mChart.setDrawHoleEnabled(true);
+        mChart.setHoleColor(Color.WHITE);
+
+        mChart.setTransparentCircleColor(Color.WHITE);
+        mChart.setTransparentCircleAlpha(110);
+
+        mChart.setHoleRadius(58f);
+        mChart.setTransparentCircleRadius(61f);
+
+        mChart.setDrawCenterText(true);
+
+        mChart.setRotationAngle(0);
+        // enable rotation of the chart by touch
+        mChart.setRotationEnabled(true);
+        mChart.setHighlightPerTapEnabled(true);
+
+        // mChart.setUnit(" €");
+        // mChart.setDrawUnitsInChart(true);
+
+        // add a selection listener
+        mChart.setOnChartValueSelectedListener(this);
+
+        setData(pieChart1, 4, 100);
+
+        mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
+        // mChart.spin(2000, 0, 360);
+
+        Legend l = mChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(0f);
+
+        // entry label styling
+        mChart.setEntryLabelColor(Color.WHITE);
+        mChart.setEntryLabelTextSize(12f);
+    }
+
+    private void setData(PieChart mChart, int count, float range) {
+
+        float mult = range;
+
+        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        for (int i = 0; i < count; i++) {
+            entries.add(new PieEntry((float) ((Math.random() * mult) + mult / 5),
+                    mParties[i % mParties.length],
+                    getResources().getDrawable(R.drawable.ic_action_stat_reply)));
+        }
+
+        PieDataSet dataSet = new PieDataSet(entries, "Election Results");
+
+
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+
+        // add a lot of colors
+
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.JOYFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.COLORFUL_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.LIBERTY_COLORS)
+            colors.add(c);
+
+        for (int c : ColorTemplate.PASTEL_COLORS)
+            colors.add(c);
+
+        colors.add(ColorTemplate.getHoloBlue());
+
+        dataSet.setColors(colors);
+        //dataSet.setSelectionShift(0f);
+
+        PieData data = new PieData(dataSet);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        mChart.setData(data);
+
+        // undo all highlights
+        mChart.highlightValues(null);
+
+        mChart.invalidate();
+    }
+
+    private SpannableString generateCenterSpannableText() {
+
+        SpannableString s = new SpannableString("MPAndroidChart\ndeveloped by Philipp Jahoda");
+        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
+        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
+        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
+        s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 15, 0);
+        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
+        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
+        return s;
     }
 
     /**
@@ -61,6 +212,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment {
      * tim id sinh vien
      */
     private void updateUI() {
+
         int postion = 0;
         for (int i = 0; i < listDiem.size(); i++) {
             if (listDiem.get(i).getIdSinhVien().get_id().equals(Utils.getEmailUser(getActivity()))) {
@@ -78,6 +230,10 @@ public class DetailHopThongBaoDiemFragment extends Fragment {
         txt_giuaky.setText(String.valueOf(userDiem.getDiemThanhPhan()));
         txt_cuoiky.setText(String.valueOf(userDiem.getDiemCuoiKy()));
         txt_tong.setText(String.valueOf(getDiemTong(userDiem.getDiemThanhPhan(), userDiem.getDiemCuoiKy())));
+
+
+        //==============================
+
     }
 
     private float getDiemTong(double diemThanhPhan, double diemCuoiKy) {
@@ -129,6 +285,16 @@ public class DetailHopThongBaoDiemFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+
+    }
+
+    @Override
+    public void onNothingSelected() {
+
+    }
+
 
     protected class AsynGetDiem extends AsyncTask<Void, Void, List<DiemResponse>> {
         @Override
@@ -154,7 +320,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment {
         @Override
         protected void onPostExecute(List<DiemResponse> diemResponse) {
             super.onPostExecute(diemResponse);
-            if (diemResponse != null) {
+            if (diemResponse != null && diemResponse.size() != 0) {
                 listDiem = diemResponse;
                 updateUI();
             } else {
@@ -226,7 +392,9 @@ public class DetailHopThongBaoDiemFragment extends Fragment {
                         weight
                 )
         );
-        col.setBackground(getResources().getDrawable(idBackground));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            col.setBackground(getResources().getDrawable(idBackground));
+        }
 
         TextView txt = new TextView(getActivity());
         txt.setLayoutParams(

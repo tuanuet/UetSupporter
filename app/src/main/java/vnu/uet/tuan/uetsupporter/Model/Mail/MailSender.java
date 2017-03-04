@@ -45,7 +45,7 @@ public class MailSender {
         ArrayList<String> to = email.getRecipient();
         String title = email.getTitle();
         String content = email.getContent();
-        String path = email.getPathFile().get(0);
+        String path = email.getFile().get(0);
         int port = 25;
         String host = "ctmail.vnu.edu.vn";
         String from = user + "@vnu.edu.vn";

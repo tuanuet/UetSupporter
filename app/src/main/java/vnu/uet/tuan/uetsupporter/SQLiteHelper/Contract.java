@@ -7,6 +7,32 @@ import android.provider.BaseColumns;
  */
 
 public class Contract {
+    public class Email implements BaseColumns {
+        public static final int id = 0;
+        public static final int from = 1;
+        public static final int sendDate = 2;
+        public static final int receivedDate = 3;
+        public static final int importance = 4;
+        public static final int title = 5;
+        public static final int content = 6;
+        public static final int hasfile = 7;
+        public static final int isread = 8;
+        public static final int folder = 9;
+
+        public static final String NAME_TABLE = "email";
+        public static final String _ID = "_id";
+        public static final String FROM = "fromemail";
+        public static final String SEND_DATE = "sendate";
+        public static final String RECEIVEDDATE = "receiveddate";
+        public static final String IMPORTANCE = "importance";
+        public static final String TITLE = "title";
+        public static final String CONTENT = "content";
+        public static final String HASFILE = "hasfile";
+        public static final String ISREAD = "isread";
+        public static final String FOLDER = "folder";
+        public static final int VERSION = 1;
+    }
+
     public class LoaiTinTuc implements BaseColumns{
         public static final int _id = 0;
         public static final int kind = 2;

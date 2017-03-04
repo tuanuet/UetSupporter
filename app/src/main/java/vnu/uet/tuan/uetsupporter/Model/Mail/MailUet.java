@@ -42,6 +42,7 @@ public class MailUet {
     private static String user = "";
     private static String pass = "";
 
+    private String typeFolder = "";
     private List<File> attachments = new ArrayList<File>();
 
     private String pathFile = "./tmp/";// chua duong dan chua file
@@ -84,7 +85,7 @@ public class MailUet {
 
             // Set the mode to the read-only mode
             inbox.open(Folder.READ_ONLY);
-
+            this.typeFolder = mailBox;
             return this;
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,7 +99,7 @@ public class MailUet {
             Message messages[] = inbox.getMessages();
             messages = (Message[]) MailUet.reverse(messages);
             ArrayList<Email> emails = this.covertIntoEmail(messages);
-            inbox.close(true);
+//            inbox.close(true);
             return emails;
         } catch (MessagingException m) {
             m.printStackTrace();
@@ -113,7 +114,7 @@ public class MailUet {
             Message messages[] = inbox.getMessages(inbox.getMessageCount() - stop, inbox.getMessageCount() - start);
             messages = (Message[]) MailUet.reverse(messages);
             ArrayList<Email> emails = this.covertIntoEmail(messages);
-            inbox.close(true);
+//            inbox.close(true);
             return emails;
         } catch (MessagingException m) {
             m.printStackTrace();
@@ -125,10 +126,9 @@ public class MailUet {
 
     public Email getMessage(int i) {
         try {
-            Message message = inbox.getMessage(inbox.getMessageCount() - i);
+            Message message = inbox.getMessage(i);
             Message[] messages = {message};
-            ArrayList<Email> emails = this.covertIntoEmail(messages);
-            inbox.close(true);
+            ArrayList<Email> emails = this.covertIntoEmailWithFile(messages);
             return emails.get(0);
         } catch (MessagingException m) {
             m.printStackTrace();
@@ -144,6 +144,7 @@ public class MailUet {
             Message[] messages = inbox.search(flagTerm);
             messages = (Message[]) MailUet.reverse(messages);
             ArrayList<Email> emails = this.covertIntoEmail(messages);
+            inbox.close(true);
             return emails;
         } catch (MessagingException m) {
             m.printStackTrace();
@@ -154,11 +155,38 @@ public class MailUet {
     }
 
 
+    public Boolean deleteEmail(int i) {
+        try {
+            Message message = inbox.getMessage(i);
+            message.setFlag(Flags.Flag.DELETED, true);
+            return true;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public Boolean setRead(int i) {
+        try {
+            Message message = inbox.getMessage(i);
+            message.setFlag(Flags.Flag.SEEN, true);
+            return true;
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private ArrayList<Email> covertIntoEmail(Message[] messages) {
         ArrayList<Email> emails = new ArrayList<Email>();
         try {
             for (Message message : messages) {
                 Email email = new Email();
+                //position
+                email.setPosition(message.getMessageNumber());
+                Log.e(TAG, "Postion: " + email.getPosition());
+                //folder
+                email.setFolder(typeFolder);
                 // From
                 for (Address a : message.getFrom()) {
                     //=?UTF-8?Q?Ph=c3=b2ng_CTSV?= <ctsv_dhcn@vnu.edu.vn>
@@ -185,8 +213,8 @@ public class MailUet {
                 //Title
                 email.setTitle(message.getSubject().toString());
                 //content
-                email = getText(email, message);
-//                email= setContentHasFileReadHtml(email,message);
+                email = setFileExistAndGetContent(email, message);
+//                email= getDetailEmail(email,message);
                 emails.add(email);
             }
         } catch (Exception e) {
@@ -195,9 +223,101 @@ public class MailUet {
         return emails;
     }
 
+    private ArrayList<Email> covertIntoEmailWithFile(Message[] messages) {
+        ArrayList<Email> emails = new ArrayList<Email>();
+        try {
+            for (Message message : messages) {
+                Email email = new Email();
+                //folder
+                email.setFolder(typeFolder);
+                //position
+                email.setPosition(message.getMessageNumber());
+                Log.e(TAG, "Postion: " + email.getPosition());
+                // From
+                for (Address a : message.getFrom()) {
+                    //=?UTF-8?Q?Ph=c3=b2ng_CTSV?= <ctsv_dhcn@vnu.edu.vn>
+                    String temp = a.toString();
+                    if (temp.contains("<")) {
+                        temp = temp.substring(temp.indexOf("<") + 1, temp.length() - 1);
+                    }
+                    email.setFrom(temp);
+                }
+                //send date
+                email.setSendDate(message.getSentDate().toString());
+                //Recipient
+                if (message.getAllRecipients() != null)
+                    for (Address a : message.getAllRecipients())
+                        email.getRecipient().add(a.toString());
+                //receive date
+                email.setReceiveDate(message.getReceivedDate().toString());
+                // Importance
+                if (message.getHeader("Importance") != null)
+                    for (String st : message.getHeader("Importance"))
+                        email.setImportance(st.toString());
+                //setISREAD
+                email.setRead(message.getFlags().contains(Flags.Flag.SEEN));
+                //Title
+                email.setTitle(message.getSubject().toString());
+                //content
+//                email = setFileExistAndGetContent(email, message);
+                email = getDetailEmail(email, message);
+                emails.add(email);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return emails;
+    }
 
     // get text of content message
-    private Email getText(Email email, Part p) throws
+    private Email getDetailEmail(Email email, Part p) throws
+            MessagingException, IOException {
+        //check type mixed: mixed include alternative, html, text, file
+        if (p.isMimeType("multipart/mixed")) {
+            // prefer html text over plain text
+            Multipart mp = (Multipart) p.getContent();
+            for (int i = 0; i < mp.getCount(); i++) {
+                BodyPart bp = mp.getBodyPart(i);
+                if (Part.ATTACHMENT.equalsIgnoreCase(bp.getDisposition())) {
+                    String fileName = bp.getFileName();
+                    if (fileName.indexOf("utf-8?B") != -1) {
+                        fileName = processFileName(fileName);
+                    }
+                    email.setHasFile(true);
+                    InputStream is = bp.getInputStream();
+                    email.addDataFile(fileName, is);
+                } else if (bp.isMimeType("multipart/alternative"))
+                    email = ProcessAlternative(email, bp);
+                else if (bp.isMimeType("text/plain")) {
+                    String s = processText(bp);
+                    if (s != null) {
+                        email.setContent(s);
+                    }
+                } else if (bp.isMimeType("text/html")) {
+                    String s = processText(bp);
+                    if (s != null) {
+                        email.setHtml(s);
+                    }
+                }
+            }
+            return email;
+        } else if (p.isMimeType("multipart/alternative")) {
+            email = ProcessAlternative(email, p);
+            return email;
+        } else if (p.isMimeType("multipart/*")) {
+            Multipart mp = (Multipart) p.getContent();
+            for (int i = 0; i < mp.getCount(); i++) {
+                email = getDetailEmail(email, mp.getBodyPart(i));
+            }
+            return email;
+        }
+        email.setContent(processText(p));
+        return email;
+    }
+
+
+    // get text of content message
+    private Email setFileExistAndGetContent(Email email, Part p) throws
             MessagingException, IOException {
         //check type mixed: mixed include alternative, html, text, file
         if (p.isMimeType("multipart/mixed")) {
@@ -219,15 +339,15 @@ public class MailUet {
                     }
                 }
                 if (Part.ATTACHMENT.equalsIgnoreCase(bp.getDisposition())) {
-                    String fileName = bp.getFileName();
-                    if (fileName.indexOf("utf-8?B") != -1) {
-                        fileName = processFileName(fileName);
-                    }
                     //set hasFile
                     email.setHasFile(true);
-                    InputStream is = bp.getInputStream();
-                    File f = new File(pathFile + fileName);
-                    email.getPathFile().add(pathFile + fileName);
+//                    String fileName = bp.getFileName();
+//                    if (fileName.indexOf("utf-8?B") != -1) {
+//                        fileName = processFileName(fileName);
+//                    }
+//                    InputStream is = bp.getInputStream();
+//                    File f = new File(pathFile + fileName);
+//                    email.getPathFile().add(pathFile + fileName);
 //                    FileOutputStream fos = new FileOutputStream(f);
 //                    byte[] buf = new byte[10000];
 //                    int bytesRead;
@@ -235,7 +355,7 @@ public class MailUet {
 //                        fos.write(buf, 0, bytesRead);
 //                    }
 //                    fos.close();
-                    attachments.add(f);
+//                    attachments.add(f);
                 }
             }
             return email;
@@ -245,7 +365,7 @@ public class MailUet {
         } else if (p.isMimeType("multipart/*")) {
             Multipart mp = (Multipart) p.getContent();
             for (int i = 0; i < mp.getCount(); i++) {
-                email = getText(email, mp.getBodyPart(i));
+                email = setFileExistAndGetContent(email, mp.getBodyPart(i));
             }
             return email;
         }

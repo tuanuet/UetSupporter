@@ -30,6 +30,7 @@ import vnu.uet.tuan.uetsupporter.Model.GiangVien;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
+import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
@@ -336,5 +337,25 @@ public class Utils {
             colors.recycle();
         }
         return returnColor;
+    }
+
+    public static ArrayList<Email> getAllEmail(Cursor cs) {
+        ArrayList<Email> list = new ArrayList<Email>();
+        cs.moveToFirst();
+        while (!cs.isAfterLast()) {
+            Email email = new Email();
+            email.setPosition(cs.getInt(Contract.Email.id));
+            email.setFrom(cs.getString(Contract.Email.from));
+            email.setContent(cs.getString(Contract.Email.content));
+            email.setHasFile(cs.getInt(Contract.Email.hasfile) == 1);
+            email.setTitle(cs.getString(Contract.Email.title));
+            email.setRead(cs.getInt(Contract.Email.isread) == 1);
+            email.setSendDate(cs.getString(Contract.Email.sendDate));
+            email.setReceiveDate(cs.getString(Contract.Email.receivedDate));
+            email.setFolder(cs.getString(Contract.Email.folder));
+            list.add(email);
+            cs.moveToNext();
+        }
+        return list;
     }
 }

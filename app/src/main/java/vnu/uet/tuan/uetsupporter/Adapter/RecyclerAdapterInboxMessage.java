@@ -71,7 +71,7 @@ public class RecyclerAdapterInboxMessage extends RecyclerView.Adapter {
                 itemViewHolder.title.setTypeface(null, Typeface.BOLD);
             }
             itemViewHolder.title.setText(email.getTitle());
-            String content = email.getContent().trim().substring(0, 50).toLowerCase();
+            String content = email.getContent().trim().toLowerCase();
             itemViewHolder.content.setText(content);
 
             TextDrawable drawable = TextDrawable.builder()

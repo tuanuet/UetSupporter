@@ -8,6 +8,7 @@ import android.util.Log;
 
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoDiemFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoFragment;
+import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.DetailEmailFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Profile.DetailLopMonHocFragment;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.Model.SinhVien;
@@ -60,6 +61,16 @@ public class Result2Activity extends AppCompatActivity {
             name = notification.getTieuDe();
         }
 
+        if (getIntent().hasExtra(Config.POSITION_EMAIL)) {
+            int position = getIntent().getIntExtra(Config.POSITION_EMAIL, 0);
+            String folder = getIntent().getStringExtra(Config.FOLDER_EMAIL);
+            fragment = new DetailEmailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(Config.POSITION_EMAIL, position);
+            bundle.putString(Config.FOLDER_EMAIL, folder);
+            fragment.setArguments(bundle);
+            name = "Email";
+        }
         showChangeFragment(fragment, name);
     }
 

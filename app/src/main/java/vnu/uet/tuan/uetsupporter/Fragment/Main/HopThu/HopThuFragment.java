@@ -44,10 +44,15 @@ public class HopThuFragment extends Fragment implements TabLayout.OnTabSelectedL
     private void setupViewPager(ViewPager pager) {
         TabAdapter adapter = new TabAdapter(getChildFragmentManager());
 
-        adapter.addFragment(new InboxFragment(), getResources().getString(R.string.title_inbox));
-        adapter.addFragment(new DraftsFragment(), getResources().getString(R.string.title_drafts));
-        adapter.addFragment(new SentFragment(), getResources().getString(R.string.title_sent));
-        adapter.addFragment(new TrashFragment(), getResources().getString(R.string.title_trash));
+        InboxFragment inboxFragment = new InboxFragment();
+        DraftsFragment draftsFragment = new DraftsFragment();
+        SentFragment sentFragment = new SentFragment();
+        TrashFragment trashFragment = new TrashFragment();
+
+        adapter.addFragment(inboxFragment, getResources().getString(R.string.title_inbox));
+        adapter.addFragment(draftsFragment, getResources().getString(R.string.title_drafts));
+        adapter.addFragment(sentFragment, getResources().getString(R.string.title_sent));
+        adapter.addFragment(trashFragment, getResources().getString(R.string.title_trash));
 
         tabLayout.setupWithViewPager(pager);
         tabLayout.addOnTabSelectedListener(this);
