@@ -26,15 +26,16 @@ public class Result2Activity extends AppCompatActivity {
 
         //fragment DetailLopMonHoc
         //lay dc position lop mon hoc va ca sinh vien
-        if (getIntent().getParcelableExtra(Config.SINHVIEN) != null) {
-            SinhVien mSinhVien = getIntent().getParcelableExtra(Config.SINHVIEN);
-            int position = getIntent().getIntExtra(Config.POSITION_LOPMONHOC, 0);
+        if (getIntent().hasExtra(Config.ID_LOPMONHOC)) {
+//            SinhVien mSinhVien = getIntent().getParcelableExtra(Config.SINHVIEN);
+//            int position = getIntent().getIntExtra(Config.POSITION_LOPMONHOC, 0);
+            String idLopMonHoc = getIntent().getStringExtra(Config.ID_LOPMONHOC);
+
             fragment = new DetailLopMonHocFragment();
             Bundle bundle = new Bundle();
-            bundle.putParcelable(Config.SINHVIEN, mSinhVien);
-            bundle.putInt(Config.POSITION_LOPMONHOC, position);
+            bundle.putString(Config.ID_LOPMONHOC, idLopMonHoc);
             fragment.setArguments(bundle);
-            name = "Lớp " + mSinhVien.getIdLopMonHoc().get(position).getTenLopMonHoc();
+            name = idLopMonHoc;
         }
 
         //fragment DetailPushNotification

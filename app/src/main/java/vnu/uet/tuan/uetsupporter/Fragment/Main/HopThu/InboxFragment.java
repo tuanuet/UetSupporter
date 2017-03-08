@@ -5,11 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,13 +16,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
-import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
-import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterInboxMessage;
+import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterInboxAndSentMessage;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Model.Mail.MailUet;
 import vnu.uet.tuan.uetsupporter.R;
@@ -36,16 +29,17 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InboxFragment extends Fragment implements RecyclerAdapterInboxMessage.ClickListener {
+public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSentMessage.ClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
 
     private static final int EMAIL_LOADER_ID = 0;
     private final String TAG = this.getClass().getName();
     private RecyclerView recycler;
     private LinearLayoutManager mLayoutManager;
-    private RecyclerAdapterInboxMessage adapter;
+    private RecyclerAdapterInboxAndSentMessage adapter;
     private ArrayList<Email> emails;
     private EmailSQLHelper emailSQLHelper;
-
+    private SwipeRefreshLayout refreshLayout;
     public InboxFragment() {
         // Required empty public constructor
     }
@@ -66,8 +60,10 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxMessa
 
         final Cursor cursor = emailSQLHelper.getAll();
         if (cursor == null || cursor.getCount() == 0) {
-            settingEmail();
             Log.e(TAG, "get data first time");
+            //get postion 0 -> get 10 mail dau tien
+            settingEmail(0);
+
         } else {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -88,18 +84,20 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxMessa
         mLayoutManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(mLayoutManager);
         emails = new ArrayList<Email>();
-        adapter = new RecyclerAdapterInboxMessage(getActivity(), emails);
+        adapter = new RecyclerAdapterInboxAndSentMessage(getActivity(), emails);
         recycler.setAdapter(adapter);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        refreshLayout.setOnRefreshListener(this);
         adapter.setOnItemClickListener(this);
         emailSQLHelper = new EmailSQLHelper(getActivity());
     }
 
 
-    private void settingEmail() {
+    private void settingEmail(final int postion) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new ExecueEmail().execute();
+                new ExecueEmail().execute(postion);
             }
         });
     }
@@ -117,17 +115,26 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxMessa
 
     }
 
+    @Override
+    public void onRefresh() {
+        emails.clear();
+        adapter.notifyDataSetChanged();
+        settingEmail(0);
+    }
 
-    private class ExecueEmail extends AsyncTask<Void, Void, ArrayList<Email>> {
+
+    private class ExecueEmail extends AsyncTask<Integer, Void, ArrayList<Email>> {
 
         @Override
-        protected ArrayList<Email> doInBackground(Void... params) {
+        protected ArrayList<Email> doInBackground(Integer... params) {
+            int first = params[0] * 10, last = first + 10;
+
             MailUet sent = MailUet.getInstance(
 //                Utils.getEmailUser(getActivity()),
 //                Utils.getPassword(getActivity())
                     "14020521", "1391996"
             ).readEmails(Config.MailBox.Inbox.toString());
-            return sent.getMessage(0, 30);
+            return sent.getMessage(first, last);
         }
 
         @Override
@@ -136,12 +143,16 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxMessa
             //update UI
             int postion = emails.size();
             if (list != null && list.size() != 0) {
-                Log.e(TAG, list.get(0).getFolder());
-                emailSQLHelper.insertBulk(list);
+//                emailSQLHelper.insertBulk(list);
                 emails.addAll(list);
                 adapter.notifyItemInserted(postion);
+
             } else
                 Toast.makeText(getActivity(), getString(R.string.fail_download), Toast.LENGTH_SHORT).show();
+
+            if (refreshLayout.isRefreshing()) {
+                refreshLayout.setRefreshing(false);
+            }
         }
     }
 

@@ -30,6 +30,7 @@ public class Config {
     public static final String POSITION_EMAIL = "positionemail";
     public static final String FOLDER_EMAIL = "folderemail";
     public static final String SAVE = "save";
+    public static final String ID_LOPMONHOC = "idlopmonhoc";
 
 
     /**

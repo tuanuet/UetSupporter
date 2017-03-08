@@ -18,8 +18,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  */
 public class DetailLopMonHocFragment extends Fragment {
 
-    private SinhVien mSinhVien;
-    private int positionLopMonHoc = 0;
+    private String mIdLopMonHoc = "";
     private TextView txt_test;
 
     public DetailLopMonHocFragment() {
@@ -45,8 +44,7 @@ public class DetailLopMonHocFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        txt_test.setText(mSinhVien.getTenSinhVien()
-                + " " + mSinhVien.getIdLopMonHoc().get(positionLopMonHoc).getTenLopMonHoc());
+        txt_test.setText(mIdLopMonHoc);
 
     }
 
@@ -55,7 +53,6 @@ public class DetailLopMonHocFragment extends Fragment {
     }
 
     public void getData() {
-        mSinhVien = getArguments().getParcelable(Config.SINHVIEN);
-        positionLopMonHoc = getArguments().getInt(Config.POSITION_LOPMONHOC);
+        mIdLopMonHoc = getArguments().getString(Config.ID_LOPMONHOC);
     }
 }

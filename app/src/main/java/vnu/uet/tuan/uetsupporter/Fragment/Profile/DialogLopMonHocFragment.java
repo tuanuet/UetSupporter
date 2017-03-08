@@ -72,8 +72,7 @@ public class DialogLopMonHocFragment extends DialogFragment implements ProfileRe
     @Override
     public void onItemClick(int position, View v) {
         Intent intent = new Intent(getActivity(), Result2Activity.class);
-        intent.putExtra(Config.SINHVIEN, mSinhVien);
-        intent.putExtra(Config.POSITION_LOPMONHOC, position);
+        intent.putExtra(Config.ID_LOPMONHOC, mSinhVien.getIdLopMonHoc().get(position).get_id());
         startActivity(intent);
     }
 

@@ -19,6 +19,7 @@ import vnu.uet.tuan.uetsupporter.Model.Response.Message;
 import vnu.uet.tuan.uetsupporter.Model.SinhVien;
 import vnu.uet.tuan.uetsupporter.Model.Subcribe;
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
+import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
 
 /**
  * Created by Administrator on 19/01/2017.
@@ -45,6 +46,9 @@ public interface ApiTinTuc {
 
     @GET("/diemmonhoc/lop/{id}")
     Call<List<DiemResponse>> getDiemOneSinhVien(@Path("id") String id, @Header("Authorization") String authorization);
+
+    @GET("/thongbao/{id}")
+    Call<DetailThongBao> getDetailThongBao(@Path("id") String id, @Header("Authorization") String authorization);
 
     @FormUrlEncoded
     @POST("/sinhvien/guiloaitintuc")

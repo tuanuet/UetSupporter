@@ -51,18 +51,8 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         values.put(Contract.PushNotification.KIND, notification.getKind());
         values.put(Contract.PushNotification.IDLOAITHONGBAO, notification.getIdLoaiThongBao());
         values.put(Contract.PushNotification.IDMUCHOTHONGBAO, notification.getIdMucDoThongBao());
-
-        if (notification.getRead()) {
-            values.put(Contract.PushNotification.ISREAD, 1);
-        } else {
-            values.put(Contract.PushNotification.ISREAD, 0);
-        }
-        if (notification.getHasFile()) {
-            values.put(Contract.PushNotification.HASFILE, 1);
-        } else {
-            values.put(Contract.PushNotification.HASFILE, 0);
-        }
-
+        values.put(Contract.PushNotification.ISREAD, notification.getRead() ? 1 : 0);
+        values.put(Contract.PushNotification.HASFILE, notification.getHasFile() ? 1 : 0);
 
         return (int) db.insert(Contract.PushNotification.NAME_TABLE, null, values);
     }

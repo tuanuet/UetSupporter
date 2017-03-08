@@ -2,6 +2,7 @@ package vnu.uet.tuan.uetsupporter.SQLiteHelper;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
@@ -43,6 +44,38 @@ public class EmailSQLHelper extends SQLFather {
         db.execSQL(sql);
     }
 
+    public ArrayList<Email> insertBulkGetArrayId(List list) {
+        List<Email> arr = list;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        ArrayList<Email> ids = new ArrayList<>();
+        try {
+            for (int i = 0; i < arr.size(); i++) {
+                ContentValues values = new ContentValues();
+                Email email = arr.get(i);
+
+                values.put(Contract.Email._ID, email.getPosition());
+                values.put(Contract.Email.FROM, email.getFrom());
+                values.put(Contract.Email.CONTENT, email.getContent());
+                values.put(Contract.Email.HASFILE, (email.isHasFile()) ? 1 : 0);
+                values.put(Contract.Email.IMPORTANCE, email.getImportance().trim().toLowerCase());
+                values.put(Contract.Email.ISREAD, (email.isRead()) ? 1 : 0);
+                values.put(Contract.Email.RECEIVEDDATE, email.getReceiveDate());
+                values.put(Contract.Email.TITLE, email.getTitle());
+                values.put(Contract.Email.SEND_DATE, email.getSendDate());
+                values.put(Contract.Email.FOLDER, email.getFolder());
+
+                long _id = db.insert(Contract.Email.NAME_TABLE, null, values);
+                if (_id != -1) {
+                    ids.add(email);
+                }
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+        return ids;
+    }
     @Override
     public int insertBulk(List list) {
         List<Email> arr = list;
@@ -60,7 +93,7 @@ public class EmailSQLHelper extends SQLFather {
                 values.put(Contract.Email.FROM, email.getFrom());
                 values.put(Contract.Email.CONTENT, email.getContent());
                 values.put(Contract.Email.HASFILE, (email.isHasFile()) ? 1 : 0);
-                values.put(Contract.Email.IMPORTANCE, email.getImportance());
+                values.put(Contract.Email.IMPORTANCE, email.getImportance().trim().toLowerCase());
                 values.put(Contract.Email.ISREAD, (email.isRead()) ? 1 : 0);
                 values.put(Contract.Email.RECEIVEDDATE, email.getReceiveDate());
                 values.put(Contract.Email.TITLE, email.getTitle());

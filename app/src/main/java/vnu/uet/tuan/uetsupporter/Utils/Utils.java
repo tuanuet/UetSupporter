@@ -312,10 +312,14 @@ public class Utils {
             String before = title.split("@")[0];
             if (!before.contains("1")) {
                 return String.valueOf(before.trim().charAt(0));
+            } else {
+                Random r = new Random();
+                return String.valueOf((char) (r.nextInt(26) + 'a'));
             }
+        } else {
+            return String.valueOf(title.trim().charAt(0));
         }
-        Random r = new Random();
-        return String.valueOf((char) (r.nextInt(26) + 'a'));
+
     }
 
     public static int getRandomColor(String username) {
@@ -353,6 +357,7 @@ public class Utils {
             email.setSendDate(cs.getString(Contract.Email.sendDate));
             email.setReceiveDate(cs.getString(Contract.Email.receivedDate));
             email.setFolder(cs.getString(Contract.Email.folder));
+            email.setImportance(cs.getString(Contract.Email.importance));
             list.add(email);
             cs.moveToNext();
         }

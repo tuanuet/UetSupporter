@@ -145,13 +145,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                drawer.closeDrawer(GravityCompat.START);
-            }
-        }, 0);
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
         return setFragment(id);
     }
 
@@ -165,22 +162,26 @@ public class MainActivity extends AppCompatActivity
      * @param name
      */
     public void showChangeFragment(final Fragment fragment, final String name) {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment fragmentInStack = getSupportFragmentManager().findFragmentByTag(name);
-        if(fragmentInStack!=null){
-            //Có fragment trong stack
-            ft.replace(R.id.content_main,fragmentInStack,name);
-            ft.addToBackStack(null);
-            ft.commit();
-            Log.e("MainActi","Fragment in Stack");
-        }else{
-            ft.replace(R.id.content_main, fragment,name);
-            ft.addToBackStack(name);
-            ft.commit();
-            Log.e("MainActi","Fragment not in Stack");
-        }
-        getSupportActionBar().setTitle(name);
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                Fragment fragmentInStack = getSupportFragmentManager().findFragmentByTag(name);
+                if (fragmentInStack != null) {
+                    //Có fragment trong stack
+                    ft.replace(R.id.content_main, fragmentInStack, name);
+                    ft.addToBackStack(null);
+                    ft.commit();
+                    Log.e("MainActi", "Fragment in Stack");
+                } else {
+                    ft.replace(R.id.content_main, fragment, name);
+                    ft.addToBackStack(name);
+                    ft.commit();
+                    Log.e("MainActi", "Fragment not in Stack");
+                }
+                getSupportActionBar().setTitle(name);
+            }
+        }, 250);
     }
 
     @Override

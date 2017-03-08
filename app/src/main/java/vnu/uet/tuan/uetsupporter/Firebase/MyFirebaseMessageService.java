@@ -53,7 +53,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setRead(false);
         push.setThoiGianNhan(Utils.getThoiGian(System.currentTimeMillis()));
         push.setTieuDe((String) data.get(PushNotification.TIEUDE));
-        push.setHasFile(false); //fix lai
+        push.setHasFile(true); //fix lai
         push.setIdLoaiThongBao(Integer.parseInt(String.valueOf(data.get(PushNotification.IDLOAITHONGBAO))));
         push.setIdMucDoThongBao(Integer.parseInt(String.valueOf(data.get(PushNotification.IDMUCDOTHONGBAO))));
         return push;

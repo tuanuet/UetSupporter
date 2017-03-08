@@ -20,6 +20,7 @@ import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Model.Mail.MailUet;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.EmailSQLHelper;
+import vnu.uet.tuan.uetsupporter.TemplateNotification.InboxMessageNotification;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
@@ -34,12 +35,11 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
     public static final long SYNC_INTERVAL = 60 * 2;
     public static final long SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
-    private Context context;
-    EmailSQLHelper emailSQLHelper;
+    private boolean isFirstTime = true;
+    private EmailSQLHelper emailSQLHelper;
 
     public EmailSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
-        this.context = context;
     }
 
     @Override
@@ -48,7 +48,14 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.e(TAG, "onPerformSync Called.");
         emailSQLHelper = new EmailSQLHelper(getContext());
         //run to get 10 email/
-        new ExecueEmail().execute(10);
+        MailUet sent = MailUet.getInstance(
+//                Utils.getEmailUser(getActivity()),
+//                Utils.getPassword(getActivity())
+                "14020521", "1391996"
+        ).readEmails(Config.MailBox.Inbox.toString());
+
+        int countNew = sent.getNewMessageCount();
+        new ExecueEmail().execute(countNew);
     }
 
     /**
@@ -163,6 +170,7 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
 //                Utils.getPassword(getActivity())
                     "14020521", "1391996"
             ).readEmails(Config.MailBox.Inbox.toString());
+
             return sent.getMessage(0, params[0]);
         }
 
@@ -172,8 +180,27 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
             super.onPostExecute(list);
             //update UI
             if (list != null && list.size() != 0) {
-                Log.e(TAG, list.get(0).getFolder());
-                emailSQLHelper.insertBulk(list);
+                ArrayList<Email> idInsert = emailSQLHelper.insertBulkGetArrayId(list);
+                if (isFirstTime) {
+                    //lan dau tien
+                } else {
+
+                }
+
+                //=================
+                isFirstTime = false;
+                if (idInsert.size() != 0) {
+                    //khong phai lan dau va khong phai la lan khong check duoc email nao
+                    if (idInsert.size() > 1) {
+                        InboxMessageNotification.notify(getContext(), "Bạn có thư mới", idInsert.size());
+                    } else {
+                        InboxMessageNotification.notify(getContext(), idInsert.get(0).getTitle(), 0);
+                    }
+                } else {
+                    //khong insert dc email nao
+                }
+
+                //===============
                 if (emailSQLHelper.getAll().getCount() > 15) {
                     emailSQLHelper.deleteEmailOffset(15);
                 }

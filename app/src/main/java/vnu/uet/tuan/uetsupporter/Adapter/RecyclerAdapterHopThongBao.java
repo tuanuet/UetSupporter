@@ -1,13 +1,19 @@
 package vnu.uet.tuan.uetsupporter.Adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.media.Image;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.amulyakhare.textdrawable.TextDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +35,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
     private final int VIEW_TYPE_ITEM = 0;
     private int previousposition = -1;
     private ArrayList<MucDoThongBao> mucDoThongBaoList;
+    private final String TAG = this.getClass().getSimpleName();
 
     public RecyclerAdapterHopThongBao(Context context, ArrayList<PushNotification> list) {
         this.context = context;
@@ -64,19 +71,29 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             itemViewHolder.txt_tieuDe.setText(notification.getTieuDe());
             itemViewHolder.txt_noiDung.setText(notification.getNoiDung());
             itemViewHolder.txt_thoiGian.setText(Utils.getThoiGian(notification.getThoiGianNhan()));
-            if (notification.getRead()) {
-                itemViewHolder.img_read.setVisibility(View.VISIBLE);
-            } else {
-                itemViewHolder.img_read.setVisibility(View.GONE);
-            }
 
-            itemViewHolder.mucDo.setBackgroundColor(Utils.renderColorMucDo(notification.getIdMucDoThongBao(), mucDoThongBaoList));
+            itemViewHolder.img_read.setImageResource(notification.getRead() ? R.drawable.ic_read : R.drawable.ic_unread);
+            Log.e(TAG, "isRead" + notification.getRead());
+            itemViewHolder.img_hasFile.setVisibility(notification.getHasFile() ? View.VISIBLE : View.INVISIBLE);
 
-            if (notification.getHasFile()) {
-                itemViewHolder.img_hasFile.setVisibility(View.VISIBLE);
-            } else {
-                itemViewHolder.img_read.setVisibility(View.GONE);
-            }
+            TextDrawable drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .textColor(Color.WHITE)
+                    .useFont(Typeface.DEFAULT)
+                    .fontSize(30) /* size in px */
+                    .bold()
+                    .toUpperCase()
+                    .endConfig()
+                    .buildRoundRect(Utils.getFirstChar(notification.getTieuDe()), Utils.getRandomColor(notification.getTieuDe()), 15);
+            itemViewHolder.avatar.setImageDrawable(drawable);
+
+//            //mức độ
+//
+//            if (notification.getHasFile()) {
+//                itemViewHolder.img_hasFile.setVisibility(View.VISIBLE);
+//            } else {
+//                itemViewHolder.img_read.setVisibility(View.INVISIBLE);
+//            }
 
 
             itemViewHolder.img_tool.setOnClickListener(new View.OnClickListener() {
@@ -114,10 +131,11 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         TextView txt_tieuDe;
         TextView txt_noiDung;
         TextView txt_thoiGian;
-        View mucDo;
+        ImageView mucDo;
         ImageView img_hasFile;
         ImageView img_read;
         ImageView img_tool;
+        ImageView avatar;
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
@@ -125,10 +143,11 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             txt_tieuDe = (TextView) itemView.findViewById(R.id.recycle_item_tieude);
             txt_noiDung = (TextView) itemView.findViewById(R.id.recycle_item_noidung);
             txt_thoiGian = (TextView) itemView.findViewById(R.id.recycle_item_postat);
-            mucDo = itemView.findViewById(R.id.recycle_item_mucdo);
+            mucDo = (ImageView) itemView.findViewById(R.id.recycle_item_mucdo);
             img_read = (ImageView) itemView.findViewById(R.id.recycle_item_read);
             img_hasFile = (ImageView) itemView.findViewById(R.id.recycle_item_hasfile);
             img_tool = (ImageView) itemView.findViewById(R.id.recycle_item_tool);
+            avatar = (ImageView) itemView.findViewById(R.id.avatar);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

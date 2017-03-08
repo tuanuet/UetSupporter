@@ -94,6 +94,14 @@ public class MailUet {
         return this;
     }
 
+    public int getNewMessageCount() {
+        try {
+            return inbox.getNewMessageCount();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public ArrayList<Email> getMessage() {
         try {
             Message messages[] = inbox.getMessages();

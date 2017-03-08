@@ -18,9 +18,7 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import java.util.ArrayList;
 
 import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;
-import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
@@ -28,14 +26,14 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
  * Created by vmtuan on 3/1/2017.
  */
 
-public class RecyclerAdapterInboxMessage extends RecyclerView.Adapter {
+public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
     private ArrayList<Email> list;
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
     private int previousposition = -1;
     private final String TAG = this.getClass().getName();
 
-    public RecyclerAdapterInboxMessage(Context context, ArrayList<Email> list) {
+    public RecyclerAdapterInboxAndSentMessage(Context context, ArrayList<Email> list) {
         this.context = context;
         this.list = list;
     }
@@ -51,7 +49,7 @@ public class RecyclerAdapterInboxMessage extends RecyclerView.Adapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (viewType == VIEW_TYPE_ITEM) {
             View view = inflater.inflate(R.layout.item_email_recycler_inbox, parent, false);
-            RecyclerAdapterInboxMessage.ItemViewHolder holder = new RecyclerAdapterInboxMessage.ItemViewHolder(view);
+            RecyclerAdapterInboxAndSentMessage.ItemViewHolder holder = new RecyclerAdapterInboxAndSentMessage.ItemViewHolder(view);
             return holder;
         }
         return null;
@@ -59,10 +57,10 @@ public class RecyclerAdapterInboxMessage extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof RecyclerAdapterInboxMessage.ItemViewHolder) {
+        if (holder instanceof RecyclerAdapterInboxAndSentMessage.ItemViewHolder) {
             //===================INIT ITEM==============================
 
-            RecyclerAdapterInboxMessage.ItemViewHolder itemViewHolder = (RecyclerAdapterInboxMessage.ItemViewHolder) holder;
+            RecyclerAdapterInboxAndSentMessage.ItemViewHolder itemViewHolder = (RecyclerAdapterInboxAndSentMessage.ItemViewHolder) holder;
             Email email = list.get(position);
 
             itemViewHolder.from.setText(email.getFrom());
@@ -89,7 +87,8 @@ public class RecyclerAdapterInboxMessage extends RecyclerView.Adapter {
                     email.isHasFile() ? View.VISIBLE : View.INVISIBLE);
 
             Log.e(TAG, email.getImportance());
-            if (email.getImportance().contains("High")) {
+
+            if (email.getImportance().toLowerCase().contains("high") || email.getImportance().toLowerCase().equals("high")) {
                 itemViewHolder.importance.setImageResource(R.drawable.red_dot);
             }
 
@@ -173,9 +172,9 @@ public class RecyclerAdapterInboxMessage extends RecyclerView.Adapter {
         void onItemLongClick(int position, View v);
     }
 
-    public RecyclerAdapterInboxMessage.ClickListener clickListener;
+    public RecyclerAdapterInboxAndSentMessage.ClickListener clickListener;
 
-    public void setOnItemClickListener(RecyclerAdapterInboxMessage.ClickListener clickListener) {
+    public void setOnItemClickListener(RecyclerAdapterInboxAndSentMessage.ClickListener clickListener) {
         this.clickListener = clickListener;
     }
 }
