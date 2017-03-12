@@ -3,9 +3,18 @@ package vnu.uet.tuan.uetsupporter.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
+import com.google.gson.Gson;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 
 /**
@@ -13,42 +22,104 @@ import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
  */
 
 public class DetailThongBao implements Parcelable {
-    /**
-     * _id : 58be855bcf300013a8471780
-     * tieuDe : Test lân 20
-     * noiDung : Nôi dung
-     * idLoaiThongBao : {"_id":5,"__v":0,"tenLoaiThongBao":"ThongBaoKhac"}
-     * idMucDoThongBao : {"_id":1,"tenMucDoThongBao":"quan trong","__v":0}
-     * idSender : phongban1
-     * idReceiver : INT1001
-     * __v : 0
-     * idFeedback : []
-     * idFile : [{"_id":"58be855acf300013a847177f","tenFile":"BangDiem_int2204_1 (2).pdf","link":"D:\\Tai Lieu\\NCKH\\UETSupportAPI\\Utils/../files/BangDiem_int2204_1 (2).pdf","__v":0}]
-     * time : 2017-03-07T10:03:07.254Z
-     */
 
     private String _id;
     private String tieuDe;
     private String noiDung;
-    private LoaiThongBao loaiThongBao;
-    private MucDoThongBao mucDoThongBao;
+    private LoaiThongBao idLoaiThongBao;
+    private MucDoThongBao idMucDoThongBao;
     private String idSender;
     private String idReceiver;
     private String time;
-    private List<File> File;
+    private List<File> idFile;
+    private List<Comment> feedback;
 
-    public DetailThongBao(String _id, String tieuDe, String noiDung, LoaiThongBao loaiThongBao,
-                          MucDoThongBao mucDoThongBao, String idSender, String idReceiver,
-                          String time, List<vnu.uet.tuan.uetsupporter.Model.File> file) {
+    private final String TAG = this.getClass().getSimpleName();
+
+    public DetailThongBao(String json) throws JSONException {
+        JSONObject root = new JSONObject(json);
+
+        this._id = root.getString("_id");
+        this.tieuDe = root.getString("tieuDe");
+        this.noiDung = root.getString("noiDung");
+//        this.idSender = root.getString("idSender");
+        this.idSender = "ahihi@123";
+        this.idReceiver = root.getString("idReceiver");
+        this.time = root.getString("time");
+        Log.e(TAG, time);
+        //==================================================================//
+        JSONObject idMucDoThongBao = root.getJSONObject("idMucDoThongBao");
+        int _id = idMucDoThongBao.getInt("_id");
+        String tenMucDoThongBao = idMucDoThongBao.getString("tenMucDoThongBao");
+        this.idMucDoThongBao = new MucDoThongBao(_id, tenMucDoThongBao);
+        Log.e(TAG, tenMucDoThongBao);
+        //==================================================================//
+
+        JSONObject idLoaiThongBao = root.getJSONObject("idLoaiThongBao");
+        _id = idLoaiThongBao.getInt("_id");
+        String tenLoaiThongBao = idLoaiThongBao.getString("tenLoaiThongBao");
+        this.idLoaiThongBao = new LoaiThongBao(_id, tenLoaiThongBao);
+        Log.e(TAG, tenLoaiThongBao);
+
+        //==================================================================//
+        try {
+            ArrayList<File> files = new ArrayList<>();
+            JSONArray jsonFiles = root.getJSONArray("idFile");
+            for (int i = 0; i < jsonFiles.length(); i++) {
+                JSONObject temp = jsonFiles.getJSONObject(i);
+                String id = temp.getString("_id");
+                String title = temp.getString("tenFile");
+                String link = temp.getString("link");
+                File file = new File(id, title, link);
+                files.add(file);
+            }
+            this.idFile = files;
+        } catch (Exception e) {
+            this.idFile = new ArrayList<>();
+        }
+
+        //==================================================================//
+        try {
+            JSONArray feedback = root.getJSONArray("feedback");
+            ArrayList<Comment> listFeedback = new ArrayList<>();
+            for (int i = 0; i < feedback.length(); i++) {
+                JSONObject jsonComment = feedback.getJSONObject(i);
+                listFeedback.add(new Comment(jsonComment));
+            }
+            this.feedback = listFeedback;
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            this.feedback = new ArrayList<>();
+        }
+    }
+
+    public DetailThongBao(String _id, String tieuDe, String noiDung, LoaiThongBao idLoaiThongBao,
+                          MucDoThongBao idMucDoThongBao, String idSender, String idReceiver,
+                          String time, List<File> idFile, List<Comment> feedback) {
         this._id = _id;
         this.tieuDe = tieuDe;
         this.noiDung = noiDung;
-        this.loaiThongBao = loaiThongBao;
-        this.mucDoThongBao = mucDoThongBao;
+        this.idLoaiThongBao = idLoaiThongBao;
+        this.idMucDoThongBao = idMucDoThongBao;
         this.idSender = idSender;
         this.idReceiver = idReceiver;
         this.time = time;
-        File = file;
+        this.idFile = idFile;
+        this.feedback = feedback;
+    }
+
+    public DetailThongBao(String _id, String tieuDe, String noiDung, LoaiThongBao idLoaiThongBao,
+                          MucDoThongBao idMucDoThongBao, String idSender, String idReceiver,
+                          String time, List<File> idFile) {
+        this._id = _id;
+        this.tieuDe = tieuDe;
+        this.noiDung = noiDung;
+        this.idLoaiThongBao = idLoaiThongBao;
+        this.idMucDoThongBao = idMucDoThongBao;
+        this.idSender = idSender;
+        this.idReceiver = idReceiver;
+        this.time = time;
+        this.idFile = idFile;
     }
 
     public DetailThongBao() {
@@ -61,7 +132,7 @@ public class DetailThongBao implements Parcelable {
         idSender = in.readString();
         idReceiver = in.readString();
         time = in.readString();
-        File = in.createTypedArrayList(vnu.uet.tuan.uetsupporter.Model.File.CREATOR);
+        idFile = in.createTypedArrayList(vnu.uet.tuan.uetsupporter.Model.File.CREATOR);
     }
 
     public static final Creator<DetailThongBao> CREATOR = new Creator<DetailThongBao>() {
@@ -76,21 +147,6 @@ public class DetailThongBao implements Parcelable {
         }
     };
 
-    public LoaiThongBao getLoaiThongBao() {
-        return loaiThongBao;
-    }
-
-    public void setLoaiThongBao(LoaiThongBao loaiThongBao) {
-        this.loaiThongBao = loaiThongBao;
-    }
-
-    public MucDoThongBao getMucDoThongBao() {
-        return mucDoThongBao;
-    }
-
-    public void setMucDoThongBao(MucDoThongBao mucDoThongBao) {
-        this.mucDoThongBao = mucDoThongBao;
-    }
 
     public String get_id() {
         return _id;
@@ -116,13 +172,12 @@ public class DetailThongBao implements Parcelable {
         this.noiDung = noiDung;
     }
 
-
-    public String getIdSender() {
-        return idSender;
+    public List<Comment> getFeedback() {
+        return feedback;
     }
 
-    public void setIdSender(String idSender) {
-        this.idSender = idSender;
+    public void setFeedback(List<Comment> feedback) {
+        this.feedback = feedback;
     }
 
     public String getIdReceiver() {
@@ -141,12 +196,36 @@ public class DetailThongBao implements Parcelable {
         this.time = time;
     }
 
-    public List<File> getFile() {
-        return File;
+    public LoaiThongBao getIdLoaiThongBao() {
+        return idLoaiThongBao;
     }
 
-    public void setFile(List<File> File) {
-        this.File = File;
+    public void setIdLoaiThongBao(LoaiThongBao idLoaiThongBao) {
+        this.idLoaiThongBao = idLoaiThongBao;
+    }
+
+    public MucDoThongBao getIdMucDoThongBao() {
+        return idMucDoThongBao;
+    }
+
+    public void setIdMucDoThongBao(MucDoThongBao idMucDoThongBao) {
+        this.idMucDoThongBao = idMucDoThongBao;
+    }
+
+    public String getIdSender() {
+        return idSender;
+    }
+
+    public void setIdSender(String idSender) {
+        this.idSender = idSender;
+    }
+
+    public List<File> getIdFile() {
+        return idFile;
+    }
+
+    public void setIdFile(List<File> idFile) {
+        this.idFile = idFile;
     }
 
     @Override
@@ -162,13 +241,7 @@ public class DetailThongBao implements Parcelable {
         dest.writeString(idSender);
         dest.writeString(idReceiver);
         dest.writeString(time);
-        dest.writeTypedList(File);
-    }
-
-    public static class LoaiThongBao {
-    }
-
-    public static class IdMucDoThongBaoBean {
+        dest.writeTypedList(idFile);
     }
 
 

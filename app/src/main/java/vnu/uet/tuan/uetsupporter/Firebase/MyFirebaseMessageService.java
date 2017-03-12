@@ -33,6 +33,8 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  */
 
 public class MyFirebaseMessageService extends FirebaseMessagingService {
+
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
@@ -40,8 +42,11 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         Map data = remoteMessage.getData();
         PushNotification pushNotification = getPushNotification(data);
 
-        ThongBaoMessageNotification.notify(getApplicationContext(), pushNotification);
         //lưu vao database
+        PushNotificationSQLHelper db = new PushNotificationSQLHelper(getApplicationContext());
+        int pos = db.insertOne(pushNotification);
+
+        ThongBaoMessageNotification.notify(getApplicationContext(), pushNotification, pos);
 
     }
 

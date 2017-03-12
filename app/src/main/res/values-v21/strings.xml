@@ -63,4 +63,18 @@
     <string name="title_trash">Trash</string>
     <string name="sync_account_type">tuan.uet.vnu</string>
     <string name="content_authority">vnu.uet.tuan.uetsupporter</string>
+    <string name="testtext">You said %1$s and lorem
+        ipsum dolor sit amet, consectetur adipiscing elit. Etiam non enim magna. Morbi dictum, velit
+        vel semper venenatis, magna odio volutpat velit, at ullamcorper nulla lacus sed turpis.
+        Pellentesque vitae metus elit, nec tincidunt tellus. Integer sed nisl sem, ullamcorper
+        ornare lacus. Duis ac mauris sed massa congue volutpat. Donec sed erat sit amet turpis
+        viverra rhoncus sit amet nec magna. Donec lacinia ligula at libero volutpat volutpat nec nec
+        tortor.Unfortunately, to effectively test the support for the system-wide suspend and resume transitions in a driver, it is necessary to suspend and resume a fully functional system with this driver loaded.  Moreover, that should be done several times, preferably several times in a row, and separately for hibernation (aka suspend to disk or STD) and suspend to RAM (STR), because each of these cases involves slightly different operations and different interactions with the machine\'s BIOS.  Of course, for this purpose the test system has to be known to suspend and resume without the driver being tested.  Thus, if possible, you should first resolve all suspend/resume-related problems in the test system before you start testing the new driver.  Please see Documentation/power/basic-pm-debugging.txt for more information about the debugging of suspend/resume functionality.</string>
+    <string name="tenfile">điều chỉnh lịch học.doc</string>
+    <string name="title_attach_file">File đính kèm</string>
+    <string name="danhsach">Danh sách sinh viên.doc</string>
+    <string name="mucdoc_khancap">Khẩn cấp</string>
+    <string name="title_html">Html</string>
+    <string name="action_important">Đánh đấu quan trọng</string>
+    <string name="add_a_comment_here">Add a comment here</string>
 </resources>

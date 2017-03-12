@@ -87,7 +87,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Activities.Result2Activity" />
+        <activity android:name=".Activities.Result2Activity"></activity>
         <activity android:name=".Activities.test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

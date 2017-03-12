@@ -3,6 +3,7 @@ package vnu.uet.tuan.uetsupporter.Retrofit;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -26,7 +27,7 @@ import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
  */
 
 public interface ApiTinTuc {
-    @GET("/tintuc/test")
+    @GET("/tintuc/fragment_feedback_detailthongbao")
     Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") int loaitintuc, @Query("offset") int offset);
 
     @GET("/loaitintuc")
@@ -48,7 +49,7 @@ public interface ApiTinTuc {
     Call<List<DiemResponse>> getDiemOneSinhVien(@Path("id") String id, @Header("Authorization") String authorization);
 
     @GET("/thongbao/{id}")
-    Call<DetailThongBao> getDetailThongBao(@Path("id") String id, @Header("Authorization") String authorization);
+    Call<ResponseBody> getDetailThongBao(@Path("id") String id, @Header("Authorization") String authorization);
 
     @FormUrlEncoded
     @POST("/sinhvien/guiloaitintuc")

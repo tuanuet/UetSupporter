@@ -9,7 +9,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "android.support.fragment_feedback_detailthongbao.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
 //        jackOptions {
 //            enabled true
@@ -54,6 +54,8 @@ dependencies {
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+    compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     testCompile 'junit:junit:4.12'
+    compile 'com.google.code.gson:gson:2.8.0'
 }
 apply plugin: 'com.google.gms.google-services'

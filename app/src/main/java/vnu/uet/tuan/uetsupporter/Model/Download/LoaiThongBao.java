@@ -22,6 +22,11 @@ public class LoaiThongBao implements Parcelable {
         tenLoaiThongBao = in.readString();
     }
 
+    public LoaiThongBao(int _id, String tenLoaiThongBao) {
+        this._id = _id;
+        this.tenLoaiThongBao = tenLoaiThongBao;
+    }
+
     public LoaiThongBao() {
     }
 

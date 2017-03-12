@@ -25,12 +25,12 @@
             fab:menu_animationDelayPerItem="55"
             fab:menu_backgroundColor="@android:color/transparent"
             fab:menu_buttonSpacing="0dp"
-            fab:menu_colorNormal="#da3c2f"
-            fab:menu_colorPressed="#dc4b3f"
+            fab:menu_colorNormal="#c402de"
+            fab:menu_colorPressed="#cc43ea"
             fab:menu_colorRipple="#99d4d4d4"
             fab:menu_fab_label="@string/filter"
             fab:menu_fab_size="normal"
-            fab:menu_icon="@drawable/filter_white_36x36"
+            fab:menu_icon="@drawable/ic_icon_filter"
             fab:menu_labels_colorNormal="#333"
             fab:menu_labels_colorPressed="#444"
             fab:menu_labels_colorRipple="#66efecec"
@@ -57,7 +57,7 @@
                 android:id="@+id/tindaotao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"
+                fab:srcCompat="@drawable/ic_star_black"
                 fab:fab_label="@string/tindaotao"
                 fab:fab_size="mini" />
 
@@ -65,7 +65,7 @@
                 android:id="@+id/tinhoithao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"
+                fab:srcCompat="@drawable/ic_star_black"
                 fab:fab_size="mini"
                 fab:fab_label="@string/tinhoithao" />
 
@@ -73,7 +73,7 @@
                 android:id="@+id/tinhoptac"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"
+                fab:srcCompat="@drawable/ic_star_black"
                 fab:fab_size="mini"
                 fab:fab_label="@string/tinhoptac" />
 
@@ -81,7 +81,7 @@
                 android:id="@+id/tinnghiencuu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"
+                fab:srcCompat="@drawable/ic_star_black"
                 fab:fab_size="mini"
                 fab:fab_label="@string/tinnghiencuu" />
 
@@ -89,7 +89,7 @@
                 android:id="@+id/tinhoatdongdoanthe"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"
+                fab:srcCompat="@drawable/ic_star_black"
                 fab:fab_size="mini"
                 fab:fab_label="@string/tinhoatdongdoanthe" />
 
@@ -97,7 +97,7 @@
                 android:id="@+id/tinvanhoathethao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"
+                fab:srcCompat="@drawable/ic_star_black"
                 fab:fab_size="mini"
                 fab:fab_label="@string/tinvanhoathethao" />
 
@@ -105,7 +105,7 @@
                 android:id="@+id/tintuyendung"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"
+                fab:srcCompat="@drawable/ic_star_black"
                 fab:fab_size="mini"
                 fab:fab_label="@string/tintuyendung" />
 
@@ -113,7 +113,7 @@
                 android:id="@+id/tinall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_menu_camera"
+                fab:srcCompat="@drawable/ic_star_black"
                 fab:fab_size="mini"
                 fab:fab_label="@string/tinall" />
 

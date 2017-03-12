@@ -59,23 +59,25 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
 
 
         final Cursor cursor = emailSQLHelper.getAll();
-        if (cursor == null || cursor.getCount() == 0) {
-            Log.e(TAG, "get data first time");
-            //get postion 0 -> get 10 mail dau tien
-            settingEmail(0);
-
-        } else {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Log.e(TAG, "reload data");
-                    int postion = emails.size();
-                    ArrayList<Email> list = Utils.getAllEmail(cursor);
-                    emails.addAll(list);
-                    adapter.notifyItemInserted(postion);
-                }
-            });
-        }
+//        if (cursor == null || cursor.getCount() == 0) {
+//            Log.e(TAG, "get data first time");
+//            //get postion 0 -> get 10 mail dau tien
+//
+//
+//        } else {
+//            getActivity().runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Log.e(TAG, "reload data");
+//                    int postion = emails.size();
+//                    ArrayList<Email> list = Utils.getAllEmail(cursor);
+//                    emails.addAll(list);
+//                    adapter.notifyItemInserted(postion);
+//                }
+//            });
+//        }
+        //lay 10 mail dau
+        settingEmail(0);
         return view;
     }
 

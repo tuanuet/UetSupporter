@@ -301,6 +301,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
                     if (!isShow) {
                         btn_xemthem.setText(getString(R.string.xemthem));
                         for (int pos = 0; pos < listDiem.size(); pos++) {
+                            Log.e(TAG, listDiem.size() + "");
                             createRow(listDiem.get(pos));
                         }
                     } else {

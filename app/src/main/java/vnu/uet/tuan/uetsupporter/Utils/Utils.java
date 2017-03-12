@@ -252,10 +252,13 @@ public class Utils {
 
     public static String getThoiGian(String s) {
         if (s == null) return new Date(System.currentTimeMillis()).toString();
-        String str = s.split("T")[0];
-//        SimpleDateFormat sdf = new SimpleDateFormat("MMM-dd-yyyy");
-//        Date date = new Date(str);
-//        return sdf.format(date);
+        String str = s.split("T")[0]; //6-6-2015Tabc
+        return str;
+    }
+
+    //Wed Mar 08 16:02:47 GMT+07:00 2017
+    public static String getTimeEmail(String s) {
+        String str = s.split("GMT")[0];
         return str;
     }
 

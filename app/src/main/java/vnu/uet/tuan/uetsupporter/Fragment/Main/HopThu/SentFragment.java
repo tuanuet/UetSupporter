@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,6 @@ public class SentFragment extends Fragment implements RecyclerAdapterInboxAndSen
     private LinearLayoutManager mLayoutManager;
     private RecyclerAdapterInboxAndSentMessage adapter;
     private ArrayList<Email> emails;
-    private EmailSQLHelper emailSQLHelper;
     private SwipeRefreshLayout refreshLayout;
     public SentFragment() {
         // Required empty public constructor
@@ -72,7 +72,6 @@ public class SentFragment extends Fragment implements RecyclerAdapterInboxAndSen
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         refreshLayout.setOnRefreshListener(this);
         adapter.setOnItemClickListener(this);
-        emailSQLHelper = new EmailSQLHelper(getActivity());
     }
 
 
@@ -87,9 +86,10 @@ public class SentFragment extends Fragment implements RecyclerAdapterInboxAndSen
 
     @Override
     public void onItemClick(int position, View v) {
+        Log.e(TAG, emails.get(position).getPosition() + "");
         Intent intent = new Intent(getActivity(), Result2Activity.class);
         intent.putExtra(Config.POSITION_EMAIL, emails.get(position).getPosition());
-        intent.putExtra(Config.FOLDER_EMAIL, Config.MailBox.Inbox.toString());
+        intent.putExtra(Config.FOLDER_EMAIL, Config.MailBox.Sent.toString());
         startActivity(intent);
     }
 
@@ -125,7 +125,6 @@ public class SentFragment extends Fragment implements RecyclerAdapterInboxAndSen
             //update UI
             int postion = emails.size();
             if (list != null && list.size() != 0) {
-//                emailSQLHelper.insertBulk(list);
                 emails.addAll(list);
                 adapter.notifyItemInserted(postion);
 

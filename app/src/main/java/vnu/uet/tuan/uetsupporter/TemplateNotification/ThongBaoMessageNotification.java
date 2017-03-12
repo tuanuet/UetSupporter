@@ -20,7 +20,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 
 public class ThongBaoMessageNotification {
 
-    public static void notify(Context context, PushNotification notification) {
+    public static void notify(Context context, PushNotification notification, int position) {
         Uri sound = Utils.getSoundNotification(context);
 
         long when = System.currentTimeMillis();
@@ -56,14 +56,14 @@ public class ThongBaoMessageNotification {
 //        mBuilder.setContentIntent(resultPendingIntent);
         mBuilder.addAction(R.drawable.ic_notifications_black_24dp,
                 context.getString(R.string.chitiet),
-                getPendingIntent(context, Config.ACTION_CHITIET, notification));
+                getPendingIntent(context, Config.ACTION_CHITIET, notification, position));
 
         mBuilder.addAction(R.drawable.ic_history_black_24dp,
                 context.getString(R.string.xemsau),
-                getPendingIntent(context, Config.ACTION_XEMSAU, notification));
+                getPendingIntent(context, Config.ACTION_XEMSAU, notification, position));
         mBuilder.addAction(R.drawable.ic_check_circle_black_24dp,
                 context.getString(R.string.daxem),
-                getPendingIntent(context, Config.ACTION_DAXEM, notification));
+                getPendingIntent(context, Config.ACTION_DAXEM, notification, position));
 
 
         NotificationManager mNotificationManager =
@@ -72,11 +72,12 @@ public class ThongBaoMessageNotification {
         mNotificationManager.notify(Config.IDNOTICATION, mBuilder.build());
     }
 
-    protected static PendingIntent getPendingIntent(Context context, String action, PushNotification notification) {
+    protected static PendingIntent getPendingIntent(Context context, String action, PushNotification notification, int position) {
         Intent intent = new Intent(context,
                 BroadcastNotification.class);
 
         intent.putExtra(Config.KEY_PUSHNOTIFICATION, notification);
+        intent.putExtra(Config.POSITION_NOTIFICATION, position);
         intent.setAction(action);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         return PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);

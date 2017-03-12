@@ -40,6 +40,16 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
     }
 
+    public boolean updateReadByPosition(int position, boolean value) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(Contract.PushNotification.ISREAD, value ? 1 : 0);
+        int id = db.update(Contract.PushNotification.NAME_TABLE, cv, Contract.PushNotification._ID + "=" + position, null);
+        if (id == position)
+            return true;
+        else return false;
+    }
+
     public int insertOne(PushNotification notification) {
         SQLiteDatabase db = this.getWritableDatabase();
 

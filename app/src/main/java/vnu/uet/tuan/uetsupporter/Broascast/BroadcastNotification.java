@@ -29,24 +29,21 @@ public class BroadcastNotification extends BroadcastReceiver {
         mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.cancel(Config.IDNOTICATION);
         PushNotification notification = (PushNotification) intent.getSerializableExtra(Config.KEY_PUSHNOTIFICATION);
+        int id = intent.getIntExtra(Config.POSITION_NOTIFICATION, 0);
         if (notification != null) {
             db = new PushNotificationSQLHelper(context);
             if (action.equals(Config.ACTION_CHITIET)) {
-                notification.setRead(true);
-                int pos = db.insertOne(notification);
-                Log.e("db", "Save: " + pos);
+                db.updateReadByPosition(id, true);
                 Intent i = new Intent(context, Result2Activity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra(Config.KEY_PUSHNOTIFICATION, notification);
                 context.startActivity(i);
             } else if (action.equals(Config.ACTION_DAXEM)) {
-                notification.setRead(true);
-                int pos = db.insertOne(notification);
-                Log.e("db", "Save: " + pos);
+                //set da xem true
+                db.updateReadByPosition(id, false);
             } else if (action.equals(Config.ACTION_XEMSAU)) {
-                notification.setRead(false);
-                int pos = db.insertOne(notification);
-                Log.e("db", "Save: " + pos);
+                //set da xem false
+                db.updateReadByPosition(id, false);
             }
         } else {
             Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show();

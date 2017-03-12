@@ -15,6 +15,14 @@ public class MucDoThongBao {
     private int _id;
     private String tenMucDoThongBao;
 
+    public MucDoThongBao(int _id, String tenMucDoThongBao) {
+        this._id = _id;
+        this.tenMucDoThongBao = tenMucDoThongBao;
+    }
+
+    public MucDoThongBao() {
+    }
+
     public int get_id() {
         return _id;
     }
