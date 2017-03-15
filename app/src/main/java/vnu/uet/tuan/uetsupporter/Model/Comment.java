@@ -7,11 +7,13 @@ import android.util.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Created by vmtuan on 3/11/2017.
  */
 
-public class Comment implements Parcelable {
+public class Comment implements Parcelable, Serializable {
 
     /**
      * noiDung : good morning
@@ -89,11 +91,11 @@ public class Comment implements Parcelable {
         this.comment = comment;
     }
 
-    public UserComment getComment() {
+    public UserComment getUserComment() {
         return comment;
     }
 
-    public void setComment(UserComment comment) {
+    public void setUserComment(UserComment comment) {
         this.comment = comment;
     }
 
@@ -140,7 +142,7 @@ public class Comment implements Parcelable {
     }
 
 
-    public static class UserComment implements Parcelable {
+    public static class UserComment implements Parcelable, Serializable {
         public UserComment() {
         }
 

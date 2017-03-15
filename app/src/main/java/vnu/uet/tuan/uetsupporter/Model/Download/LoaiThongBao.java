@@ -3,11 +3,13 @@ package vnu.uet.tuan.uetsupporter.Model.Download;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by Vu Minh Tuan on 2/11/2017.
  */
 
-public class LoaiThongBao implements Parcelable {
+public class LoaiThongBao implements Parcelable, Serializable {
 
     /**
      * _id : 0

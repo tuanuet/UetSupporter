@@ -87,7 +87,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Activities.Result2Activity"></activity>
+        <activity android:name=".Activities.Result2Activity" />
         <activity android:name=".Activities.test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -95,7 +95,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.NewMailActivity"></activity>
+        <activity android:name=".Activities.NewMailActivity" />
 
         <service
             android:name=".Async.EmailSyncService"
@@ -103,6 +103,7 @@
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
             </intent-filter>
+
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/syncadapter" />
@@ -111,16 +112,19 @@
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accounts.AccountAuthenticator"
                 android:resource="@xml/authenticator" />
         </service>
 
         <provider
-            android:authorities="vnu.uet.tuan.uetsupporter"
             android:name=".provider.StubProvider"
+            android:authorities="vnu.uet.tuan.uetsupporter"
             android:exported="false"
             android:syncable="true" />
+
+        <activity android:name=".Activities.FeedBackActivity"></activity>
     </application>
 
 </manifest>

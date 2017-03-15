@@ -3,11 +3,13 @@ package vnu.uet.tuan.uetsupporter.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by vmtuan on 3/8/2017.
  */
 
-public class File implements Parcelable {
+public class File implements Parcelable, Serializable {
     /**
      * _id : 58be855acf300013a847177f
      * tenFile : BangDiem_int2204_1 (2).pdf

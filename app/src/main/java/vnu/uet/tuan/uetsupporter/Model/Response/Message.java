@@ -1,10 +1,12 @@
 package vnu.uet.tuan.uetsupporter.Model.Response;
 
+import java.io.Serializable;
+
 /**
  * Created by Vu Minh Tuan on 2/11/2017.
  */
 
-public class Message {
+public class Message implements Serializable {
     private Boolean success;
     private String message;
 

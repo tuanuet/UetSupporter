@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc;
 
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,9 +13,12 @@ import android.view.ViewGroup;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+import com.gordonwong.materialsheetfab.MaterialSheetFab;
+import com.gordonwong.materialsheetfab.MaterialSheetFabEventListener;
 
 import java.util.ArrayList;
 
+import vnu.uet.tuan.uetsupporter.Animation.Fab;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
@@ -24,14 +28,9 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
  */
 public class TinTucFragment extends Fragment implements View.OnClickListener {
 
-
-
     ArrayList<LoaiTinTuc> loaiTinTucArrayList;
-    FloatingActionMenu menu;
-    FloatingActionButton btn_all, btn_tuyendung,
-            btn_vanhoa_thethao, btn_doanthe,
-            btn_nghiencuu, btn_hoptac, btn_hoithao, btn_daotao;
-
+    private MaterialSheetFab materialSheetFab;
+    private int statusBarColor;
 
     public TinTucFragment() {
         // Required empty public constructor
@@ -67,28 +66,73 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initUI(View view) {
+
+        setupFab(view);
+
+
+
         loaiTinTucArrayList = Utils.getAllLoaiTinTuc(getActivity());
-        menu = (FloatingActionMenu) view.findViewById(R.id.social_floating_menu);
-        btn_all = (FloatingActionButton) view.findViewById(R.id.tinall);
-        btn_daotao = (FloatingActionButton) view.findViewById(R.id.tindaotao);
-        btn_doanthe = (FloatingActionButton) view.findViewById(R.id.tinhoatdongdoanthe);
-        btn_hoithao = (FloatingActionButton) view.findViewById(R.id.tinhoithao);
-        btn_hoptac = (FloatingActionButton) view.findViewById(R.id.tinhoptac);
-        btn_nghiencuu = (FloatingActionButton) view.findViewById(R.id.tinnghiencuu);
-        btn_tuyendung = (FloatingActionButton) view.findViewById(R.id.tintuyendung);
-        btn_vanhoa_thethao = (FloatingActionButton) view.findViewById(R.id.tinvanhoathethao);
+//        menu = (FloatingActionMenu) view.findViewById(R.id.social_floating_menu);
+//        btn_all = (FloatingActionButton) view.findViewById(R.id.tinall);
+//        btn_daotao = (FloatingActionButton) view.findViewById(R.id.tindaotao);
+//        btn_doanthe = (FloatingActionButton) view.findViewById(R.id.tinhoatdongdoanthe);
+//        btn_hoithao = (FloatingActionButton) view.findViewById(R.id.tinhoithao);
+//        btn_hoptac = (FloatingActionButton) view.findViewById(R.id.tinhoptac);
+//        btn_nghiencuu = (FloatingActionButton) view.findViewById(R.id.tinnghiencuu);
+//        btn_tuyendung = (FloatingActionButton) view.findViewById(R.id.tintuyendung);
+//        btn_vanhoa_thethao = (FloatingActionButton) view.findViewById(R.id.tinvanhoathethao);
 
 
-        menu.setClosedOnTouchOutside(true);
+//        menu.setClosedOnTouchOutside(true);
+//
+//        btn_vanhoa_thethao.setOnClickListener(this);
+//        btn_all.setOnClickListener(this);
+//        btn_daotao.setOnClickListener(this);
+//        btn_doanthe.setOnClickListener(this);
+//        btn_hoithao.setOnClickListener(this);
+//        btn_hoptac.setOnClickListener(this);
+//        btn_nghiencuu.setOnClickListener(this);
+//        btn_tuyendung.setOnClickListener(this);
+    }
 
-        btn_vanhoa_thethao.setOnClickListener(this);
-        btn_all.setOnClickListener(this);
-        btn_daotao.setOnClickListener(this);
-        btn_doanthe.setOnClickListener(this);
-        btn_hoithao.setOnClickListener(this);
-        btn_hoptac.setOnClickListener(this);
-        btn_nghiencuu.setOnClickListener(this);
-        btn_tuyendung.setOnClickListener(this);
+    private void setupFab(View view) {
+
+        Fab fab = (Fab) view.findViewById(R.id.fab);
+        View sheetView = view.findViewById(R.id.fab_sheet);
+        View overlay = view.findViewById(R.id.overlay);
+        int sheetColor = getResources().getColor(R.color.background_card);
+        int fabColor = getResources().getColor(R.color.theme_primary_dark);
+
+        // Create material sheet FAB
+        materialSheetFab = new MaterialSheetFab<>(fab, sheetView, overlay, sheetColor, fabColor);
+
+        // Set material sheet event listener
+        materialSheetFab.setEventListener(new MaterialSheetFabEventListener() {
+            @Override
+            public void onShowSheet() {
+                // Save current status bar color
+                statusBarColor = getStatusBarColor();
+                // Set darker status bar color to match the dim overlay
+//                setStatusBarColor(getResources().getColor(R.color.theme_primary_dark2));
+            }
+
+            @Override
+            public void onHideSheet() {
+                // Restore status bar color
+                setStatusBarColor(statusBarColor);
+            }
+        });
+
+        // Set material sheet item click listeners
+        view.findViewById(R.id.tinall).setOnClickListener(this);
+        view.findViewById(R.id.tindaotao).setOnClickListener(this);
+        view.findViewById(R.id.tinhoatdongdoanthe).setOnClickListener(this);
+        view.findViewById(R.id.tinhoithao).setOnClickListener(this);
+        view.findViewById(R.id.tinhoptac).setOnClickListener(this);
+        view.findViewById(R.id.tinnghiencuu).setOnClickListener(this);
+        view.findViewById(R.id.tintuyendung).setOnClickListener(this);
+        view.findViewById(R.id.tinvanhoathethao).setOnClickListener(this);
+
     }
 
     @Override
@@ -97,9 +141,9 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
     @Override
     public void onClick(View v) {
-        menu.close(true);
         switch (v.getId()) {
             case R.id.tinall: {
                 showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(-1), "all");
@@ -133,6 +177,20 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
                 showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(6), "tintuyendung");
                 break;
             }
+        }
+        materialSheetFab.hideSheet();
+    }
+
+    private int getStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return getActivity().getWindow().getStatusBarColor();
+        }
+        return 0;
+    }
+
+    private void setStatusBarColor(int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getActivity().getWindow().setStatusBarColor(color);
         }
     }
 }

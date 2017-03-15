@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.github.clans.fab.FloatingActionButton;
 
 import org.json.JSONException;
 
@@ -28,6 +30,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import vnu.uet.tuan.uetsupporter.Activities.FeedBackActivity;
 import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.R;
@@ -47,6 +50,8 @@ public class DetailHopThongBaoFragment extends Fragment {
     Call<ResponseBody> call;
     ScrollView layout_scrollview;
     LinearLayout layout_wait;
+    FloatingActionButton fab;
+    DetailThongBao mThongBao;
 
     private final String TAG = this.getClass().getSimpleName();
     public DetailHopThongBaoFragment() {
@@ -91,6 +96,7 @@ public class DetailHopThongBaoFragment extends Fragment {
         sender = (TextView) view.findViewById(R.id.sender);
         mucdo = (TextView) view.findViewById(R.id.mucdo);
         avatar = (ImageView) view.findViewById(R.id.image_avatar);
+        fab = (FloatingActionButton) view.findViewById(R.id.comment_now);
         layout_attachfile = (LinearLayout) view.findViewById(R.id.layout_attach);
         layout_scrollview = (ScrollView) view.findViewById(R.id.scrollView);
 
@@ -118,6 +124,7 @@ public class DetailHopThongBaoFragment extends Fragment {
             return arr[2].trim();
         } else return null;
     }
+
 
     protected class AsynDetailThongBao extends AsyncTask<Void, Void, String> {
         @Override
@@ -159,7 +166,7 @@ public class DetailHopThongBaoFragment extends Fragment {
         }
     }
 
-    private void updateUI(DetailThongBao detailThongBao) {
+    private void updateUI(final DetailThongBao detailThongBao) {
 
         layout_wait.setVisibility(View.GONE);
         layout_scrollview.setVisibility(View.VISIBLE);
@@ -185,8 +192,16 @@ public class DetailHopThongBaoFragment extends Fragment {
         if (detailThongBao.getIdFile() == null) {
             layout_attachfile.setVisibility(View.GONE);
         }
-//        Toast.makeText(getActivity(),
-//                detailThongBao.getFeedback().size()!=0 ? detailThongBao.getFeedback().get(0).getComment().getName(): "Khong co comment",
-//                Toast.LENGTH_SHORT).show();
+
+        //ONCLICK fab => activity feedback
+        mThongBao = detailThongBao;
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FeedBackActivity.class);
+                intent.putExtra(Config.DETAILTHONGBAO, detailThongBao);
+                startActivity(intent);
+            }
+        });
     }
 }

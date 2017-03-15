@@ -32,12 +32,13 @@ public class Config {
     public static final String SAVE = "save";
     public static final String ID_LOPMONHOC = "idlopmonhoc";
     public static final String POSITION_NOTIFICATION = "positionnotification";
+    public static final String DETAILTHONGBAO = "detailthongbao";
 
 
     /**
      * ===================================================
      */
-    public static String hostname = "http://192.168.0.4:3000";
+    public static String hostname = "http://10.99.248.209:3000";
 
     public static final String KEY_URL = "keyurl";
     public static final String GET_INFORMATION_USER = hostname + "/sinhvien/profile";

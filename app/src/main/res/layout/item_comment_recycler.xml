@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    card_view:cardCornerRadius="3dp"
-    tools:listitem="@layout/fragment_feedback_detailthongbao">
+    card_view:cardCornerRadius="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,6 +24,7 @@
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:padding="8dp"
+                android:id="@+id/avatar"
                 android:layout_margin="5dp" />
         </LinearLayout>
 
@@ -46,6 +46,7 @@
                     android:layout_weight="7"
                     android:maxLines="1"
                     android:textSize="16sp"
+                    android:id="@+id/username"
                     android:text="Vũ Minh Tuấn"
                     android:textStyle="bold"
                     android:layout_height="wrap_content"
@@ -55,6 +56,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:maxLines="1"
+                    android:id="@+id/time"
                     android:text="10-10-2017"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -69,6 +71,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:ellipsize="end"
+                    android:id="@+id/noidung"
                     android:maxLines="2"
                     android:text="This is comment" />
             </LinearLayout>

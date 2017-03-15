@@ -27,7 +27,7 @@ import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
  */
 
 public interface ApiTinTuc {
-    @GET("/tintuc/fragment_feedback_detailthongbao")
+    @GET("/tintuc/test")
     Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") int loaitintuc, @Query("offset") int offset);
 
     @GET("/loaitintuc")
@@ -62,4 +62,10 @@ public interface ApiTinTuc {
     @FormUrlEncoded
     @POST("/sinhvien/deletefirebasetoken")
     Call<Message> postToDeleteTokenFirebase(@Field("firebaseToken") String firebaseToken, @Header("Authorization") String authorization);
+
+    @FormUrlEncoded
+    @POST("/sinhvien/guifeedback/{id}")
+    Call<Message> postComment(@Field("noiDung") String noiDung,
+                              @Path("id") String thongbaoid, @Header("Authorization") String authorization);
+
 }

@@ -3,10 +3,12 @@ package vnu.uet.tuan.uetsupporter.Model.Download;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by Administrator on 19/01/2017.
  */
-public class LoaiTinTuc implements Parcelable{
+public class LoaiTinTuc implements Parcelable, Serializable {
     private int _id;
     private String kind;
     private String linkPage;

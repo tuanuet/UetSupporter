@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
  * Created by vmtuan on 3/8/2017.
  */
 
-public class DetailThongBao implements Parcelable {
+public class DetailThongBao implements Serializable {
 
     private String _id;
     private String tieuDe;
@@ -125,27 +126,6 @@ public class DetailThongBao implements Parcelable {
     public DetailThongBao() {
     }
 
-    protected DetailThongBao(Parcel in) {
-        _id = in.readString();
-        tieuDe = in.readString();
-        noiDung = in.readString();
-        idSender = in.readString();
-        idReceiver = in.readString();
-        time = in.readString();
-        idFile = in.createTypedArrayList(vnu.uet.tuan.uetsupporter.Model.File.CREATOR);
-    }
-
-    public static final Creator<DetailThongBao> CREATOR = new Creator<DetailThongBao>() {
-        @Override
-        public DetailThongBao createFromParcel(Parcel in) {
-            return new DetailThongBao(in);
-        }
-
-        @Override
-        public DetailThongBao[] newArray(int size) {
-            return new DetailThongBao[size];
-        }
-    };
 
 
     public String get_id() {
@@ -228,21 +208,7 @@ public class DetailThongBao implements Parcelable {
         this.idFile = idFile;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(_id);
-        dest.writeString(tieuDe);
-        dest.writeString(noiDung);
-        dest.writeString(idSender);
-        dest.writeString(idReceiver);
-        dest.writeString(time);
-        dest.writeTypedList(idFile);
-    }
 
 
 }
