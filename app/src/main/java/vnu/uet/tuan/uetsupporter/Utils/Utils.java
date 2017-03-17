@@ -1,5 +1,6 @@
 package vnu.uet.tuan.uetsupporter.Utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
@@ -7,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -48,6 +50,11 @@ import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
  */
 
 public class Utils {
+    public static boolean isNetworkConnected(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null;
+    }
     public static ArrayList<String> getMultipleListSetting(Context context,String key){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         Set set = sharedPreferences.getStringSet(key,null);
@@ -263,7 +270,9 @@ public class Utils {
     }
 
     public static String getThoiGian(long i) {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd,yyyy HH:mm");
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy");
+
         Date resultdate = new Date(i);
         return sdf.format(resultdate);
     }

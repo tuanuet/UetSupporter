@@ -122,11 +122,14 @@
 
         <!-- Your FAB implementation -->
         <vnu.uet.tuan.uetsupporter.Animation.Fab
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
             android:id="@+id/fab"
             android:layout_gravity="bottom|right"
-            android:background="@drawable/ic_icon_filter"
+            android:background="@color/grey"
             android:layout_margin="16dp"
-            style="@style/Widget.MaterialSheetFab.Fab" />
+            fab:fabSize="normal" />
+        <!--style="@style/Widget.MaterialSheetFab.Fab" />-->
 
         <!-- Overlay that dims the screen -->
         <com.gordonwong.materialsheetfab.DimOverlayFrameLayout

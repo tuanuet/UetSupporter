@@ -26,7 +26,7 @@ import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, TinTucFragment.OnBackpressToFinish {
     NavigationView navigationView;
     int postionNav = 0;
     private static final String POSITIONNAV = "postionNav";
@@ -231,5 +231,12 @@ public class MainActivity extends AppCompatActivity
         }
 
         return true;
+    }
+
+    @Override
+    public void finish(boolean isFinish) {
+        if (isFinish) {
+            finish();
+        }
     }
 }

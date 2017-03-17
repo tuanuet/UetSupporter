@@ -4,64 +4,105 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    card_view:cardElevation="3dp">
+    android:layout_marginRight="5dp"
+    android:layout_marginTop="5dp"
+    card_view:cardElevation="5dp"
+    card_view:cardBackgroundColor="@color/cardview_light_blue"
+    card_view:cardCornerRadius="5dp"
+    android:layout_marginLeft="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/img_item"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/uet_logo"
-                app:civ_border_width="1dp"
-                android:layout_gravity="top|center"
-                app:civ_border_color="#3e44f4" />
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/recycle_item_img"
+                android:layout_width="match_parent"
+                android:layout_height="120dp" />
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="5dp">
 
-            <TextView
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Title"
-                android:id="@+id/recycle_item_title"
-                android:singleLine="true"
-                android:textSize="16sp" />
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:paddingLeft="5dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="20h30"
-                android:id="@+id/recycle_item_postat"
-                android:singleLine="true"
-                android:textSize="10sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
-                android:textColor="@color/black"
-                android:id="@+id/recycle_item_content"
-                android:textSize="14sp" />
+                    <TextView
+                        android:id="@+id/recycle_item_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="9.5"
+                        android:text="Title"
+                        android:textAllCaps="true"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/recycle_item_tool"
+                        android:layout_width="0dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="top"
+                        android:layout_weight="0.5"
+                        android:src="@drawable/ic_more_vert_black_24dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/recycle_item_loaitintuc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:text="TextView"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:paddingTop="5dp"
+                        android:text="@string/newthongbao"
+                        android:textColor="@color/white" />
+
+                    <TextView
+                        android:id="@+id/recycle_item_postat"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="20h30"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
+
 
 </android.support.v7.widget.CardView>
 

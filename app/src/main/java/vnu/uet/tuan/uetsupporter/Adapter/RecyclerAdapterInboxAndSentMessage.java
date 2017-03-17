@@ -57,10 +57,10 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof RecyclerAdapterInboxAndSentMessage.ItemViewHolder) {
+        if (holder instanceof ItemViewHolder) {
             //===================INIT ITEM==============================
 
-            RecyclerAdapterInboxAndSentMessage.ItemViewHolder itemViewHolder = (RecyclerAdapterInboxAndSentMessage.ItemViewHolder) holder;
+            ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
             Email email = list.get(position);
 
             itemViewHolder.from.setText(email.getFrom());

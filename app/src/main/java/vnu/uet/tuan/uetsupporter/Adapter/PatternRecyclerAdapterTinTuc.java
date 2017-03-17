@@ -5,6 +5,7 @@ package vnu.uet.tuan.uetsupporter.Adapter;
  */
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.ArrayList;
 
@@ -31,6 +35,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_LOADING = 1;
+    private final int VIEW_TYPE_SPECIAL = 2;
     private int previousposition = -1;
 
 
@@ -42,7 +47,10 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        return list.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+        if (position == 0)
+            return VIEW_TYPE_SPECIAL;
+        else
+            return list.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
     @Override
@@ -55,6 +63,10 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
         } else if (viewType == VIEW_TYPE_LOADING) {
             View view = inflater.inflate(R.layout.layout_loading_item, parent, false);
             return new LoadingViewHolder(view);
+        } else if (viewType == VIEW_TYPE_SPECIAL) {
+            View view = inflater.inflate(R.layout.pattern_item_recycler_factory_first_tintuc, parent, false);
+            ItemSpecialViewHolder holder = new ItemSpecialViewHolder(view);
+            return holder;
         }
         return null;
     }
@@ -71,7 +83,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
             if (list.get(position).getImageLink() != null) {
                 Glide.with(context)
                         .load(list.get(position).getImageLink())
-                        .thumbnail(0.5f)
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .crossFade()
                         .into(itemViewHolder.img_picture);
             } else {
@@ -91,20 +103,55 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
 
 
 
-            //animation
-            if (position >= previousposition) {
-                RecyclerAnim.animate(itemViewHolder, true);
-            } else RecyclerAnim.animate(itemViewHolder, false);
-
-            previousposition = position;
-
         } else if (holder instanceof LoadingViewHolder) {
             LoadingViewHolder loadingViewHolder = (LoadingViewHolder) holder;
             loadingViewHolder.progressBar.setIndeterminate(true);
-        }
+        } else if (holder instanceof ItemSpecialViewHolder) {
 
+            final ItemSpecialViewHolder itemViewHolder = (ItemSpecialViewHolder) holder;
+
+            itemViewHolder.txt_title.setText(list.get(position).getTitle());
+            itemViewHolder.txt_postat.setText(Utils.getThoiGian(list.get(position).getPostAt()));
+            itemViewHolder.txt_loaitintuc.setText(list.get(position).getLoaiTinTuc().getKind());
+
+            Glide.with(context)
+                    .load(list.get(position).getImageLink().replace("/imagecache/anhminhhoa_home", ""))
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .centerCrop()
+                    .into(itemViewHolder.img_picture);
+
+            //========================
+            //onClick tool
+            //show popUp
+            itemViewHolder.tool.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPopup(itemViewHolder.tool);
+                }
+            });
+
+            //setImage for contnet_picture and animation
+//            Glide.with(context)
+//                    .load(R.drawable.content_picture)
+//                    .centerCrop()
+////                    .animate(R.anim.first_item_tintuc)
+//                    .into(itemViewHolder.content_picture);
+
+//            YoYo.with(Techniques.ZoomInLeft).duration(10000)
+//                    .repeat(5)
+//                    .playOn(itemViewHolder.content_picture);
+
+
+        }
+//        //animation
+//        if (position >= previousposition) {
+//            RecyclerAnim.animate(itemViewHolder, true);
+//        } else RecyclerAnim.animate(itemViewHolder, false);
+//
+//        previousposition = position;
 
     }
+
 
     @Override
     public int getItemCount() {
@@ -135,8 +182,6 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
         CircleImageView img_picture;
         ImageView tool;
 
-
-
         public ItemViewHolder(final View itemView) {
             super(itemView);
 
@@ -145,6 +190,41 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
             txt_loaitintuc = (TextView) itemView.findViewById(R.id.recycle_item_loaitintuc);
             img_picture = (CircleImageView) itemView.findViewById(R.id.recycle_item_img);
             tool = (ImageView) itemView.findViewById(R.id.recycle_item_tool);
+
+            itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            clickListener.onItemClick(getAdapterPosition(), v);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            clickListener.onItemLongClick(getAdapterPosition(), v);
+            return false;
+        }
+    }
+
+    public class ItemSpecialViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        TextView txt_title;
+        TextView txt_postat;
+        TextView txt_loaitintuc;
+        ImageView img_picture;
+        ImageView tool;
+        ImageView content_picture;
+
+
+        public ItemSpecialViewHolder(final View itemView) {
+            super(itemView);
+
+            txt_title = (TextView) itemView.findViewById(R.id.recycle_item_title);
+            txt_postat = (TextView) itemView.findViewById(R.id.recycle_item_postat);
+            txt_loaitintuc = (TextView) itemView.findViewById(R.id.recycle_item_loaitintuc);
+            img_picture = (ImageView) itemView.findViewById(R.id.recycle_item_img);
+            tool = (ImageView) itemView.findViewById(R.id.recycle_item_tool);
+//            content_picture = (ImageView) itemView.findViewById(R.id.content_picture);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#005B96</color>
     <color name="colorPrimaryDark">#03396C</color>
-    <color name="colorAccent">#64b18d</color>
+    <color name="colorAccent">#FFEB3B</color>
     <color name="black">#000000</color>
     <color name="grey">#565656</color>
     <color name="white">#fff</color>
@@ -20,6 +20,9 @@
 
     <color name="text_black_87">#de000000</color>
     <color name="text_white_87">#deFFFFFF</color>
+    <color name="cardview_light_blue">#3498db</color>
+    <color name="dark_red">#c0392b</color>
+    <color name="dark_yellow">#f1c40f</color>
 
     <array name="note_neutral_colors">
         <item>#9E9E9E</item>
@@ -27,10 +30,10 @@
         <item>#607D8B</item>
     </array>
 
-    <array name="note_accent_colors">
-        <item>#039BE5</item>
-        <item>#3D51B3</item>
-        <item>#689f38</item>
-        <item>#FD7044</item>
-    </array>
+    <!--<array name="note_accent_colors">-->
+    <!--<item>#039BE5</item>-->
+    <!--<item>#3D51B3</item>-->
+    <!--<item>#689f38</item>-->
+    <!--<item>#FD7044</item>-->
+    <!--</array>-->
 </resources>

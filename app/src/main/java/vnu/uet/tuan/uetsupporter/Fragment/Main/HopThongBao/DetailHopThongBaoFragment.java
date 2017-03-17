@@ -204,4 +204,10 @@ public class DetailHopThongBaoFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        call.cancel();
+    }
 }

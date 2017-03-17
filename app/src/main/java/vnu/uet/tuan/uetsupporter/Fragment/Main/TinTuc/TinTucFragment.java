@@ -1,15 +1,20 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc;
 
 
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -36,6 +41,17 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
+    public interface OnBackpressToFinish {
+        public void finish(boolean isFinish);
+    }
+
+    private OnBackpressToFinish onFinish;
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        onFinish = (OnBackpressToFinish) activity;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -98,6 +114,10 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
     private void setupFab(View view) {
 
         Fab fab = (Fab) view.findViewById(R.id.fab);
+        fab.setImageResource(R.drawable.ic_icon_filter);
+        fab.setRippleColor(getResources().getColor(R.color.theme_primary_dark));
+        fab.setBackgroundColor(getResources().getColor(R.color.theme_primary_dark));
+
         View sheetView = view.findViewById(R.id.fab_sheet);
         View overlay = view.findViewById(R.id.overlay);
         int sheetColor = getResources().getColor(R.color.background_card);
@@ -134,6 +154,34 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
         view.findViewById(R.id.tinvanhoathethao).setOnClickListener(this);
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
+
+                    if (materialSheetFab.isSheetVisible()) {
+                        materialSheetFab.hideSheet();
+                        return true;
+                    }
+
+                } else {
+                    Toast.makeText(getActivity(), "Nhấn 1 lần nữa để thoát ", Toast.LENGTH_SHORT).show();
+                    onFinish.finish(true);
+                }
+
+                return false;
+            }
+        });
+    }
+
+
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

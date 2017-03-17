@@ -16,12 +16,14 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapterTinTuc;
+import vnu.uet.tuan.uetsupporter.Cache.ConfigCache;
 import vnu.uet.tuan.uetsupporter.Listener.EndlessRecyclerOnScrollListener;
 
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
@@ -102,6 +104,16 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new PatternRecyclerAdapterTinTuc(getActivity(), listTinTuc);
+        recyclerView.setAdapter(adapter);
+
+        return view;
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         adapter.setOnItemClickListener(new PatternRecyclerAdapterTinTuc.ClickListener() {
             @Override
             public void onItemClick(int position, View v) {
@@ -121,17 +133,6 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
 
             }
         });
-        recyclerView.setAdapter(adapter);
-
-        Log.e("TAG", "onCreateView");
-        return view;
-    }
-
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
         recyclerView.setOnScrollListener(new EndlessRecyclerOnScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int current_page) {
@@ -144,8 +145,10 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
 
     public void getTinTucByLoaiTinTuc(int loaitintuc, int offsetPage) {
         Call<ArrayList<TinTuc>> call;
+        OkHttpClient okHttpClient = ConfigCache.createCachedClient(getActivity());
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Config.API_HOSTNAME)
+                .client(okHttpClient)
                 // Sử dụng GSON cho việc parse và maps JSON data tới Object
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

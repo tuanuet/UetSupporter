@@ -78,4 +78,8 @@
     <string name="action_important">Đánh đấu quan trọng</string>
     <string name="add_a_comment_here">Add a comment here</string>
     <string name="recording">test 1</string>
+    <string name="newthongbao">Tiêu Điểm</string>
+    <string name="date_test">13/2/2016</string>
+    <string name="string_test">Hôm nfddddddddddddddddddddddđ</string>
+    <string name="user_pdt">Phòng đào tạo</string>
 </resources>

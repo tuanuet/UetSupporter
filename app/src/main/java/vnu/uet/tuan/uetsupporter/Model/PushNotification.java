@@ -14,7 +14,7 @@ public class PushNotification implements Serializable {
     public static final String LINK = "link";
     public static final String IDLOAITHONGBAO = "idLoaiThongBao";
     public static final String IDMUCDOTHONGBAO = "idMucDoThongBao";
-    public static final String HASFILE = "hasFile";
+    public static final String HASFILE = "hasfile";
 
     private String tieuDe;
     private String noiDung;
