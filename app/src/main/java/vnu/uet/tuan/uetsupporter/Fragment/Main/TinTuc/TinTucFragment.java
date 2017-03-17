@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
@@ -31,7 +33,7 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class TinTucFragment extends Fragment implements View.OnClickListener {
+public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
 
     ArrayList<LoaiTinTuc> loaiTinTucArrayList;
     private MaterialSheetFab materialSheetFab;
@@ -39,6 +41,45 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
 
     public TinTucFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+        switch (checkedId) {
+            case R.id.tinall: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(-1), "all");
+                break;
+            }
+            case R.id.tindaotao: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(0), "tindaotao");
+                break;
+            }
+            case R.id.tinhoithao: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(1), "tinhoithao");
+                break;
+            }
+            case R.id.tinhoptac: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(2), "tinhoptac");
+                break;
+            }
+            case R.id.tinnghiencuu: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(3), "tinnghiencuu");
+                break;
+            }
+            case R.id.tinhoatdongdoanthe: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(4), "tinhoatdongdoanthe");
+                break;
+            }
+            case R.id.tinvanhoathethao: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(5), "tinvanhoathethao");
+                break;
+            }
+            case R.id.tintuyendung: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(6), "tintuyendung");
+                break;
+            }
+        }
+        materialSheetFab.hideSheet();
     }
 
     public interface OnBackpressToFinish {
@@ -85,30 +126,8 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
 
         setupFab(view);
 
-
-
         loaiTinTucArrayList = Utils.getAllLoaiTinTuc(getActivity());
-//        menu = (FloatingActionMenu) view.findViewById(R.id.social_floating_menu);
-//        btn_all = (FloatingActionButton) view.findViewById(R.id.tinall);
-//        btn_daotao = (FloatingActionButton) view.findViewById(R.id.tindaotao);
-//        btn_doanthe = (FloatingActionButton) view.findViewById(R.id.tinhoatdongdoanthe);
-//        btn_hoithao = (FloatingActionButton) view.findViewById(R.id.tinhoithao);
-//        btn_hoptac = (FloatingActionButton) view.findViewById(R.id.tinhoptac);
-//        btn_nghiencuu = (FloatingActionButton) view.findViewById(R.id.tinnghiencuu);
-//        btn_tuyendung = (FloatingActionButton) view.findViewById(R.id.tintuyendung);
-//        btn_vanhoa_thethao = (FloatingActionButton) view.findViewById(R.id.tinvanhoathethao);
 
-
-//        menu.setClosedOnTouchOutside(true);
-//
-//        btn_vanhoa_thethao.setOnClickListener(this);
-//        btn_all.setOnClickListener(this);
-//        btn_daotao.setOnClickListener(this);
-//        btn_doanthe.setOnClickListener(this);
-//        btn_hoithao.setOnClickListener(this);
-//        btn_hoptac.setOnClickListener(this);
-//        btn_nghiencuu.setOnClickListener(this);
-//        btn_tuyendung.setOnClickListener(this);
     }
 
     private void setupFab(View view) {
@@ -143,15 +162,17 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.groupbutton);
+        radioGroup.setOnCheckedChangeListener(this);
         // Set material sheet item click listeners
-        view.findViewById(R.id.tinall).setOnClickListener(this);
-        view.findViewById(R.id.tindaotao).setOnClickListener(this);
-        view.findViewById(R.id.tinhoatdongdoanthe).setOnClickListener(this);
-        view.findViewById(R.id.tinhoithao).setOnClickListener(this);
-        view.findViewById(R.id.tinhoptac).setOnClickListener(this);
-        view.findViewById(R.id.tinnghiencuu).setOnClickListener(this);
-        view.findViewById(R.id.tintuyendung).setOnClickListener(this);
-        view.findViewById(R.id.tinvanhoathethao).setOnClickListener(this);
+//        view.findViewById(R.id.tinall).setOnClickListener(this);
+//        view.findViewById(R.id.tindaotao).setOnClickListener(this);
+//        view.findViewById(R.id.tinhoatdongdoanthe).setOnClickListener(this);
+//        view.findViewById(R.id.tinhoithao).setOnClickListener(this);
+//        view.findViewById(R.id.tinhoptac).setOnClickListener(this);
+//        view.findViewById(R.id.tinnghiencuu).setOnClickListener(this);
+//        view.findViewById(R.id.tintuyendung).setOnClickListener(this);
+//        view.findViewById(R.id.tinvanhoathethao).setOnClickListener(this);
 
     }
 
@@ -189,45 +210,6 @@ public class TinTucFragment extends Fragment implements View.OnClickListener {
 
     }
 
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.tinall: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(-1), "all");
-                break;
-            }
-            case R.id.tindaotao: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(0), "tindaotao");
-                break;
-            }
-            case R.id.tinhoithao: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(1), "tinhoithao");
-                break;
-            }
-            case R.id.tinhoptac: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(2), "tinhoptac");
-                break;
-            }
-            case R.id.tinnghiencuu: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(3), "tinnghiencuu");
-                break;
-            }
-            case R.id.tinhoatdongdoanthe: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(4), "tinhoatdongdoanthe");
-                break;
-            }
-            case R.id.tinvanhoathethao: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(5), "tinvanhoathethao");
-                break;
-            }
-            case R.id.tintuyendung: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(6), "tintuyendung");
-                break;
-            }
-        }
-        materialSheetFab.hideSheet();
-    }
 
     private int getStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

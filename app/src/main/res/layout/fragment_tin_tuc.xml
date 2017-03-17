@@ -1,6 +1,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.TinTucFragment">
@@ -148,7 +149,9 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/fab_sheet"
                 android:layout_width="250dp"
-                android:layout_height="300dp">
+                android:layout_height="300dp"
+                card_view:cardCornerRadius="10dp"
+                card_view:cardElevation="4dp">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -159,61 +162,124 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:id="@+id/tindaotao"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:drawableStart="@drawable/ic_check_circle_black_24dp"
-                            android:text="@string/tindaotao" />
+                        <RadioGroup
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/groupbutton">
 
-                        <TextView
-                            android:id="@+id/tinhoithao"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:drawableStart="@drawable/ic_check_circle_black_24dp"
-                            android:text="@string/tinhoithao" />
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tinall"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tinall" />
 
-                        <TextView
-                            android:id="@+id/tinhoptac"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:drawableStart="@drawable/ic_check_circle_black_24dp"
-                            android:text="@string/tinhoptac" />
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tindaotao"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tindaotao" />
 
-                        <TextView
-                            android:id="@+id/tinnghiencuu"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:drawableStart="@drawable/ic_check_circle_black_24dp"
-                            android:text="@string/tinnghiencuu" />
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tinhoithao"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tinhoithao" />
 
-                        <TextView
-                            android:id="@+id/tinhoatdongdoanthe"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:drawableStart="@drawable/ic_check_circle_black_24dp"
-                            android:text="@string/tinhoatdongdoanthe" />
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tinhoptac"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tinhoptac" />
 
-                        <TextView
-                            android:id="@+id/tinvanhoathethao"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:drawableStart="@drawable/ic_check_circle_black_24dp"
-                            android:text="@string/tinvanhoathethao" />
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tinnghiencuu"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tinnghiencuu" />
 
-                        <TextView
-                            android:id="@+id/tintuyendung"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:drawableStart="@drawable/ic_check_circle_black_24dp"
-                            android:text="@string/tintuyendung" />
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tinhoatdongdoanthe"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tinhoatdongdoanthe" />
 
-                        <TextView
-                            android:id="@+id/tinall"
-                            style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                            android:drawableLeft="@drawable/ic_check_circle_black_24dp"
-                            android:drawableStart="@drawable/ic_check_circle_black_24dp"
-                            android:text="@string/tinall" />
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tinvanhoathethao"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tinvanhoathethao" />
+
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tintuyendung"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tintuyendung" />
+
+                        </RadioGroup>
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tindaotao"-->
+                        <!--style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"-->
+                        <!--android:drawableLeft="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:text="@string/tindaotao" />-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tinhoithao"-->
+                        <!--style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"-->
+                        <!--android:drawableLeft="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:text="@string/tinhoithao" />-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tinhoptac"-->
+                        <!--style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"-->
+                        <!--android:drawableLeft="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:text="@string/tinhoptac" />-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tinnghiencuu"-->
+                        <!--style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"-->
+                        <!--android:drawableLeft="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:text="@string/tinnghiencuu" />-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tinhoatdongdoanthe"-->
+                        <!--style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"-->
+                        <!--android:drawableLeft="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:text="@string/tinhoatdongdoanthe" />-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tinvanhoathethao"-->
+                        <!--style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"-->
+                        <!--android:drawableLeft="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:text="@string/tinvanhoathethao" />-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tintuyendung"-->
+                        <!--style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"-->
+                        <!--android:drawableLeft="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:text="@string/tintuyendung" />-->
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tinall"-->
+                        <!--style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"-->
+                        <!--android:drawableLeft="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:drawableStart="@drawable/ic_check_circle_black_24dp"-->
+                        <!--android:text="@string/tinall" />-->
 
                     </LinearLayout>
                 </ScrollView>
