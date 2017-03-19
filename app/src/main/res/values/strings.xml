@@ -65,10 +65,10 @@
     <string name="action_delete">Xóa</string>
     <string name="fail_download">Lỗi trong khi tải tài nguyên</string>
 
-    <string name="inbox_message_notification_title_template">Inbox message: %1$s</string>
+    <string name="inbox_message_notification_title_template">%1$s</string>
 
     <!-- TODO: remove this placeholder text -->
-    <string name="inbox_message_notification_placeholder_text_template">Nội dung: %1$s</string>
+    <string name="inbox_message_notification_placeholder_text_template">%1$s</string>
     <string name="action_reply">Reply</string>
     <string name="msv">Mã</string>
     <string name="ten">Họ và tên</string>
@@ -104,5 +104,16 @@
     <string name="date_test">13/2/2016</string>
     <string name="string_test">Hôm nfddddddddddddddddddddddđ</string>
     <string name="user_pdt">Phòng đào tạo</string>
+    <string name="email_action_from">Từ</string>
+    <string name="email_action_to">Tới</string>
+    <string name="email_action_cc">Cc</string>
+    <string name="email_action_bcc">Bcc</string>
+    <string name="email_action_title">Chủ đề</string>
+    <string name="email_action_content">Soạn email</string>
+    <string name="title_send_now">Gửi</string>
+    <string name="action_huy">Hủy</string>
+    <string name="action_help_feedback">Trợ giúp và phản hồi</string>
+    <string name="fullmail_from_ma_sinh_vien">%1$s@vnu.edu.vn</string>
+    <string name="title_write_email">Soạn thư</string>
 
 </resources>

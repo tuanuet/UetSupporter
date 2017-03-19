@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="@string/title_attach_file"
+        android:id="@+id/action_attach_file"
+        android:icon="@drawable/ic_attach_file_grey"
+        app:showAsAction="always" />
+    <item
+        android:title="@string/title_send_now"
+        android:id="@+id/action_send_now"
+        android:icon="@drawable/ic_action_send_now_grey"
+        app:showAsAction="always" />
+    <item
+        android:title="@string/action_huy"
+        android:id="@+id/action_huy" />
+    <item
+        android:title="@string/action_settings"
+        android:id="@+id/action_settings"
+        app:showAsAction="never" />
+    <item
+        android:title="@string/action_help_feedback"
+        android:id="@+id/action_help_feedback" />
+</menu>

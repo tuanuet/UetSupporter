@@ -22,6 +22,7 @@
     <color name="cardview_light_blue">#3498db</color>
     <color name="dark_red">#c0392b</color>
     <color name="dark_yellow">#f1c40f</color>
+    <color name="light_grey">#cacaca</color>
 
     <array name="note_neutral_colors">
         <item>#9E9E9E</item>

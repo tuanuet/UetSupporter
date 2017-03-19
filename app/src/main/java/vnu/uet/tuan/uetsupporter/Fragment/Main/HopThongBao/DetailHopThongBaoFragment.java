@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.util.Util;
 import com.github.clans.fab.FloatingActionButton;
 
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -31,7 +36,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Activities.FeedBackActivity;
+import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterHopThongBao;
 import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
+import vnu.uet.tuan.uetsupporter.Model.File;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
@@ -44,7 +52,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 public class DetailHopThongBaoFragment extends Fragment {
 
     PushNotification notification;
-    TextView title, noidung, time, sender, loaithongbao, mucdo;
+    TextView title, noidung, time, sender, loaithongbao;
     ImageView avatar;
     LinearLayout layout_attachfile;
     Call<ResponseBody> call;
@@ -52,6 +60,7 @@ public class DetailHopThongBaoFragment extends Fragment {
     LinearLayout layout_wait;
     FloatingActionButton fab;
     DetailThongBao mThongBao;
+    AsynDetailThongBao mTask;
 
     private final String TAG = this.getClass().getSimpleName();
     public DetailHopThongBaoFragment() {
@@ -78,7 +87,8 @@ public class DetailHopThongBaoFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new AsynDetailThongBao().execute();
+                mTask = new AsynDetailThongBao();
+                mTask.execute();
             }
         });
 
@@ -94,7 +104,6 @@ public class DetailHopThongBaoFragment extends Fragment {
         time = (TextView) view.findViewById(R.id.time);
         loaithongbao = (TextView) view.findViewById(R.id.loaithongbao);
         sender = (TextView) view.findViewById(R.id.sender);
-        mucdo = (TextView) view.findViewById(R.id.mucdo);
         avatar = (ImageView) view.findViewById(R.id.image_avatar);
         fab = (FloatingActionButton) view.findViewById(R.id.comment_now);
         layout_attachfile = (LinearLayout) view.findViewById(R.id.layout_attach);
@@ -103,6 +112,44 @@ public class DetailHopThongBaoFragment extends Fragment {
         layout_scrollview.setVisibility(View.INVISIBLE);
         layout_wait = (LinearLayout) view.findViewById(R.id.layout_wait);
 
+    }
+
+    /**
+     * thêm tên laoij thông báo
+     * * lấy tên thông báo trong csdl
+     *
+     * @param detailThongBao
+     */
+    private void setupLoaiThongBao(DetailThongBao detailThongBao) {
+        loaithongbao.setText(detailThongBao.getIdLoaiThongBao().getTenLoaiThongBao());
+    }
+
+    private void setupMucDo(DetailThongBao detailThongBao) {
+        switch (detailThongBao.getIdMucDoThongBao().get_id()) {
+            case 1:
+                title.setTextColor(getActivity().getResources().getColor(R.color.dark_red));
+                break;
+            case 2:
+                title.setTextColor(getActivity().getResources().getColor(R.color.dark_yellow));
+                break;
+            case 3:
+                title.setTextColor(getActivity().getResources().getColor(R.color.black));
+                break;
+            default:
+
+                break;
+        }
+    }
+
+    private void setupAvatarWithAuthor() {
+        String urlAvatar = Config.API_HOSTNAME + "/avatar/" + notification.getIdSender();
+        Log.e(TAG, urlAvatar);
+        Glide.with(getActivity()).load(urlAvatar)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .centerCrop()
+                .into(avatar);
+
+        sender.setText(notification.getNameSender());
     }
 
     private Call<ResponseBody> getDiem() {
@@ -173,24 +220,23 @@ public class DetailHopThongBaoFragment extends Fragment {
 
         title.setText(detailThongBao.getTieuDe());
         loaithongbao.setText(detailThongBao.getIdLoaiThongBao().getTenLoaiThongBao());
-        mucdo.setText(detailThongBao.getIdMucDoThongBao().getTenMucDoThongBao());
         sender.setText(detailThongBao.getIdSender());
         time.setText(Utils.getThoiGian(detailThongBao.getTime()));
         noidung.setText(detailThongBao.getNoiDung());
 
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .textColor(Color.WHITE)
-                .useFont(Typeface.DEFAULT)
-                .fontSize(30) /* size in px */
-                .bold()
-                .toUpperCase()
-                .endConfig()
-                .buildRoundRect(Utils.getFirstChar(detailThongBao.getIdSender()), Utils.getRandomColor(detailThongBao.getIdSender()), 15);
-        avatar.setImageDrawable(drawable);
+        setupAvatarWithAuthor();
 
-        if (detailThongBao.getIdFile() == null) {
+        setupMucDo(detailThongBao);
+
+        setupLoaiThongBao(detailThongBao);
+
+        if (detailThongBao.getIdFile().size() == 0) {
             layout_attachfile.setVisibility(View.GONE);
+        } else {
+            for (int i = 0; i < detailThongBao.getIdFile().size(); i++) {
+                createUIAttachfile(detailThongBao.getIdFile().get(i));
+            }
+
         }
 
         //ONCLICK fab => activity feedback
@@ -205,9 +251,44 @@ public class DetailHopThongBaoFragment extends Fragment {
         });
     }
 
+    private void createUIAttachfile(final File file) {
+        LinearLayout row = new LinearLayout(getActivity());
+        row.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        ImageView imageView = new ImageView(getActivity());
+        imageView.setPadding(5, 3, 0, 0);
+        imageView.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        Utils.getPixelFromDP(getActivity(), 36),
+                        Utils.getPixelFromDP(getActivity(), 36)));
+        imageView.setImageResource(R.drawable.icon_word);
+
+        row.addView(imageView);
+
+        TextView txt = new TextView(getActivity());
+        txt.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER_HORIZONTAL));
+        txt.setText(file.getTenFile());
+        txt.setPadding(5, 3, 0, 0);
+
+        row.addView(txt);
+        txt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), file.getLink(), Toast.LENGTH_SHORT).show();
+            }
+        });
+        layout_attachfile.addView(row);
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         call.cancel();
+        mTask.cancel(true);
     }
 }

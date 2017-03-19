@@ -96,11 +96,15 @@ public class MailUet {
 
     public int getNewMessageCount() {
         try {
-            return inbox.getNewMessageCount();
+            if (inbox != null)
+                return inbox.getNewMessageCount();
+            else {
+                return 0;
+            }
         } catch (MessagingException e) {
             e.printStackTrace();
+            return 0;
         }
-        return 0;
     }
     public ArrayList<Email> getMessage() {
         try {

@@ -20,46 +20,22 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
 public class ConfigCache {
     public static OkHttpClient createCachedClient(final Context context) {
         File httpCacheDirectory = new File(context.getCacheDir(), "cache_file");
-
-        Cache cache = new Cache(httpCacheDirectory, 20 * 1024 * 1024);
-        OkHttpClient okHttpClient = new OkHttpClient()
-                .newBuilder()
-                .cache(cache)
+        OkHttpClient client = new OkHttpClient
+                .Builder()
+                .cache(new Cache(httpCacheDirectory, 10 * 1024 * 1024)) // 10 MB
                 .addInterceptor(new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
-                        Request originalRequest = chain.request();
-                        String cacheHeaderValue = Utils.isNetworkConnected(context)
-                                ? "public, max-age=60*5"
-                                : "public, only-if-cached, max-stale=2419200";
-                        Request request = originalRequest.newBuilder().build();
-                        Response response = chain.proceed(request);
-                        return response.newBuilder()
-                                .removeHeader("Pragma")
-                                .removeHeader("Cache-Control")
-                                .header("Cache-Control", cacheHeaderValue)
-                                .build();
-                    }
-                })
-                .addNetworkInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request originalRequest = chain.request();
-                        String cacheHeaderValue = Utils.isNetworkConnected(context)
-                                ? "public, max-age=60*5"
-                                : "public, only-if-cached, max-stale=2419200";
-                        Request request = originalRequest.newBuilder().build();
-                        Response response = chain.proceed(request);
-                        return response.newBuilder()
-                                .removeHeader("Pragma")
-                                .removeHeader("Cache-Control")
-                                .header("Cache-Control", cacheHeaderValue)
-                                .build();
+                        Request request = chain.request();
+                        if (Utils.isNetworkConnected(context)) {
+                            request = request.newBuilder().header("Cache-Control", "public, max-age=" + 60).build();
+                        } else {
+                            request = request.newBuilder().header("Cache-Control", "public, only-if-cached, max-stale=" + 60 * 60 * 24 * 7).build();
+                        }
+                        return chain.proceed(request);
                     }
                 })
                 .build();
-
-
-        return okHttpClient;
+        return client;
     }
 }

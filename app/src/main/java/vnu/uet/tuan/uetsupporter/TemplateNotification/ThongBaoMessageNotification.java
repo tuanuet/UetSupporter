@@ -7,8 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
-import vnu.uet.tuan.uetsupporter.Broascast.BroadcastNotification;
-import vnu.uet.tuan.uetsupporter.Firebase.MyFirebaseMessageService;
+import vnu.uet.tuan.uetsupporter.Broascast.BroadcastPushNotification;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
@@ -61,9 +60,9 @@ public class ThongBaoMessageNotification {
         mBuilder.addAction(R.drawable.ic_history_black_24dp,
                 context.getString(R.string.xemsau),
                 getPendingIntent(context, Config.ACTION_XEMSAU, notification, position));
-        mBuilder.addAction(R.drawable.ic_check_circle_black_24dp,
-                context.getString(R.string.daxem),
-                getPendingIntent(context, Config.ACTION_DAXEM, notification, position));
+//        mBuilder.addAction(R.drawable.ic_check_circle_black_24dp,
+//                context.getString(R.string.daxem),
+//                getPendingIntent(context, Config.ACTION_DAXEM, notification, position));
 
 
         NotificationManager mNotificationManager =
@@ -74,7 +73,7 @@ public class ThongBaoMessageNotification {
 
     protected static PendingIntent getPendingIntent(Context context, String action, PushNotification notification, int position) {
         Intent intent = new Intent(context,
-                BroadcastNotification.class);
+                BroadcastPushNotification.class);
 
         intent.putExtra(Config.KEY_PUSHNOTIFICATION, notification);
         intent.putExtra(Config.POSITION_NOTIFICATION, position);

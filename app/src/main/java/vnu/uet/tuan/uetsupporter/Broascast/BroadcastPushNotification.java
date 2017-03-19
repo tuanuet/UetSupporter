@@ -8,18 +8,22 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.greenrobot.eventbus.EventBus;
+
+import me.leolin.shortcutbadger.ShortcutBadger;
 import vnu.uet.tuan.uetsupporter.Activities.MainActivity;
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * Created by Vu Minh Tuan on 2/14/2017.
  */
 
-public class BroadcastNotification extends BroadcastReceiver {
+public class BroadcastPushNotification extends BroadcastReceiver {
     NotificationManager mNotificationManager;
     PushNotificationSQLHelper db;
 
@@ -48,6 +52,18 @@ public class BroadcastNotification extends BroadcastReceiver {
         } else {
             Toast.makeText(context, "Null", Toast.LENGTH_SHORT).show();
         }
+
+        // send to Fragment
+        EventBus.getDefault().post(notification);
+
+        //setBage
+        initShortcutBadger(context);
+
+    }
+
+    private void initShortcutBadger(Context context) {
+        int badgeCount = Utils.getNumberOnNav(context);
+        ShortcutBadger.applyCount(context, badgeCount); //for 1.1.4+
 
     }
 }

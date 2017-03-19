@@ -1,0 +1,168 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.SendEmailFragment">
+
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:layout_height="wrap_content"
+            android:text="@string/email_action_from"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:id="@+id/from" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="8.4"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:padding="10dp"
+            android:inputType="textEmailAddress"
+            android:id="@+id/email_action_from" />
+    </LinearLayout>
+
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/light_grey" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:id="@+id/to"
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/email_action_to"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/email_action_to"
+            android:layout_width="0dp"
+            android:layout_weight="8.4"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:inputType="textEmailAddress"
+            android:padding="10dp" />
+    </LinearLayout>
+
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/light_grey" />
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:layout_height="wrap_content"
+            android:text="@string/email_action_cc"
+            android:padding="10dp"
+            android:textSize="16sp"
+            android:id="@+id/cc" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="8.4"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="10dp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:inputType="textEmailAddress"
+            android:id="@+id/email_action_cc" />
+    </LinearLayout>
+
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/light_grey" />
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/bcc"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.6"
+            android:padding="10dp"
+            android:text="@string/email_action_bcc"
+            android:textSize="16sp" />
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="8.4"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:padding="10dp"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:inputType="textEmailAddress"
+            android:id="@+id/email_action_bcc" />
+    </LinearLayout>
+
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/light_grey" />
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:maxLines="1"
+            android:padding="10dp"
+            android:hint="@string/email_action_title"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:id="@+id/email_action_title"
+            android:layout_alignParentTop="true" />
+    </RelativeLayout>
+
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/light_grey" />
+
+    <RelativeLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+
+        <EditText
+            android:id="@+id/email_action_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:gravity="top"
+            android:hint="@string/email_action_content"
+            android:background="@null"
+            android:textCursorDrawable="@drawable/color_cursor"
+            android:inputType="textMultiLine" />
+    </RelativeLayout>
+</LinearLayout>

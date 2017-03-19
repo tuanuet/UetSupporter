@@ -3,6 +3,7 @@ package vnu.uet.tuan.uetsupporter.Utils;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,7 +12,9 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
@@ -203,17 +206,10 @@ public class Utils {
             pushNotification.setIdLoaiThongBao(cursor.getInt(Contract.PushNotification.id_loai_thong_bao));
             pushNotification.setIdMucDoThongBao(cursor.getInt(Contract.PushNotification.id_muc_mo_thong_bao));
             pushNotification.setHasFile(cursor.getInt(Contract.PushNotification.has_file) == 1);
+            pushNotification.setIdSender(cursor.getString(Contract.PushNotification.id_sender));
+            pushNotification.setNameSender(cursor.getString(Contract.PushNotification.name_sender));
+            pushNotification.setRead(cursor.getInt(Contract.PushNotification.is_read) == 1);
 
-            if (cursor.getInt(Contract.PushNotification.is_read) == 1) {
-                pushNotification.setRead(true);
-            } else {
-                pushNotification.setRead(false);
-            }
-            if (cursor.getInt(Contract.PushNotification.has_file) == 1) {
-                pushNotification.setRead(true);
-            } else {
-                pushNotification.setRead(false);
-            }
             list.add(pushNotification);
             cursor.moveToNext();
         }
@@ -374,5 +370,12 @@ public class Utils {
             cs.moveToNext();
         }
         return list;
+    }
+
+    public static int getPixelFromDP(Context context, int dp) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        int px = (int) (dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
+        return px;
     }
 }

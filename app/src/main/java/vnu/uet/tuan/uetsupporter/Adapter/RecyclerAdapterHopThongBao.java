@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * Created by Vu Minh Tuan on 2/16/2017.
@@ -82,9 +84,6 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             PushNotification notification = list.get(position);
 
             itemViewHolder.txt_tieuDe.setText(notification.getTieuDe());
-            if (!notification.getRead()) {
-                itemViewHolder.txt_tieuDe.setTypeface(null, Typeface.BOLD);
-            }
             itemViewHolder.txt_noiDung.setText(notification.getNoiDung());
             itemViewHolder.txt_thoiGian.setText(Utils.getThoiGian(notification.getThoiGianNhan()));
             itemViewHolder.img_hasFile.setVisibility(notification.getHasFile() ? View.VISIBLE : View.INVISIBLE);
@@ -95,6 +94,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
             setupLoaiThongBao(itemViewHolder, notification);
 
+            setupRead(itemViewHolder, notification);
 
             setupListenerIcon(itemViewHolder);
 
@@ -108,6 +108,11 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         }
 
 
+    }
+
+    private void setupRead(ItemViewHolder itemViewHolder, PushNotification notification) {
+        itemViewHolder.img_read.setImageResource(notification.getRead() ?
+                R.drawable.ic_icon_read : R.drawable.ic_action_unread);
     }
 
     /**
@@ -143,27 +148,25 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      */
     private void setupAvatarWithAuthor(ItemViewHolder itemViewHolder, PushNotification notification) {
 
-//        String encodedImage="";
-//        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
-////        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//
-//        Glide.with(context)
-//                .load(decodedString)
-//                .centerCrop()
-//                .into(itemViewHolder.avatar);
+        String urlAvatar = Config.API_HOSTNAME + "/avatar/" + notification.getIdSender();
+        Log.e(TAG, urlAvatar);
+        Glide.with(context).load(urlAvatar)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .centerCrop()
+                .into(itemViewHolder.avatar);
 
-//        itemViewHolder.txt_sender.setText();
+        itemViewHolder.txt_sender.setText(notification.getNameSender());
 
-        TextDrawable drawable = TextDrawable.builder()
-                .beginConfig()
-                .textColor(Color.WHITE)
-                .useFont(Typeface.DEFAULT)
-                .fontSize(30) /* size in px */
-                .bold()
-                .toUpperCase()
-                .endConfig()
-                .buildRoundRect(Utils.getFirstChar(notification.getTieuDe()), Utils.getRandomColor(notification.getTieuDe()), 15);
-        itemViewHolder.avatar.setImageDrawable(drawable);
+//        TextDrawable drawable = TextDrawable.builder()
+//                .beginConfig()
+//                .textColor(Color.WHITE)
+//                .useFont(Typeface.DEFAULT)
+//                .fontSize(30) /* size in px */
+//                .bold()
+//                .toUpperCase()
+//                .endConfig()
+//                .buildRoundRect(Utils.getFirstChar(notification.getTieuDe()), Utils.getRandomColor(notification.getTieuDe()), 15);
+//        itemViewHolder.avatar.setImageDrawable(drawable);
     }
 
     /**
@@ -223,6 +226,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         TextView txt_thoiGian;
         ImageView img_hasFile;
         RelativeLayout img_tool;
+        ImageView img_read;
         ImageView avatar;
         ImageView sendFeedback;
         TextView txt_loaithongbao;
@@ -241,6 +245,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             sendFeedback = (ImageView) itemView.findViewById(R.id.recycle_item_sendfeedback);
             txt_loaithongbao = (TextView) itemView.findViewById(R.id.recycle_item_loaithongbao);
             txt_sender = (TextView) itemView.findViewById(R.id.recycle_item_sender);
+            img_read = (ImageView) itemView.findViewById(R.id.recycle_item_isread);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

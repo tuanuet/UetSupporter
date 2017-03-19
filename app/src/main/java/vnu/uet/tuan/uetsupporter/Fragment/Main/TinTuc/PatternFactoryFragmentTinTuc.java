@@ -43,7 +43,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
 
-
+    private final String TAG = this.getClass().getSimpleName();
 
     // TODO: Rename and change types of parameters
     private ArrayList<TinTuc> listTinTuc;
@@ -162,10 +162,19 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements
         int lastPosition = 0;
         if (listTinTuc == null) {
             lastPosition = 0;
-            listTinTuc = response.body();
+            try {
+                listTinTuc = response.body();
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+
         } else {
-            lastPosition = listTinTuc.size();
-            listTinTuc.addAll(response.body());
+            try {
+                lastPosition = listTinTuc.size();
+                listTinTuc.addAll(response.body());
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
         }
         adapter.notifyItemInserted(lastPosition);
     }

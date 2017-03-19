@@ -1,6 +1,8 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -40,6 +42,7 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
     private ArrayList<Email> emails;
     private EmailSQLHelper emailSQLHelper;
     private SwipeRefreshLayout refreshLayout;
+    private ExecueEmail mTask;
     public InboxFragment() {
         // Required empty public constructor
     }
@@ -58,7 +61,7 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
         initUI(view);
 
 
-        final Cursor cursor = emailSQLHelper.getAll();
+//        final Cursor cursor = emailSQLHelper.getAll();
 //        if (cursor == null || cursor.getCount() == 0) {
 //            Log.e(TAG, "get data first time");
 //            //get postion 0 -> get 10 mail dau tien
@@ -96,10 +99,11 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
 
 
     private void settingEmail(final int postion) {
+        mTask = new ExecueEmail();
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new ExecueEmail().execute(postion);
+                mTask.execute(postion);
             }
         });
     }
@@ -158,4 +162,9 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mTask.cancel(true);
+    }
 }

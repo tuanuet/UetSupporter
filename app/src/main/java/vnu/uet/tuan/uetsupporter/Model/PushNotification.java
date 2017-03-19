@@ -15,6 +15,8 @@ public class PushNotification implements Serializable {
     public static final String IDLOAITHONGBAO = "idLoaiThongBao";
     public static final String IDMUCDOTHONGBAO = "idMucDoThongBao";
     public static final String HASFILE = "hasfile";
+    public static final String IDSENDER = "idSender";
+    public static final String NAMESENDER = "nameSender";
 
     private String tieuDe;
     private String noiDung;
@@ -25,8 +27,53 @@ public class PushNotification implements Serializable {
     private int idMucDoThongBao;
     private int idLoaiThongBao;
     private Boolean hasFile;
+    private String idSender;
+    private String nameSender;
+
+    public String getIdSender() {
+        return idSender;
+    }
+
+    public void setIdSender(String idSender) {
+        this.idSender = idSender;
+    }
+
+    public String getNameSender() {
+        return nameSender;
+    }
+
+    public void setNameSender(String nameSender) {
+        this.nameSender = nameSender;
+    }
+
+    public PushNotification(String tieuDe, String noiDung, String link, Boolean isRead,
+                            String thoiGianNhan, int kind, int idMucDoThongBao, int idLoaiThongBao,
+                            Boolean hasFile, String idSender, String nameSender) {
+        this.tieuDe = tieuDe;
+        this.noiDung = noiDung;
+        this.link = link;
+        this.isRead = isRead;
+        this.thoiGianNhan = thoiGianNhan;
+        this.kind = kind;
+        this.idMucDoThongBao = idMucDoThongBao;
+        this.idLoaiThongBao = idLoaiThongBao;
+        this.hasFile = hasFile;
+        this.idSender = idSender;
+        this.nameSender = nameSender;
+    }
 
     public PushNotification() {
+        this.tieuDe = "";
+        this.noiDung = "";
+        this.link = "";
+        this.isRead = false;
+        this.thoiGianNhan = "";
+        this.kind = 0;
+        this.idMucDoThongBao = 0;
+        this.idLoaiThongBao = 0;
+        this.hasFile = false;
+        this.idSender = "";
+        this.nameSender = "";
     }
 
     public PushNotification(String tieuDe, String noiDung, String link,

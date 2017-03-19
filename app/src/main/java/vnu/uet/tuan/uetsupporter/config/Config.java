@@ -33,6 +33,7 @@ public class Config {
     public static final String ID_LOPMONHOC = "idlopmonhoc";
     public static final String POSITION_NOTIFICATION = "positionnotification";
     public static final String DETAILTHONGBAO = "detailthongbao";
+    public static final int ACTION_EMAIL = 3;
 
 
     /**

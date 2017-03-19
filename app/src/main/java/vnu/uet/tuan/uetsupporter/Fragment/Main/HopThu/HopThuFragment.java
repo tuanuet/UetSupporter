@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -9,17 +10,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.clans.fab.FloatingActionButton;
+
+import vnu.uet.tuan.uetsupporter.Activities.SendMailActivity;
 import vnu.uet.tuan.uetsupporter.Adapter.TabAdapter;
 import vnu.uet.tuan.uetsupporter.R;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HopThuFragment extends Fragment implements TabLayout.OnTabSelectedListener {
+public class HopThuFragment extends Fragment implements TabLayout.OnTabSelectedListener, View.OnClickListener {
 
-    TabLayout tabLayout;
-    ViewPager pager;
-
+    private TabLayout tabLayout;
+    private ViewPager pager;
+    private FloatingActionButton fab;
     public HopThuFragment() {
         // Required empty public constructor
     }
@@ -37,6 +41,8 @@ public class HopThuFragment extends Fragment implements TabLayout.OnTabSelectedL
     private void initUI(View view) {
         tabLayout = (TabLayout) view.findViewById(R.id.tablayout);
         pager = (ViewPager) view.findViewById(R.id.viewPager);
+        fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(this);
         setupViewPager(pager);
 
     }
@@ -74,5 +80,15 @@ public class HopThuFragment extends Fragment implements TabLayout.OnTabSelectedL
     @Override
     public void onTabReselected(TabLayout.Tab tab) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                Intent intent = new Intent(getActivity(), SendMailActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }

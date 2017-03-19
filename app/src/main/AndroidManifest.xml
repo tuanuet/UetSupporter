@@ -80,7 +80,7 @@
                 android:value="vnu.uet.tuan.uetsupporter.Activities.MainActivity" />
         </activity>
 
-        <receiver android:name=".Broascast.BroadcastNotification">
+        <receiver android:name=".Broascast.BroadcastPushNotification">
             <intent-filter>
                 <action android:name="vnu.uet.tuan.uetsupporter.chitiet" />
                 <action android:name="vnu.uet.tuan.uetsupporter.xemsau" />
@@ -126,7 +126,8 @@
             android:exported="false"
             android:syncable="true" />
 
-        <activity android:name=".Activities.FeedBackActivity"></activity>
+        <activity android:name=".Activities.FeedBackActivity" />
+        <activity android:name=".Activities.SendMailActivity"></activity>
     </application>
 
 </manifest>

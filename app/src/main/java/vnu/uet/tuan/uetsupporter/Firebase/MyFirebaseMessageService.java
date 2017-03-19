@@ -48,6 +48,8 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setHasFile((getIntFromString(String.valueOf(data.get(PushNotification.HASFILE))) == 1)); //fix lai
         push.setIdLoaiThongBao(getIntFromString(String.valueOf(data.get(PushNotification.IDLOAITHONGBAO))));
         push.setIdMucDoThongBao(getIntFromString(String.valueOf(data.get(PushNotification.IDMUCDOTHONGBAO))));
+        push.setIdSender(String.valueOf(data.get(PushNotification.IDSENDER)));
+        push.setNameSender(String.valueOf(data.get(PushNotification.NAMESENDER)));
         return push;
     }
 

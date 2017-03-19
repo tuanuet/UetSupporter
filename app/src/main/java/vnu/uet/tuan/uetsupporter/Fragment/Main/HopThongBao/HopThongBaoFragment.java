@@ -11,6 +11,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
@@ -35,6 +39,11 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
         // Required empty public constructor
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,5 +79,17 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     @Override
     public void onItemLongClick(int position, View v) {
 
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
+    public void onMessageEvent(PushNotification notification) {
+        list.add(notification);
+        adapter.notifyItemInserted(list.size() - 1);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 }
