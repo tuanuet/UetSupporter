@@ -134,29 +134,22 @@ public class Utils {
             return null;
         }
     }
-    public static String getJSONFromSever(String stringbody,String url) {
+
+    public static String getJSONFromSever(String stringbody, String url) throws Exception {
         //post email and password
         OkHttpClient client = new OkHttpClient();
         String json = stringbody;
 
-        Log.e("json", json);
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(url)
                 .post(body)
                 .build();
-        Response response = null;
 
-        try {
-            response = client.newCall(request).execute();
-            String jsonObj = response.body().string();
-            Log.e("response", jsonObj);
+        Response response = client.newCall(request).execute();
+        String jsonObj = response.body().string();
 
-            return jsonObj;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return jsonObj;
     }
 
     public static ArrayList<LoaiTinTuc> getAllLoaiTinTuc(Context context){

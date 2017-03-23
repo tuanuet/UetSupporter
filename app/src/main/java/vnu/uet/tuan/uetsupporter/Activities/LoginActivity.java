@@ -19,41 +19,34 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import vnu.uet.tuan.uetsupporter.Presenter.Login.IPresenterLoginView;
+import vnu.uet.tuan.uetsupporter.Presenter.Login.PresenterLoginLogic;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.View.Login.IViewLogin;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 import static vnu.uet.tuan.uetsupporter.config.Config.LOGIN_URL;
 
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, IViewLogin {
 
-    private static final String SINHVIEN = "sinhvien";
-    private static final String SUCCESS = "success";
     private ProgressDialog dialog;
-    private static final String TOKEN = "token";
     private TextView email, password;
-    Button btnSignIn;
+    private Button btnSignIn;
 
+    private IPresenterLoginView presenterLoginLogic;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (Utils.isRunFirstTime(getApplicationContext())) {
-            Log.e("runfirsttiem", Utils.isRunFirstTime(getApplicationContext()) + "");
-            Thread runFirstTime = new Thread(new RunFirstTime());
-            runFirstTime.start();
-            finish();
-        }
 
-        dialog = new ProgressDialog(LoginActivity.this);
-        dialog.setMessage(getString(R.string.please_wait));
+        checkFirstTime();
 
-        email = (TextView) findViewById(R.id.email);
-        password = (TextView) findViewById(R.id.password);
-        btnSignIn = (Button) findViewById(R.id.btn_sign_in);
-        btnSignIn.setOnClickListener(this);
+        initUI();
+
+        presenterLoginLogic = new PresenterLoginLogic(getApplicationContext(), this);
 
         //neu da dang nhap tai khoan roi thi finish luon
         if (Utils.getUserToken(getApplicationContext()) != null) {
@@ -62,113 +55,55 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             finish();
         }
 
-
     }
 
-    class SignIn extends AsyncTask<Void,Void,String>{
-        @Override
-        protected void onPreExecute() {
-            dialog.show();
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-
-            return Utils.getJSONFromSever(getBodyRequest(),LOGIN_URL);
-        }
-
-        @Override
-        protected void onPostExecute(String json) {
-            super.onPostExecute(json);
-            if (json != null) {
-                try {
-                    final JSONObject object = new JSONObject(json);
-                    Boolean success = object.getBoolean(SUCCESS);
-                    if (success) {
-
-                        String token = object.getString(TOKEN);
-                        JSONObject sinhvien = object.getJSONObject(SINHVIEN);
-                        String tenSinhVien = sinhvien.getString(Config.TENSINHVIEN);
-                        //luu vao shareprefer
-                        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.putString(Config.EMAIL, email.getText().toString());
-                        editor.putString(Config.TENSINHVIEN, tenSinhVien);
-                        editor.putString(Config.PASSWORD, password.getText().toString());
-                        editor.putString(Config.USER_TOKEN, token);
-                        Toast.makeText(LoginActivity.this, token, Toast.LENGTH_SHORT).show();
-                        editor.commit();
-
-                        //cap nhật lại token
-                        Thread thread = new Thread(new RenderToken());
-
-                        //cho den khi token đc cập nhận thì mới đăng nhập
-                        Thread checkToken = new Thread(new CheckRenderToken());
-                        thread.start();
-                        checkToken.start();
-
-                    } else {
-                        //mat khau hoac tai khoan sai
-                        dialog.dismiss();
-                        password.setText("");
-                        Toast.makeText(getApplicationContext(),
-                                getString(R.string.fail_sign_in),
-                                Toast.LENGTH_LONG).show();
-
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-    @Override
-    public void onClick(View v) {
-        //xu ly asyn tai day
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new SignIn().execute();
-            }
-        });
-    }
-
-    public String getBodyRequest() {
-        String username = email.getText().toString();
-        String pass = password.getText().toString();
-        String json = "{ \"username\" : \"" + username + "\",\"password\" : \"" + pass + "\"}";
-        return json;
-    }
-
-    private class CheckRenderToken implements Runnable {
-        @Override
-        public void run() {
-            //start activity
-            // progressDialog.dismiss();
-            while (!Utils.canGetFirebaseToken(getApplicationContext())) {
-                Log.e("Login", Utils.canGetFirebaseToken(getApplicationContext()) + "");
-            }
-
-            dialog.dismiss();
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
+    private void checkFirstTime() {
+        if (Utils.isRunFirstTime(getApplicationContext())) {
+            Log.e("runfirsttiem", Utils.isRunFirstTime(getApplicationContext()) + "");
+            Thread runFirstTime = new Thread(new RunFirstTime());
+            runFirstTime.start();
             finish();
         }
     }
 
+    private void initUI() {
+        dialog = new ProgressDialog(LoginActivity.this);
+        dialog.setMessage(getString(R.string.please_wait));
 
-    private class RenderToken implements Runnable {
-        @Override
-        public void run() {
-            try {
-                FirebaseInstanceId.getInstance().deleteInstanceId();
-                FirebaseInstanceId.getInstance().getToken();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        email = (TextView) findViewById(R.id.email);
+        password = (TextView) findViewById(R.id.password);
+        btnSignIn = (Button) findViewById(R.id.btn_sign_in);
+        btnSignIn.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        //xu ly asyn tai day
+        String user = email.getText().toString();
+        String pass = password.getText().toString();
+        presenterLoginLogic.excuteLogin(user, pass);
+    }
+
+    @Override
+    public void OnPreExecute() {
+        dialog.show();
+    }
+
+    @Override
+    public void OnAuthenticationSuccess() {
+        dialog.dismiss();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void OnAuthenticationFailure() {
+        dialog.dismiss();
+        password.setText("");
+        Toast.makeText(getApplicationContext(),
+                getString(R.string.fail_sign_in),
+                Toast.LENGTH_LONG).show();
 
     }
 
@@ -179,4 +114,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(loading);
         }
     }
+
+
 }

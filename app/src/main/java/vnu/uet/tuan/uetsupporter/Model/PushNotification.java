@@ -72,8 +72,8 @@ public class PushNotification implements Serializable {
         this.idMucDoThongBao = 0;
         this.idLoaiThongBao = 0;
         this.hasFile = false;
-        this.idSender = "";
-        this.nameSender = "";
+        this.idSender = "phongban2";
+        this.nameSender = "Phòng Đào Tạo";
     }
 
     public PushNotification(String tieuDe, String noiDung, String link,

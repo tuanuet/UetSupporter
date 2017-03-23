@@ -93,4 +93,7 @@
     <string name="action_help_feedback">Trợ giúp và phản hồi</string>
     <string name="fullmail_from_ma_sinh_vien">%1$s@vnu.edu.vn</string>
     <string name="title_write_email">Soạn thư</string>
+    <string name="title_setting_time">Thời gian đồng bộ</string>
+    <string name="time_sync">15 phút</string>
+    <string name="lable_subcriber_notification">Đăng kí thông báo</string>
 </resources>

@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -96,14 +97,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
             setupRead(itemViewHolder, notification);
 
-            setupListenerIcon(itemViewHolder);
-
-            //====================ANIMATION=========================
-            if (position >= previousposition) {
-                RecyclerAnim.animate(itemViewHolder, true);
-            } else RecyclerAnim.animate(itemViewHolder, false);
-
-            previousposition = position;
+            setupListenerIcon(itemViewHolder, position);
 
         }
 
@@ -121,11 +115,11 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      *
      * @param itemViewHolder
      */
-    private void setupListenerIcon(ItemViewHolder itemViewHolder) {
+    private void setupListenerIcon(ItemViewHolder itemViewHolder, final int position) {
         itemViewHolder.img_tool.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopup(v);
+                showPopup(v, position);
             }
         });
 
@@ -213,10 +207,28 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         return list == null ? 0 : list.size();
     }
 
-    private void showPopup(View v) {
+    private void showPopup(View v, final int position) {
         PopupMenu popupMenu = new PopupMenu(context, v);
         popupMenu.inflate(R.menu.hopthongbao_popup_menu);
         popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_delete:
+                        deleteitem(position);
+                        break;
+                    case R.id.action_share:
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void deleteitem(int position) {
+        this.list.remove(position);
+        this.notifyItemRemoved(position);
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder

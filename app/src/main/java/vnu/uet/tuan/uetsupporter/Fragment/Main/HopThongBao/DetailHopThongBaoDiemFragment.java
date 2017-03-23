@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
@@ -57,14 +59,14 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartValueSelectedListener {
 
     private final String TAG = this.getClass().getSimpleName();
-
-    PushNotification notification;
-    List<DiemResponse> listDiem;
-    Call<List<DiemResponse>> call;
-    Button btn_xemthem;
-    LinearLayout table;
-    TextView txt_msv, txt_ten, txt_giuaky, txt_cuoiky, txt_tong;
-    PieChart pieChart1;
+    private Toolbar toolbar;
+    private PushNotification notification;
+    private List<DiemResponse> listDiem;
+    private Call<List<DiemResponse>> call;
+    private Button btn_xemthem;
+    private LinearLayout table;
+    private TextView txt_msv, txt_ten, txt_giuaky, txt_cuoiky, txt_tong;
+    private PieChart pieChart1;
 
     protected String[] mParties = new String[]{
             "0 => 4", "4 => 7", "7 => 8", "8 >= 10"
@@ -86,7 +88,13 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         txt_cuoiky = (TextView) view.findViewById(R.id.cuoiky);
         txt_tong = (TextView) view.findViewById(R.id.tong);
         pieChart1 = (PieChart) view.findViewById(R.id.chart);
-
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().finish();
+            }
+        });
         initPieChart();
     }
 
@@ -256,6 +264,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
             }
         }
 
+
         DiemResponse userDiem = listDiem.get(postion);
         //xoa di item user trong list
         listDiem.remove(postion);
@@ -265,8 +274,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         txt_giuaky.setText(String.valueOf(userDiem.getDiemThanhPhan()));
         txt_cuoiky.setText(String.valueOf(userDiem.getDiemCuoiKy()));
         txt_tong.setText(String.valueOf(getDiemTong(userDiem.getDiemThanhPhan(), userDiem.getDiemCuoiKy())));
-
-
+        toolbar.setTitle("Điểm thi: " + userDiem.getIdLopMonHoc().getTenLopMonHoc());
         //==============================
 
     }

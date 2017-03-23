@@ -89,7 +89,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Activities.Result2Activity" />
+        <activity
+            android:name=".Activities.Result2Activity"
+            android:theme="@style/MyMaterialThemeNoActionBar" />
         <activity android:name=".Activities.test">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -127,7 +129,10 @@
             android:syncable="true" />
 
         <activity android:name=".Activities.FeedBackActivity" />
-        <activity android:name=".Activities.SendMailActivity"></activity>
+        <activity android:name=".Activities.SendMailActivity" />
+        <activity
+            android:theme="@style/MyMaterialThemeNoActionBar"
+            android:name=".Activities.HopThongBaoDiemActivity" />
     </application>
 
 </manifest>

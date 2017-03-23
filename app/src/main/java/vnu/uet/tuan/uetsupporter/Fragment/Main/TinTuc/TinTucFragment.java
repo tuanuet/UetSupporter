@@ -35,7 +35,7 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
  */
 public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChangeListener {
 
-    ArrayList<LoaiTinTuc> loaiTinTucArrayList;
+    private ArrayList<LoaiTinTuc> loaiTinTucArrayList;
     private MaterialSheetFab materialSheetFab;
     private int statusBarColor;
 
@@ -164,16 +164,6 @@ public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChan
 
         RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.groupbutton);
         radioGroup.setOnCheckedChangeListener(this);
-        // Set material sheet item click listeners
-//        view.findViewById(R.id.tinall).setOnClickListener(this);
-//        view.findViewById(R.id.tindaotao).setOnClickListener(this);
-//        view.findViewById(R.id.tinhoatdongdoanthe).setOnClickListener(this);
-//        view.findViewById(R.id.tinhoithao).setOnClickListener(this);
-//        view.findViewById(R.id.tinhoptac).setOnClickListener(this);
-//        view.findViewById(R.id.tinnghiencuu).setOnClickListener(this);
-//        view.findViewById(R.id.tintuyendung).setOnClickListener(this);
-//        view.findViewById(R.id.tinvanhoathethao).setOnClickListener(this);
-
     }
 
     @Override
@@ -184,7 +174,6 @@ public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChan
         getView().setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK) {
 
                     if (materialSheetFab.isSheetVisible()) {

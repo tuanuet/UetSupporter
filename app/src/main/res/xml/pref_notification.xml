@@ -23,5 +23,10 @@
         android:dependency="notifications_new_message"
         android:key="@string/vibrate"
         android:title="@string/pref_title_vibrate" />
-
+    <ListPreference
+        android:title="@string/title_setting_time"
+        android:key="@string/title_setting_time"
+        android:summary="@string/time_sync"
+        android:entryValues="@array/entries_time_sync"
+        android:entries="@array/value_time_sync" />
 </PreferenceScreen>

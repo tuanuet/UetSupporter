@@ -5,33 +5,35 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoDiemFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.DetailEmailFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Profile.DetailLopMonHocFragment;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 public class Result2Activity extends AppCompatActivity {
-    Fragment fragment;
-    String name;
-
+    private Fragment fragment;
+    private String name;
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result2);
+        initUI();
 
         //fragment DetailLopMonHoc
         //lay dc position lop mon hoc va ca sinh vien
         if (getIntent().hasExtra(Config.ID_LOPMONHOC)) {
-//            SinhVien mSinhVien = getIntent().getParcelableExtra(Config.SINHVIEN);
-//            int position = getIntent().getIntExtra(Config.POSITION_LOPMONHOC, 0);
+
             String idLopMonHoc = getIntent().getStringExtra(Config.ID_LOPMONHOC);
 
             fragment = new DetailLopMonHocFragment();
@@ -49,10 +51,13 @@ public class Result2Activity extends AppCompatActivity {
 
             switch (notification.getKind()) {
                 case 1: {
+                    toolbar.setTitle("Thông báo");
+
                     fragment = new DetailHopThongBaoFragment();
                     break;
                 }
                 case 2: {
+                    toolbar.setVisibility(View.GONE);
                     fragment = new DetailHopThongBaoDiemFragment();
                     break;
                 }
@@ -62,7 +67,7 @@ public class Result2Activity extends AppCompatActivity {
             }
 
             fragment.setArguments(bundle);
-            name = "Thông báo";
+
         }
 
         if (getIntent().hasExtra(Config.POSITION_EMAIL)) {
@@ -73,36 +78,26 @@ public class Result2Activity extends AppCompatActivity {
             bundle.putInt(Config.POSITION_EMAIL, position);
             bundle.putString(Config.FOLDER_EMAIL, folder);
             fragment.setArguments(bundle);
-            name = "Email";
+            toolbar.setTitle("Email");
         }
+
+
+        name = fragment.getClass().getSimpleName();
         showChangeFragment(fragment, name);
 
     }
 
-    //
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            Intent intent = new Intent(getApplicationContext(),SettingsActivity.class);
-//            startActivity(intent);
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    private void initUI() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+
+
     public void showChangeFragment(Fragment fragment, String name) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
@@ -119,7 +114,6 @@ public class Result2Activity extends AppCompatActivity {
             ft.commit();
             Log.e("Result2", "Fragment not in Stack");
         }
-        getSupportActionBar().setTitle(name);
     }
 
     @Override

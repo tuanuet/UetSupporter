@@ -14,13 +14,16 @@
         <!--android:entries="@array/type_data_notifi_lables"-->
         <!--android:entryValues="@array/type_data_notifi_values"-->
         <!--android:defaultValue="@array/type_data_notifi_default"/>-->
-    <MultiSelectListPreference
-        android:key="@string/pref_title_tintuc"
-        android:title="@string/pref_title_tintuc"
-        android:icon="@mipmap/ic_launcher"/>
-    <MultiSelectListPreference
-        android:key="@string/pref_title_thongbao"
-        android:title="@string/pref_title_thongbao"
-        android:icon="@mipmap/ic_launcher" />
+    <vnu.uet.tuan.uetsupporter.Model.Customize.CustomizePreferenceCatology android:title="@string/lable_subcriber_notification">
+        <MultiSelectListPreference
+            android:key="@string/pref_title_tintuc"
+            android:title="@string/pref_title_tintuc"
+            android:icon="@drawable/ic_action_choose_kind" />
+        <MultiSelectListPreference
+            android:key="@string/pref_title_thongbao"
+            android:title="@string/pref_title_thongbao"
+            android:icon="@drawable/ic_action_choose_kind" />
+    </vnu.uet.tuan.uetsupporter.Model.Customize.CustomizePreferenceCatology>
+
 
 </PreferenceScreen>

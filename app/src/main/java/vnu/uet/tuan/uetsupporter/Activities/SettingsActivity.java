@@ -439,6 +439,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
             // guidelines.
+            ListPreference preference = (ListPreference) findPreference(getString(R.string.title_setting_time));
+            bindPreferenceSummaryToValue(preference);
             bindPreferenceSummaryToValue(findPreference(context.getString(R.string.sound_notification)));
         }
 
