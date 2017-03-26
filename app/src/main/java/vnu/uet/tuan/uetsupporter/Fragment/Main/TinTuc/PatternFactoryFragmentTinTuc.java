@@ -98,6 +98,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
         initUI(view);
 
         presenterTinTucLogic = new PresenterTinTucLogic(getActivity(), this);
+        presenterTinTucLogic.executeTinTuc(-1, 0);
 
         return view;
     }
@@ -134,14 +135,6 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
 
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        presenterTinTucLogic.executeTinTuc(-1, 0);
-
-    }
-
-    @Override
     public void OnPreSendRequest() {
 
     }
@@ -154,50 +147,25 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
     }
 
     @Override
-    public void OnGetReponseFailure() {
-        Toast.makeText(getActivity(), "Đường truyền gặp lỗi!", Toast.LENGTH_SHORT).show();
+    public void OnGetReponseFailure(String fail) {
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
     }
 
-//    public void getTinTucByLoaiTinTuc(int loaitintuc, int offsetPage) {
-//        Call<ArrayList<TinTuc>> call;
-//        OkHttpClient okHttpClient = ConfigCache.createCachedClient(getActivity());
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl(Config.API_HOSTNAME)
-//                .client(okHttpClient)
-//                // Sử dụng GSON cho việc parse và maps JSON data tới Object
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .build();
-//        ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-//        call = apiTinTuc.getDataTinTuc(loaitintuc, offsetPage * 10);
-//        call.enqueue(this);
-//
-//    }
-//    @Override
-//    public void onResponse(Call<ArrayList<TinTuc>> call, Response<ArrayList<TinTuc>> response) {
-//        int lastPosition = 0;
-//        if (listTinTuc == null) {
-//            lastPosition = 0;
-//            try {
-//                listTinTuc = response.body();
-//            } catch (Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//
-//        } else {
-//            try {
-//                lastPosition = listTinTuc.size();
-//                listTinTuc.addAll(response.body());
-//            } catch (Exception e) {
-//                Log.e(TAG, e.getMessage());
-//            }
-//        }
-//        adapter.notifyItemInserted(lastPosition);
-//    }
-//
-//    @Override
-//    public void onFailure(Call<ArrayList<TinTuc>> call, Throwable t) {
-////        Toast.makeText(getActivity(), "Đường truyền gặp lỗi!", Toast.LENGTH_SHORT).show();
-//    }
+    @Override
+    public void onCancelSuccess(String success) {
+        Toast.makeText(getActivity(), success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelFailure(String fail) {
+        Log.e(TAG, "onCancelFailure: " + fail);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenterTinTucLogic.cancelExcute();
+    }
 
 
 }

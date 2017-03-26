@@ -12,7 +12,7 @@ import vnu.uet.tuan.uetsupporter.Fragment.LinhTinh.WaitingFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Profile.ProfileFragment;
 import vnu.uet.tuan.uetsupporter.R;
 
-public class ProfileActivity extends AppCompatActivity implements ProfileFragment.OnDataRecived {
+public class ProfileActivity extends AppCompatActivity {
     ProfileFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +22,7 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
         initUI();
 
         fragment = new ProfileFragment();
-        fragment.getInformationSinhVien(getApplicationContext());
-        fragment.setOnDataRecived(this);
-        showChangeFragment(new WaitingFragment(), "Waiting");
+        showChangeFragment(fragment, fragment.getClass().getSimpleName());
     }
 
     private void initUI() {
@@ -47,16 +45,6 @@ public class ProfileActivity extends AppCompatActivity implements ProfileFragmen
             ft.addToBackStack(name);
             ft.commit();
             Log.e("profile", "Fragment not in Stack");
-        }
-    }
-
-    @Override
-    public void onRecived(Boolean isRecived) {
-        Log.e("onRecived", isRecived + "");
-        if (isRecived) {
-            showChangeFragment(fragment, "Thông tin cá nhân");
-        } else {
-            Toast.makeText(getApplicationContext(), "Đường truyền có lỗi", Toast.LENGTH_SHORT).show();
         }
     }
 

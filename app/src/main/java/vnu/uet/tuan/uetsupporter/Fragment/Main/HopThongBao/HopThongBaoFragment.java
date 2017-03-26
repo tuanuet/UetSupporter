@@ -10,62 +10,63 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
-import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
 import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterHopThongBao;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.MainHopThongBao.IPresenterHopThongBaoView;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.MainHopThongBao.PresenterHopThongBaoLogic;
 import vnu.uet.tuan.uetsupporter.R;
-import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.MainHopThongBao.IViewHopThongBao;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopThongBao.ClickListener {
+public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopThongBao.ClickListener,
+        IViewHopThongBao {
 
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private RecyclerAdapterHopThongBao adapter;
-    ArrayList<PushNotification> list;
+    private ArrayList<PushNotification> list;
+    private IPresenterHopThongBaoView presenterHopThongBaoLogic;
+
 
     public HopThongBaoFragment() {
         // Required empty public constructor
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_hopthongbao, container, false);
+
+        initUI(view);
+
+        return view;
+    }
+
+    private void initUI(View view) {
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
-
-        return view;
+        list = new ArrayList<>();
+        adapter = new RecyclerAdapterHopThongBao(getActivity(), list);
+        recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(this);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        list = Utils.getPushNotification(getActivity());
-        if (list != null) {
-            adapter = new RecyclerAdapterHopThongBao(getActivity(), list);
-            recyclerView.setAdapter(adapter);
-        }
-        adapter.setOnItemClickListener(this);
+        presenterHopThongBaoLogic = new PresenterHopThongBaoLogic(getActivity(), this);
+
     }
 
     @Override
@@ -81,15 +82,20 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
 
     }
 
-    @Subscribe(threadMode = ThreadMode.BACKGROUND)
-    public void onMessageEvent(PushNotification notification) {
-        list.add(notification);
-        adapter.notifyItemInserted(list.size() - 1);
+
+    @Override
+    public void OnPreExcute() {
+
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
+    public void OnGetHopThongBaoSuccess(List<PushNotification> notifications) {
+        list.addAll(notifications);
+        adapter.notifyItemInserted(list.size() - notifications.size());
+    }
+
+    @Override
+    public void OnGetHopThongBaoFailure(String fail) {
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
     }
 }

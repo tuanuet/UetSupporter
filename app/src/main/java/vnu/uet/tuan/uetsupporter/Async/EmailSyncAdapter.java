@@ -171,7 +171,12 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
                     "14020521", "1391996"
             ).readEmails(Config.MailBox.Inbox.toString());
 
-            return sent.getMessage(0, params[0]);
+            try {
+                return sent.getMessage(0, params[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ArrayList<>();
+            }
         }
 
         //đẻ lại 10 cái email

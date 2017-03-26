@@ -13,6 +13,9 @@ public interface IViewTinTuc {
 
     void OnGetReponseSuccess(List<TinTuc> tinTucs);
 
-    void OnGetReponseFailure();
+    void OnGetReponseFailure(String f);
 
+    void onCancelSuccess(String success);
+
+    void onCancelFailure(String fail);
 }

@@ -83,7 +83,7 @@ public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChan
     }
 
     public interface OnBackpressToFinish {
-        public void finish(boolean isFinish);
+        void finish(boolean isFinish);
     }
 
     private OnBackpressToFinish onFinish;

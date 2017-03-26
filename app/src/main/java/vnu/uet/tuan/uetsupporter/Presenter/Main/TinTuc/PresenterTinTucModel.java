@@ -12,7 +12,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Cache.ConfigCache;
+import vnu.uet.tuan.uetsupporter.Listener.OnCancelRequest;
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
+import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -25,21 +27,11 @@ public class PresenterTinTucModel implements IPresenterTinTucModel, Callback<Arr
     private OnGetTinTucFinishListener listener;
     private final String TAG = this.getClass().getSimpleName();
     private Context context;
+    private Call<ArrayList<TinTuc>> call;
+    private ApiTinTuc api;
 
     public PresenterTinTucModel(Context context) {
         this.context = context;
-    }
-
-    @Override
-    public void sendRequest(int loaitintuc, int offset, OnGetTinTucFinishListener listener) {
-        this.listener = listener;
-        //retrofit
-        getTinTucByLoaiTinTuc(loaitintuc, offset);
-
-    }
-
-    private void getTinTucByLoaiTinTuc(int loaitintuc, int offsetPage) {
-        Call<ArrayList<TinTuc>> call;
         OkHttpClient okHttpClient = ConfigCache.createCachedClient(context);
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Config.API_HOSTNAME)
@@ -47,10 +39,26 @@ public class PresenterTinTucModel implements IPresenterTinTucModel, Callback<Arr
                 // Sử dụng GSON cho việc parse và maps JSON data tới Object
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        call = apiTinTuc.getDataTinTuc(loaitintuc, offsetPage * 10);
-        call.enqueue(this);
+        api = retrofit.create(ApiTinTuc.class);
+    }
 
+    @Override
+    public void sendRequest(int loaitintuc, int offset, OnGetTinTucFinishListener listener) {
+        this.listener = listener;
+        //retrofit
+
+        call = api.getDataTinTuc(loaitintuc, offset * 10);
+        call.enqueue(this);
+    }
+
+    @Override
+    public void cancelSendRequest(OnCancelRequest listener) {
+        call.cancel();
+        if (call.isCanceled()) {
+            listener.OnCancelSuccess(context.getString(R.string.cancel_success));
+        } else {
+            listener.OnCancelFailure(context.getString(R.string.cancel_failure));
+        }
     }
 
     @Override
@@ -59,15 +67,15 @@ public class PresenterTinTucModel implements IPresenterTinTucModel, Callback<Arr
             if (response.isSuccessful() && response.body().size() >= 0)
                 listener.OnSuccess(response.body());
             else
-                listener.OnFailure();
+                listener.OnFailure(context.getString(R.string.fail_download));
         } catch (Exception e) {
-            listener.OnFailure();
+            listener.OnFailure(e.getMessage());
         }
 
     }
 
     @Override
     public void onFailure(Call<ArrayList<TinTuc>> call, Throwable t) {
-        listener.OnFailure();
+        listener.OnFailure(t.getMessage());
     }
 }

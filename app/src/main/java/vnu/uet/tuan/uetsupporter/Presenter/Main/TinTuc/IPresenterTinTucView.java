@@ -8,4 +8,6 @@ import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
 
 public interface IPresenterTinTucView {
     void executeTinTuc(int loaitintuc, int offset);
+
+    void cancelExcute();
 }

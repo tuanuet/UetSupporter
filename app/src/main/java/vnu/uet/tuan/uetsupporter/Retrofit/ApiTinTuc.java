@@ -47,7 +47,7 @@ public interface ApiTinTuc {
     Call<SinhVien> getInformationSinhVien(@Header("Authorization") String authorization);
 
     @GET("/diemmonhoc/lop/{id}")
-    Call<List<DiemResponse>> getDiemOneSinhVien(@Path("id") String id, @Header("Authorization") String authorization);
+    Call<List<DiemResponse>> getDiemSinhVienByIdLop(@Path("id") String id, @Header("Authorization") String authorization);
 
     @GET("/thongbao/{id}")
     Call<ResponseBody> getDetailThongBao(@Path("id") String id, @Header("Authorization") String authorization);

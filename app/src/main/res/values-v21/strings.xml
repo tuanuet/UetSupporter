@@ -96,4 +96,6 @@
     <string name="title_setting_time">Thời gian đồng bộ</string>
     <string name="time_sync">15 phút</string>
     <string name="lable_subcriber_notification">Đăng kí thông báo</string>
+    <string name="cancel_success">Cancel Success</string>
+    <string name="cancel_failure">Cancel Failure</string>
 </resources>

@@ -4,6 +4,7 @@ package vnu.uet.tuan.uetsupporter.Fragment.Profile;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -25,23 +26,27 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Activities.SettingsActivity;
 import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+import vnu.uet.tuan.uetsupporter.Presenter.Profile.MainProfile.IPresenterMainProfileView;
+import vnu.uet.tuan.uetsupporter.Presenter.Profile.MainProfile.PresenterMainProfileLogic;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.View.Profile.MainProfile.IViewMainProfile;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment implements Callback<SinhVien>, View.OnClickListener {
+public class ProfileFragment extends Fragment implements View.OnClickListener, IViewMainProfile {
 
 
-    TextView txt_tenSinhVien;
-    TextView txt_lopChinh;
-    TextView txt_khoa;
-    RelativeLayout profile_action_lopmonhoc;
-    SinhVien mSinhVien;
-    DialogLopMonHocFragment dialog;
+    private TextView txt_tenSinhVien;
+    private TextView txt_lopChinh;
+    private TextView txt_khoa;
+    private RelativeLayout profile_action_lopmonhoc;
+    private SinhVien mSinhVien;
+    private DialogLopMonHocFragment dialog;
+    private IPresenterMainProfileView presenter;
 
     public ProfileFragment() {
     }
@@ -54,24 +59,18 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         initUI(view);
+
         listenerUI();
-
-        updateUI(mSinhVien);
-
 
         return view;
     }
 
-    public void getInformationSinhVien(Context context) {
-        Call<SinhVien> call;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.API_HOSTNAME)
-                // Sử dụng GSON cho việc parse và maps JSON data tới Object
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        call = apiTinTuc.getInformationSinhVien(Utils.getUserToken(context));
-        call.enqueue(this);
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter = new PresenterMainProfileLogic(getActivity(), this);
+        presenter.executeLoadStudent(Utils.getUserToken(getActivity()));
+
     }
 
     private void initUI(View view) {
@@ -99,6 +98,33 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
 
     }
 
+
+    @Override
+    public void onPreExecute() {
+
+    }
+
+    @Override
+    public void onExecuteSuccess(SinhVien sinhVien) {
+        mSinhVien = sinhVien;
+        updateUI(sinhVien);
+    }
+
+    @Override
+    public void onExecuteFailure(String fail) {
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelExecuteSuccess(String success) {
+        Toast.makeText(getActivity(), success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelExecuteFailure(String fail) {
+
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
@@ -123,18 +149,6 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onResponse(Call<SinhVien> call, Response<SinhVien> response) {
-        mSinhVien = response.body();
-        Log.e("profile", "onResponse");
-        onDataRecived.onRecived(true);
-    }
-
-    @Override
-    public void onFailure(Call<SinhVien> call, Throwable t) {
-
-        onDataRecived.onRecived(false);
-    }
 
     @Override
     public void onClick(View v) {
@@ -150,13 +164,9 @@ public class ProfileFragment extends Fragment implements Callback<SinhVien>, Vie
         }
     }
 
-    public interface OnDataRecived {
-        void onRecived(Boolean isRecived);
-    }
-
-    private OnDataRecived onDataRecived;
-
-    public void setOnDataRecived(OnDataRecived onDataRecived) {
-        this.onDataRecived = onDataRecived;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.cancelLoadStudent();
     }
 }

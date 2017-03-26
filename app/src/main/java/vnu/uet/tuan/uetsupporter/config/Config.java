@@ -39,7 +39,7 @@ public class Config {
     /**
      * ===================================================
      */
-    public static String hostname = "http://192.168.0.6:3000";
+    public static String hostname = "http://192.168.1.8:3000";
 
     public static final String KEY_URL = "keyurl";
     public static final String GET_INFORMATION_USER = hostname + "/sinhvien/profile";

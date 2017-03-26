@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * Created by Administrator on 13/01/2017.
  */
 
-public class TabAdapter extends FragmentPagerAdapter {
+public class TabAdapter extends SmartFragmentStatePagerAdapter {
 
     private ArrayList<Fragment> mArray_Fragments;
     private ArrayList<String> mName_Fragment;

@@ -168,6 +168,9 @@ public class Utils {
         return list;
     }
 
+    public static float getDiemTong(double diemThanhPhan, double diemCuoiKy) {
+        return (float) (0.6 * diemCuoiKy + 0.4 * diemThanhPhan);
+    }
     public static ArrayList<LoaiThongBao> getAllLoaiThongBao(Context context) {
         LoaiThongBaoSQLHelper db = new LoaiThongBaoSQLHelper(context);
         Cursor cursor = db.getAll();

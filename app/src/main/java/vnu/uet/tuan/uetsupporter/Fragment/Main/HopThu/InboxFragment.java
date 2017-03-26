@@ -1,12 +1,9 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu;
 
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,21 +15,22 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterInboxAndSentMessage;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
-import vnu.uet.tuan.uetsupporter.Model.Mail.MailUet;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.MainEmail.IPresenterMainEmailView;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.MainEmail.PresenterMainEmailLogic;
 import vnu.uet.tuan.uetsupporter.R;
-import vnu.uet.tuan.uetsupporter.SQLiteHelper.EmailSQLHelper;
-import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.View.Main.HopThu.MainEmail.IViewMainEmail;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSentMessage.ClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, IViewMainEmail {
 
     private static final int EMAIL_LOADER_ID = 0;
     private final String TAG = this.getClass().getName();
@@ -40,9 +38,8 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
     private LinearLayoutManager mLayoutManager;
     private RecyclerAdapterInboxAndSentMessage adapter;
     private ArrayList<Email> emails;
-    private EmailSQLHelper emailSQLHelper;
     private SwipeRefreshLayout refreshLayout;
-    private ExecueEmail mTask;
+    private IPresenterMainEmailView presenter;
     public InboxFragment() {
         // Required empty public constructor
     }
@@ -58,29 +55,9 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_inbox, container, false);
+
         initUI(view);
 
-
-//        final Cursor cursor = emailSQLHelper.getAll();
-//        if (cursor == null || cursor.getCount() == 0) {
-//            Log.e(TAG, "get data first time");
-//            //get postion 0 -> get 10 mail dau tien
-//
-//
-//        } else {
-//            getActivity().runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Log.e(TAG, "reload data");
-//                    int postion = emails.size();
-//                    ArrayList<Email> list = Utils.getAllEmail(cursor);
-//                    emails.addAll(list);
-//                    adapter.notifyItemInserted(postion);
-//                }
-//            });
-//        }
-        //lay 10 mail dau
-        settingEmail(0);
         return view;
     }
 
@@ -94,18 +71,13 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
         refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
         refreshLayout.setOnRefreshListener(this);
         adapter.setOnItemClickListener(this);
-        emailSQLHelper = new EmailSQLHelper(getActivity());
+        presenter = new PresenterMainEmailLogic(getActivity(), this);
     }
 
-
-    private void settingEmail(final int postion) {
-        mTask = new ExecueEmail();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTask.execute(postion);
-            }
-        });
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        presenter.excuteLoadEmail(Config.MailBox.Inbox.toString(), 0);
     }
 
     @Override
@@ -125,46 +97,82 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
     public void onRefresh() {
         emails.clear();
         adapter.notifyDataSetChanged();
-        settingEmail(0);
+        presenter.excuteLoadEmail(Config.MailBox.Inbox.toString(), 0);
     }
 
+    @Override
+    public void onPreExecute() {
 
-    private class ExecueEmail extends AsyncTask<Integer, Void, ArrayList<Email>> {
+    }
 
-        @Override
-        protected ArrayList<Email> doInBackground(Integer... params) {
-            int first = params[0] * 10, last = first + 10;
-
-            MailUet sent = MailUet.getInstance(
-//                Utils.getEmailUser(getActivity()),
-//                Utils.getPassword(getActivity())
-                    "14020521", "1391996"
-            ).readEmails(Config.MailBox.Inbox.toString());
-            return sent.getMessage(first, last);
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<Email> list) {
-            super.onPostExecute(list);
-            //update UI
-            int postion = emails.size();
-            if (list != null && list.size() != 0) {
-//                emailSQLHelper.insertBulk(list);
-                emails.addAll(list);
-                adapter.notifyItemInserted(postion);
-
-            } else
-                Toast.makeText(getActivity(), getString(R.string.fail_download), Toast.LENGTH_SHORT).show();
-
-            if (refreshLayout.isRefreshing()) {
-                refreshLayout.setRefreshing(false);
-            }
+    @Override
+    public void onExecuteSuccess(List<Email> emails) {
+        this.emails.addAll(emails);
+        this.adapter.notifyItemInserted(this.emails.size() - emails.size());
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
         }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mTask.cancel(true);
+    public void onExecuteFailure(String fail) {
+        Log.e(TAG, "Fail:" + fail);
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onCancelExecuteSuccess(String success) {
+        Toast.makeText(getActivity(), TAG + ": " + success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelExecuteFailure(String fail) {
+        Log.e(TAG, "onCancelExecuteFailure: " + fail);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.cancelLoadEmail();
+    }
+
+    //    private class ExecueEmail extends AsyncTask<Integer, Void, ArrayList<Email>> {
+//
+//        @Override
+//        protected ArrayList<Email> doInBackground(Integer... params) {
+//            int first = params[0] * 10, last = first + 10;
+//
+//            MailUet sent = MailUet.getInstance(
+////                Utils.getEmailUser(getActivity()),
+////                Utils.getPassword(getActivity())
+//                    "14020521", "1391996"
+//            ).readEmails(Config.MailBox.Inbox.toString());
+//            try {
+//                return sent.getMessage(first, last);
+//            } catch (Exception e) {
+//
+//                e.printStackTrace();
+//                return new ArrayList<>();
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(ArrayList<Email> list) {
+//            super.onPostExecute(list);
+//            //update UI
+//            int postion = emails.size();
+//            if (list != null && list.size() != 0) {
+////                emailSQLHelper.insertBulk(list);
+//                emails.addAll(list);
+//                adapter.notifyItemInserted(postion);
+//
+//            } else
+//                Toast.makeText(getActivity(), getString(R.string.fail_download), Toast.LENGTH_SHORT).show();
+//
+//            if (refreshLayout.isRefreshing()) {
+//                refreshLayout.setRefreshing(false);
+//            }
+//        }
+//    }
+
 }

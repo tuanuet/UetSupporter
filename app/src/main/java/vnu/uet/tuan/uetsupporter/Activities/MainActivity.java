@@ -3,6 +3,7 @@ package vnu.uet.tuan.uetsupporter.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -27,7 +28,7 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, TinTucFragment.OnBackpressToFinish {
-    NavigationView navigationView;
+    private NavigationView navigationView;
     int postionNav = 0;
     private static final String POSITIONNAV = "postionNav";
 
@@ -38,12 +39,19 @@ public class MainActivity extends AppCompatActivity
 
         init();
 
+        if (savedInstanceState != null) {
 
-        //chay luon fragment tintuc
-        Fragment tintuc = new TinTucFragment();
-        showChangeFragment(tintuc, getString(R.string.nav_tintuc));
-        postionNav = R.id.nav_tintuc;
-        //
+        } else {
+            try {
+                Fragment tintuc = new TinTucFragment();
+                showChangeFragment(tintuc, getString(R.string.nav_tintuc));
+                postionNav = R.id.nav_tintuc;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
     }
 
     private void init() {
@@ -94,9 +102,11 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+
     @Override
     protected void onResume() {
         super.onResume();
+
         setupNumberForNav();
         initShortcutBadger();
     }
@@ -152,6 +162,7 @@ public class MainActivity extends AppCompatActivity
         return setFragment(id);
     }
 
+
     /**
      * thay doi fragment
      * dua fragment vao backstack
@@ -161,7 +172,7 @@ public class MainActivity extends AppCompatActivity
      * @param fragment
      * @param name
      */
-    public void showChangeFragment(final Fragment fragment, final String name) {
+    public void showChangeFragment(final Fragment fragment, final String name) throws Exception {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -204,33 +215,39 @@ public class MainActivity extends AppCompatActivity
     }
 
     private boolean setFragment(int id) {
-        if (id == R.id.nav_thongbao) {
+        try {
+            if (id == R.id.nav_thongbao) {
 
-        } else if (id == R.id.nav_tintuc) {
+            } else if (id == R.id.nav_tintuc) {
 
-            Fragment tintuc = new TinTucFragment();
-            showChangeFragment(tintuc, getString(R.string.nav_tintuc));
-            postionNav = R.id.nav_tintuc;
+                Fragment tintuc = new TinTucFragment();
+                showChangeFragment(tintuc, getString(R.string.nav_tintuc));
+                postionNav = R.id.nav_tintuc;
 
-        } else if (id == R.id.nav_hopthongbao) {
-            Fragment hopthu = new HopThongBaoFragment();
-            showChangeFragment(hopthu, getString(R.string.nav_hopthongbao));
-            postionNav = R.id.nav_hopthongbao;
-        } else if (id == R.id.nav_myprofile) {
-            Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
-            startActivity(intent);
+            } else if (id == R.id.nav_hopthongbao) {
+                Fragment hopthu = new HopThongBaoFragment();
+                showChangeFragment(hopthu, getString(R.string.nav_hopthongbao));
+                postionNav = R.id.nav_hopthongbao;
+            } else if (id == R.id.nav_myprofile) {
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                return false;
+            } else if (id == R.id.nav_share) {
+
+            } else if (id == R.id.nav_send) {
+
+            } else if (id == R.id.nav_hopthu) {
+                Fragment hopthu = new HopThuFragment();
+                showChangeFragment(hopthu, getString(R.string.nav_hopthu));
+                postionNav = R.id.nav_hopthu;
+            }
+            return true;
+
+        } catch (Exception e) {
             return false;
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        } else if (id == R.id.nav_hopthu) {
-            Fragment hopthu = new HopThuFragment();
-            showChangeFragment(hopthu, getString(R.string.nav_hopthu));
-            postionNav = R.id.nav_hopthu;
         }
 
-        return true;
+
     }
 
     @Override

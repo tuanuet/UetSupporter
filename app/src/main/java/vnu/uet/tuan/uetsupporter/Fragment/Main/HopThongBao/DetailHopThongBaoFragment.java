@@ -41,26 +41,30 @@ import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.File;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBao.IPresenterDetailHopThongBaoModel;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBao.IPresenterDetailHopThongBaoView;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBao.PresenterDetailHopThongBaoLogic;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.DetailHopThongBao.IViewDetailHopThongBao;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailHopThongBaoFragment extends Fragment {
+public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHopThongBao {
 
-    PushNotification notification;
-    TextView title, noidung, time, sender, loaithongbao;
-    ImageView avatar;
-    LinearLayout layout_attachfile;
-    Call<ResponseBody> call;
-    ScrollView layout_scrollview;
-    LinearLayout layout_wait;
-    FloatingActionButton fab;
-    DetailThongBao mThongBao;
-    AsynDetailThongBao mTask;
+    private PushNotification notification;
+    private TextView title, noidung, time, sender, loaithongbao;
+    private ImageView avatar;
+    private LinearLayout layout_attachfile;
+
+    private ScrollView layout_scrollview;
+    private LinearLayout layout_wait;
+    private FloatingActionButton fab;
+    private DetailThongBao mThongBao;
+    private IPresenterDetailHopThongBaoView presenter;
 
     private final String TAG = this.getClass().getSimpleName();
     public DetailHopThongBaoFragment() {
@@ -78,20 +82,19 @@ public class DetailHopThongBaoFragment extends Fragment {
 
         initUI(view);
 
+
         return view;
+    }
+
+    private void interactPresent() {
+        presenter = new PresenterDetailHopThongBaoLogic(getActivity(), this);
+        presenter.executeDetailHopThongBao(notification.getLink());
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTask = new AsynDetailThongBao();
-                mTask.execute();
-            }
-        });
-
+        interactPresent();
     }
 
     private void getData() {
@@ -152,66 +155,45 @@ public class DetailHopThongBaoFragment extends Fragment {
         sender.setText(notification.getNameSender());
     }
 
-    private Call<ResponseBody> getDiem() {
-        Call<ResponseBody> call;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.API_HOSTNAME)
-                .build();
-        ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        String idLop = getId(notification.getLink());
-        call = apiTinTuc.getDetailThongBao(idLop, Utils.getUserToken(getActivity()));
-        return call;
-    }
-
-    //link dang /avc/idThongbao;
-    //đưa về lay idThongbao
-    private String getId(String link) {
-        String[] arr = link.split("/");
-        if (arr.length == 3) {
-            return arr[2].trim();
-        } else return null;
-    }
-
-
-    protected class AsynDetailThongBao extends AsyncTask<Void, Void, String> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            call = getDiem();
-        }
-
-        @Override
-        protected String doInBackground(Void... params) {
-
-            try {
-                Response<ResponseBody> responseBody = call.execute();
-                return responseBody.body().string();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String json) {
-            super.onPostExecute(json);
-            if (json != null) {
-                DetailThongBao detailThongBao = null;
-                try {
-                    detailThongBao = new DetailThongBao(json);
-                    updateUI(detailThongBao);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, e.getMessage());
-                    Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
-                }
-
-            } else {
-                Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    }
+//    protected class AsynDetailThongBao extends AsyncTask<Void, Void, String> {
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//            call = getDiem();
+//        }
+//
+//        @Override
+//        protected String doInBackground(Void... params) {
+//
+//            try {
+//                Response<ResponseBody> responseBody = call.execute();
+//                return responseBody.body().string();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(String json) {
+//            super.onPostExecute(json);
+//            if (json != null) {
+//                DetailThongBao detailThongBao = null;
+//                try {
+//                    detailThongBao = new DetailThongBao(json);
+//                    updateUI(detailThongBao);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    Log.e(TAG, e.getMessage());
+//                    Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
+//                }
+//
+//            } else {
+//                Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
+//            }
+//
+//        }
+//    }
 
     private void updateUI(final DetailThongBao detailThongBao) {
 
@@ -288,7 +270,32 @@ public class DetailHopThongBaoFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        call.cancel();
-        mTask.cancel(true);
+        presenter.cancelExecuteDetailHopThongBao();
+    }
+
+    @Override
+    public void onPreExecute() {
+
+    }
+
+    @Override
+    public void onExecuteSuccess(DetailThongBao detailThongBao) {
+        updateUI(detailThongBao);
+    }
+
+    @Override
+    public void onExecuteFailure(String fail) {
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelExecuteSuccess() {
+
+    }
+
+
+    @Override
+    public void onCancelExecuteFailure() {
+
     }
 }

@@ -48,21 +48,24 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBaoDiem.IPresenterDetailHopThongBaoDiemView;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBaoDiem.PresenterDetailHopThongBaoDiemLogic;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.DetailHopThongBaoDiem.IViewDetailHopThongBaoDiem;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartValueSelectedListener {
+public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartValueSelectedListener, IViewDetailHopThongBaoDiem {
 
     private final String TAG = this.getClass().getSimpleName();
     private Toolbar toolbar;
     private PushNotification notification;
     private List<DiemResponse> listDiem;
-    private Call<List<DiemResponse>> call;
+
     private Button btn_xemthem;
     private LinearLayout table;
     private TextView txt_msv, txt_ten, txt_giuaky, txt_cuoiky, txt_tong;
@@ -72,6 +75,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
             "0 => 4", "4 => 7", "7 => 8", "8 >= 10"
     };
 
+    private IPresenterDetailHopThongBaoDiemView presenter;
     private boolean isShow = false;
 
 
@@ -80,6 +84,8 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
     }
 
     private void initUI(View view) {
+        listDiem = new ArrayList<>();
+
         btn_xemthem = (Button) view.findViewById(R.id.btn_xemthem);
         table = (LinearLayout) view.findViewById(R.id.table);
         txt_msv = (TextView) view.findViewById(R.id.msv);
@@ -96,8 +102,32 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
             }
         });
         initPieChart();
+
+        btn_xemthem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listDiem != null) {
+
+                    if (!isShow) {
+                        btn_xemthem.setText(getString(R.string.xemthem));
+                        for (int pos = 0; pos < listDiem.size(); pos++) {
+                            Log.e(TAG, listDiem.size() + "");
+                            createRow(listDiem.get(pos));
+                        }
+                    } else {
+                        btn_xemthem.setText(getString(R.string.thugon));
+                    }
+
+                }
+
+            }
+        });
     }
 
+    /**
+     * =======================================================================
+     * Khởi tạo pieChart
+     */
     private void initPieChart() {
         pieChart1.setUsePercentValues(true);
         pieChart1.getDescription().setEnabled(false);
@@ -214,7 +244,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         ArrayList<Integer> values = new ArrayList<>();
         for (int i = 0; i < listDiem.size(); i++) {
             DiemResponse item = listDiem.get(i);
-            float diemTong = getDiemTong(item.getDiemThanhPhan(), item.getDiemCuoiKy());
+            float diemTong = Utils.getDiemTong(item.getDiemThanhPhan(), item.getDiemCuoiKy());
             if (diemTong < 4) {
                 zeroTo4++;
             } else if (diemTong < 7) {
@@ -273,15 +303,13 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         txt_ten.setText(userDiem.getIdSinhVien().getTenSinhVien());
         txt_giuaky.setText(String.valueOf(userDiem.getDiemThanhPhan()));
         txt_cuoiky.setText(String.valueOf(userDiem.getDiemCuoiKy()));
-        txt_tong.setText(String.valueOf(getDiemTong(userDiem.getDiemThanhPhan(), userDiem.getDiemCuoiKy())));
+        txt_tong.setText(String.valueOf(Utils.getDiemTong(userDiem.getDiemThanhPhan(), userDiem.getDiemCuoiKy())));
         toolbar.setTitle("Điểm thi: " + userDiem.getIdLopMonHoc().getTenLopMonHoc());
         //==============================
 
     }
 
-    private float getDiemTong(double diemThanhPhan, double diemCuoiKy) {
-        return (float) (0.6 * diemCuoiKy + 0.4 * diemThanhPhan);
-    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -296,109 +324,45 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         return view;
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        btn_xemthem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listDiem != null) {
+        presenter = new PresenterDetailHopThongBaoDiemLogic(getActivity(), this);
+        presenter.executeDetailHopThongBaoDiem(notification.getLink());
 
-                    if (!isShow) {
-                        btn_xemthem.setText(getString(R.string.xemthem));
-                        for (int pos = 0; pos < listDiem.size(); pos++) {
-                            Log.e(TAG, listDiem.size() + "");
-                            createRow(listDiem.get(pos));
-                        }
-                    } else {
-                        btn_xemthem.setText(getString(R.string.thugon));
-                    }
+    }
 
-                }
 
-            }
-        });
+    @Override
+    public void onPreExecute() {
 
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new AsynGetDiem().execute();
-            }
-        });
     }
 
     @Override
-    public void onValueSelected(Entry e, Highlight h) {
-        PieEntry entry = (PieEntry) e;
-        String label = entry.getLabel();
-        Toast.makeText(getActivity(), label, Toast.LENGTH_LONG).show();
+    public void onExecuteSuccess(List<DiemResponse> diemResponses) {
+        listDiem = diemResponses;
+        updateUI();
     }
 
     @Override
-    public void onNothingSelected() {
-
+    public void onExecuteFailure(String fail) {
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
     }
 
-
-    protected class AsynGetDiem extends AsyncTask<Void, Void, List<DiemResponse>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            call = getDiem();
-        }
-
-        @Override
-        protected List<DiemResponse> doInBackground(Void... params) {
-
-            try {
-                Response<List<DiemResponse>> response = call.execute();
-                if (response.isSuccessful() && response.body() != null) {
-                    return response.body();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<DiemResponse> diemResponse) {
-            super.onPostExecute(diemResponse);
-            if (diemResponse != null && diemResponse.size() != 0) {
-                listDiem = diemResponse;
-                updateUI();
-            } else {
-                Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
-            }
-
-        }
+    @Override
+    public void onCancelExecuteSuccess() {
+        Toast.makeText(getActivity(), "Lỗi mạng!", Toast.LENGTH_SHORT).show();
     }
 
-    private Call<List<DiemResponse>> getDiem() {
-        Call<List<DiemResponse>> call;
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Config.API_HOSTNAME)
-                // Sử dụng GSON cho việc parse và maps JSON data tới Object
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        Log.e(TAG, notification.getLink());
-        String idLop = getidLop(notification.getLink());
-
-        call = apiTinTuc.getDiemOneSinhVien(idLop, Utils.getUserToken(getActivity()));
-        return call;
+    @Override
+    public void onCancelExecuteFailure() {
+        Toast.makeText(getActivity(), "Lỗi mạng! ", Toast.LENGTH_SHORT).show();
     }
 
-    //link dang /avc/avc/idLop;
-    //đưa về lay idlop
-    private String getidLop(String link) {
-        String[] arr = link.split("/");
-        if (arr.length == 4) {
-            return arr[3].trim();
-        } else return null;
-    }
+    /** ===================================================================
+     * Create UI xem them
+ */
 
     private void getDataFromIntent() {
         notification = (PushNotification) getArguments().getSerializable(Config.KEY_PUSHNOTIFICATION);
@@ -423,7 +387,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         row.addView(createCol(R.drawable.border_linerlayout_left_bottom,
                 1.5f, String.valueOf(item.getDiemCuoiKy())));
         row.addView(createCol(R.drawable.border_linerlayout_left_right_bottom,
-                1.5f, String.valueOf(getDiemTong(item.getDiemThanhPhan(), item.getDiemCuoiKy()))));
+                1.5f, String.valueOf(Utils.getDiemTong(item.getDiemThanhPhan(), item.getDiemCuoiKy()))));
 
         //==================================================================
         table.addView(row);
@@ -457,4 +421,26 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         return col;
     }
 
+    /**
+     * ===================================================================
+     * Listener Piechart
+     */
+    @Override
+    public void onValueSelected(Entry e, Highlight h) {
+        PieEntry entry = (PieEntry) e;
+        String label = entry.getLabel();
+        Toast.makeText(getActivity(), label, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onNothingSelected() {
+
+    }
+//===================================================================
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.cancelExecuteDetailHopThongBaoDiem();
+    }
 }

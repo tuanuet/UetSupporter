@@ -20,26 +20,31 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Model.Mail.MailUet;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.DetailEmail.IPresenterDetailEmailView;
+import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.DetailEmail.PresenterDetailEmailLogic;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.View.Main.HopThu.DetailEmail.IViewDetailEmail;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailEmailFragment extends Fragment {
+public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
 
     private final String TAG = this.getClass().getSimpleName();
-    private String folder;
+
     private TextView title, content, time, mucdo, from;
     private ImageView avatar;
     private WebView webView;
     private LinearLayout layout_html, layout_attach;
+    private IPresenterDetailEmailView presenter;
 
     public DetailEmailFragment() {
         // Required empty public constructor
@@ -51,6 +56,7 @@ public class DetailEmailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detail_email, container, false);
+        Log.d(TAG, "OnCreateView");
 
         initUI(view);
 
@@ -60,17 +66,16 @@ public class DetailEmailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.d(TAG, "onViewCreated");
+
         Intent intent = getActivity().getIntent();
-        if (intent.hasExtra(Config.POSITION_EMAIL)) {
+        if (intent.hasExtra(Config.POSITION_EMAIL) && intent.hasExtra(Config.FOLDER_EMAIL)) {
+
             final int position = intent.getIntExtra(Config.POSITION_EMAIL, 0);
-            folder = intent.getStringExtra(Config.FOLDER_EMAIL);
-            Log.e(TAG, "Email posstion: " + position);
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    new RetrigerEmail().execute(position);
-                }
-            });
+            String folder = intent.getStringExtra(Config.FOLDER_EMAIL);
+
+            presenter.excuteLoadEmail(folder, position);
+
         }
     }
 
@@ -86,6 +91,7 @@ public class DetailEmailFragment extends Fragment {
         webView = (WebView) view.findViewById(R.id.webview);
         layout_html = (LinearLayout) view.findViewById(R.id.layout_html);
         layout_attach = (LinearLayout) view.findViewById(R.id.layout_attach);
+        presenter = new PresenterDetailEmailLogic(getActivity(), this);
     }
 
     @Override
@@ -108,24 +114,34 @@ public class DetailEmailFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    private class RetrigerEmail extends AsyncTask<Integer, Void, Email> {
+//    private class RetrigerEmail extends AsyncTask<Integer, Void, Email> {
+//
+//        @Override
+//        protected Email doInBackground(Integer... params) {
+//            try {
+//                return MailUet.getInstance(
+//    //                    Utils.getEmailUser(getActivity()),
+//    //                    Utils.getPassword(getActivity())
+//                        "14020521", "1391996")
+//                        .readEmails(folder)
+//                        .getMessage(params[0]);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//                return null;
+//            }
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Email email) {
+//            super.onPostExecute(email);
+//            if (email!=null){
+//                updateUI(email);
+//            }else{
+//                Toast.makeText(getActivity(), getString(R.string.fail_download), Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
-        @Override
-        protected Email doInBackground(Integer... params) {
-            return MailUet.getInstance(
-//                    Utils.getEmailUser(getActivity()),
-//                    Utils.getPassword(getActivity())
-                    "14020521", "1391996")
-                    .readEmails(folder)
-                    .getMessage(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(Email email) {
-            super.onPostExecute(email);
-            updateUI(email);
-        }
-    }
 
     private void updateUI(Email email) {
         title.setText(email.getTitle());
@@ -175,5 +191,36 @@ public class DetailEmailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onPreExecute() {
+
+    }
+
+    @Override
+    public void onExecuteSuccess(Email email) {
+        updateUI(email);
+    }
+
+    @Override
+    public void onExecuteFailure(String fail) {
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelExecuteSuccess(String success) {
+        Toast.makeText(getActivity(), success, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onCancelExecuteFailure(String fail) {
+        Log.e(TAG, "onCancelExecuteFailure: " + fail);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.cancelLoadEmail();
     }
 }

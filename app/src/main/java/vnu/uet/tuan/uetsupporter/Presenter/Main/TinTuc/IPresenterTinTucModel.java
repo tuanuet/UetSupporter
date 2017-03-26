@@ -2,6 +2,7 @@ package vnu.uet.tuan.uetsupporter.Presenter.Main.TinTuc;
 
 import java.util.List;
 
+import vnu.uet.tuan.uetsupporter.Listener.OnCancelRequest;
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
 
 
@@ -13,8 +14,10 @@ public interface IPresenterTinTucModel {
     interface OnGetTinTucFinishListener {
         void OnSuccess(List<TinTuc> tinTucs);
 
-        void OnFailure();
+        void OnFailure(String fail);
     }
 
     void sendRequest(int loaitintuc, int offset, OnGetTinTucFinishListener listener);
+
+    void cancelSendRequest(OnCancelRequest listener);
 }
