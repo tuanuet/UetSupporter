@@ -10,7 +10,7 @@ import okhttp3.MediaType;
 public class Config {
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
-    public static final String TENSINHVIEN = "tenSinhVien";
+    public static final String TENSINHVIEN = "name";
     public static final String SINHVIEN = "sinhvien";
     public static final String KEY_PUSHNOTIFICATION = "key_pushnotification";
 
@@ -43,9 +43,9 @@ public class Config {
 
     public static final String KEY_URL = "keyurl";
     public static final String GET_INFORMATION_USER = hostname + "/sinhvien/profile";
-    public static final String POST_TOKEN = hostname + "/sinhvien/guitokenfirebase";
+    public static final String POST_TOKEN = hostname + "/student/savetoken";
     public static final String API_HOSTNAME = hostname;
-    public static final String LOGIN_URL = hostname + "/users/authenticate";
+    public static final String LOGIN_URL = hostname + "/api/authenticate";
     public static final String GET_LOAITINTUC = hostname+"/loaitintuc";
 
     public static final MediaType JSON
