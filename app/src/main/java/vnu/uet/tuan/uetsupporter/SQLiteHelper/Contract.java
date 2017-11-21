@@ -39,7 +39,7 @@ public class Contract {
         public static final int linkpage = 1;
         public static final String NAME_TABLE = "loaitintuc";
         public static final String _ID = "_id";
-        public static final String KIND = "kind";
+        public static final String KIND = "name";
         public static final String LINKPAGE = "linkPage";
         public static final int VERSION = 1;
     }
@@ -49,7 +49,7 @@ public class Contract {
         public static final int tenLoaiThongBao = 1;
         public static final String NAME_TABLE = "loaithongbao";
         public static final String _ID = "_id";
-        public static final String TENLOAITHONGBAO = "tenloaithongbao";
+        public static final String TENLOAITHONGBAO = "name";
         public static final int VERSION = 1;
     }
 
@@ -58,7 +58,7 @@ public class Contract {
         public static final int tenMucDoThongBao = 1;
         public static final String NAME_TABLE = "mucdothongbao";
         public static final String _ID = "_id";
-        public static final String TENMUCDOTHONGBAO = "tenmucdothongbao";
+        public static final String TENMUCDOTHONGBAO = "name";
         public static final int VERSION = 1;
     }
 

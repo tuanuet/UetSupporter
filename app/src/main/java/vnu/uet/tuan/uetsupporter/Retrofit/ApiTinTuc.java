@@ -31,13 +31,13 @@ public interface ApiTinTuc {
     @GET("/tintuc/test")
     Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") int loaitintuc, @Query("offset") int offset);
 
-    @GET("/loaitintuc")
+    @GET("/api/loaitintuc")
     Call<ArrayList<LoaiTinTuc>> getAllLoaiTinTuc();
 
-    @GET("/loaithongbao")
+    @GET("/api/loaithongbao")
     Call<List<LoaiThongBao>> getAllLoaiThongBao();
 
-    @GET("/mucdothongbao")
+    @GET("/api/mucdothongbao")
     Call<List<MucDoThongBao>> getAllMucDoThongBao();
 
     @GET("/subscribe")

@@ -178,7 +178,7 @@ public class Utils {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             LoaiThongBao loaiThongBao = new LoaiThongBao();
-            loaiThongBao.set_id(cursor.getInt(Contract.LoaiThongBao._id));
+            loaiThongBao.set_id(cursor.getString(Contract.LoaiThongBao._id));
             loaiThongBao.setTenLoaiThongBao(cursor.getString(Contract.LoaiThongBao.tenLoaiThongBao));
             list.add(loaiThongBao);
             cursor.moveToNext();
@@ -287,7 +287,7 @@ public class Utils {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             MucDoThongBao mucDoThongBao = new MucDoThongBao();
-            mucDoThongBao.set_id(cursor.getInt(Contract.MucDoThongBao._id));
+            mucDoThongBao.set_id(cursor.getString(Contract.MucDoThongBao._id));
             mucDoThongBao.setTenMucDoThongBao(cursor.getString(Contract.MucDoThongBao.tenMucDoThongBao));
             list.add(mucDoThongBao);
             cursor.moveToNext();
@@ -295,19 +295,19 @@ public class Utils {
         return list;
     }
 
-    public static int renderColorMucDo(int idMucDoThongBao, ArrayList<MucDoThongBao> mucDoThongBaoList) {
-        for (MucDoThongBao item : mucDoThongBaoList) {
-            if (idMucDoThongBao == item.get_id()) {
-                if (item.get_id() == 1)
-                    return Color.RED;           //QuAN TROGG
-                else if (item.get_id() == 2)
-                    return Color.YELLOW;          //KhanCap
-                else if (item.get_id() == 3)
-                    return Color.BLUE;        // binh thuong
-            }
-        }
-        return 0;
-    }
+//    public static int renderColorMucDo(String idMucDoThongBao, ArrayList<MucDoThongBao> mucDoThongBaoList) {
+//        for (MucDoThongBao item : mucDoThongBaoList) {
+//            if (idMucDoThongBao == item.get_id()) {
+//                if (item.get_id() == 1)
+//                    return Color.RED;           //QuAN TROGG
+//                else if (item.get_id() == 2)
+//                    return Color.YELLOW;          //KhanCap
+//                else if (item.get_id() == 3)
+//                    return Color.BLUE;        // binh thuong
+//            }
+//        }
+//        return 0;
+//    }
 
     private static final String TAG = "Utils";
 

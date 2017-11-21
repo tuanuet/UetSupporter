@@ -17,20 +17,20 @@ public class MucDoThongBao implements Parcelable, Serializable {
      * tenMucDoThongBao : Khan cap
      */
 
-    private int _id;
-    private String tenMucDoThongBao;
+    private String _id;
+    private String name;
 
-    public MucDoThongBao(int _id, String tenMucDoThongBao) {
+    public MucDoThongBao(String _id, String tenMucDoThongBao) {
         this._id = _id;
-        this.tenMucDoThongBao = tenMucDoThongBao;
+        this.name = tenMucDoThongBao;
     }
 
     public MucDoThongBao() {
     }
 
     protected MucDoThongBao(Parcel in) {
-        _id = in.readInt();
-        tenMucDoThongBao = in.readString();
+        _id = in.readString();
+        name = in.readString();
     }
 
     public static final Creator<MucDoThongBao> CREATOR = new Creator<MucDoThongBao>() {
@@ -45,20 +45,20 @@ public class MucDoThongBao implements Parcelable, Serializable {
         }
     };
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
     public String getTenMucDoThongBao() {
-        return tenMucDoThongBao;
+        return name;
     }
 
     public void setTenMucDoThongBao(String tenMucDoThongBao) {
-        this.tenMucDoThongBao = tenMucDoThongBao;
+        this.name = tenMucDoThongBao;
     }
 
     @Override
@@ -68,7 +68,7 @@ public class MucDoThongBao implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(_id);
-        dest.writeString(tenMucDoThongBao);
+        dest.writeString(_id);
+        dest.writeString(name);
     }
 }

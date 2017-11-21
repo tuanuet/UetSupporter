@@ -10,12 +10,12 @@ import java.io.Serializable;
  */
 public class LoaiTinTuc implements Parcelable, Serializable {
     private int _id;
-    private String kind;
+    private String name;
     private String linkPage;
 
     protected LoaiTinTuc(Parcel in) {
         _id = in.readInt();
-        kind = in.readString();
+        name = in.readString();
         linkPage = in.readString();
     }
 
@@ -39,13 +39,13 @@ public class LoaiTinTuc implements Parcelable, Serializable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(_id);
-        dest.writeString(kind);
+        dest.writeString(name);
         dest.writeString(linkPage);
     }
 
     public LoaiTinTuc(int _id, String kind, String linkPage) {
         this._id = _id;
-        this.kind = kind;
+        this.name = kind;
         this.linkPage = linkPage;
     }
 
@@ -62,11 +62,11 @@ public class LoaiTinTuc implements Parcelable, Serializable {
     }
 
     public String getKind() {
-        return kind;
+        return name;
     }
 
     public void setKind(String kind) {
-        this.kind = kind;
+        this.name = kind;
     }
 
     public String getLinkPage() {

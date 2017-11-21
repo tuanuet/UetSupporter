@@ -127,22 +127,22 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         loaithongbao.setText(detailThongBao.getIdLoaiThongBao().getTenLoaiThongBao());
     }
 
-    private void setupMucDo(DetailThongBao detailThongBao) {
-        switch (detailThongBao.getIdMucDoThongBao().get_id()) {
-            case 1:
-                title.setTextColor(getActivity().getResources().getColor(R.color.dark_red));
-                break;
-            case 2:
-                title.setTextColor(getActivity().getResources().getColor(R.color.dark_yellow));
-                break;
-            case 3:
-                title.setTextColor(getActivity().getResources().getColor(R.color.black));
-                break;
-            default:
-
-                break;
-        }
-    }
+//    private void setupMucDo(DetailThongBao detailThongBao) {
+//        switch (detailThongBao.getIdMucDoThongBao().get_id()) {
+//            case 1:
+//                title.setTextColor(getActivity().getResources().getColor(R.color.dark_red));
+//                break;
+//            case 2:
+//                title.setTextColor(getActivity().getResources().getColor(R.color.dark_yellow));
+//                break;
+//            case 3:
+//                title.setTextColor(getActivity().getResources().getColor(R.color.black));
+//                break;
+//            default:
+//
+//                break;
+//        }
+//    }
 
     private void setupAvatarWithAuthor() {
         String urlAvatar = Config.API_HOSTNAME + "/avatar/" + notification.getIdSender();
@@ -208,7 +208,7 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 
         setupAvatarWithAuthor();
 
-        setupMucDo(detailThongBao);
+//        setupMucDo(detailThongBao);
 
         setupLoaiThongBao(detailThongBao);
 

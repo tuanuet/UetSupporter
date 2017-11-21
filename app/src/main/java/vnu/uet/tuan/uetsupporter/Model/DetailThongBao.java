@@ -50,14 +50,14 @@ public class DetailThongBao implements Serializable {
         Log.e(TAG, time);
         //==================================================================//
         JSONObject idMucDoThongBao = root.getJSONObject("idMucDoThongBao");
-        int _id = idMucDoThongBao.getInt("_id");
+        String _id = idMucDoThongBao.getString("_id");
         String tenMucDoThongBao = idMucDoThongBao.getString("tenMucDoThongBao");
         this.idMucDoThongBao = new MucDoThongBao(_id, tenMucDoThongBao);
         Log.e(TAG, tenMucDoThongBao);
         //==================================================================//
 
         JSONObject idLoaiThongBao = root.getJSONObject("idLoaiThongBao");
-        _id = idLoaiThongBao.getInt("_id");
+        _id = idLoaiThongBao.getString("_id");
         String tenLoaiThongBao = idLoaiThongBao.getString("tenLoaiThongBao");
         this.idLoaiThongBao = new LoaiThongBao(_id, tenLoaiThongBao);
         Log.e(TAG, tenLoaiThongBao);

@@ -11,22 +11,17 @@ import java.io.Serializable;
 
 public class LoaiThongBao implements Parcelable, Serializable {
 
-    /**
-     * _id : 0
-     * tenLoaiThongBao : DiemThi
-     */
-
-    private int _id;
-    private String tenLoaiThongBao;
+    private String _id;
+    private String name;
 
     public LoaiThongBao(Parcel in) {
-        _id = in.readInt();
-        tenLoaiThongBao = in.readString();
+        _id = in.readString();
+        name = in.readString();
     }
 
-    public LoaiThongBao(int _id, String tenLoaiThongBao) {
+    public LoaiThongBao(String _id, String tenLoaiThongBao) {
         this._id = _id;
-        this.tenLoaiThongBao = tenLoaiThongBao;
+        this.name = tenLoaiThongBao;
     }
 
     public LoaiThongBao() {
@@ -44,20 +39,20 @@ public class LoaiThongBao implements Parcelable, Serializable {
         }
     };
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
     public String getTenLoaiThongBao() {
-        return tenLoaiThongBao;
+        return name;
     }
 
     public void setTenLoaiThongBao(String tenLoaiThongBao) {
-        this.tenLoaiThongBao = tenLoaiThongBao;
+        this.name = tenLoaiThongBao;
     }
 
     @Override
@@ -67,7 +62,7 @@ public class LoaiThongBao implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(_id);
-        dest.writeString(tenLoaiThongBao);
+        dest.writeString(_id);
+        dest.writeString(name);
     }
 }
