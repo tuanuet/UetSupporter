@@ -73,10 +73,11 @@ public class MyFirebaseInstanceId extends FirebaseInstanceIdService {
             String json = getJSONString(tokenFirebase);
             Log.e("POST_TOKEN", json);
             RequestBody body = RequestBody.create(Config.JSON, json);
-            Request request = new Request.Builder()
+            Request.Builder builder = new Request.Builder()
                     .url(Config.POST_TOKEN)
                     .post(body)
-                    .build();
+                    .addHeader("Authorization",Utils.getUserToken(getApplicationContext()));
+            Request request = builder.build();
             Response response = null;
             try {
                 response = client.newCall(request).execute();
