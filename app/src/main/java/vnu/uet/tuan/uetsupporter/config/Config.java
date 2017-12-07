@@ -68,4 +68,12 @@ public class Config {
         Trash
     }
 
+    /**
+     * SAVE PREFERENCE
+     */
+
+    public static final String REGISTER_NEWS = "register_new";
+    public static final String REGISTER_ANNOUNCES = "register_announce";
+
+
 }

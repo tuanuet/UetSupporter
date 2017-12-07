@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -23,6 +24,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,6 +47,9 @@ import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
+
+import static vnu.uet.tuan.uetsupporter.config.Config.REGISTER_ANNOUNCES;
+import static vnu.uet.tuan.uetsupporter.config.Config.REGISTER_NEWS;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -243,7 +250,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
 
-        private final String TAG = "General";
+        private final String TAG =this.getClass().getSimpleName();
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
@@ -264,19 +271,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Log.e("prefer", "valueString : " + newValue.toString());
-//                    ArrayList<Integer> arrValue  = Utils.getArrayFromString(newValue.toString());
+                    SharedPreferences sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(REGISTER_NEWS,newValue.toString());
+                    editor.apply();
+                    //todo : register with firebase
 
                     //đưa lên server
-                    postLoaiTinTuc(newValue.toString());
-
-                    //
+//                    postLoaiTinTuc(newValue.toString());
                     return true;
                 }
             });
             thongbao.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    postLoaiThongBao(newValue.toString());
+//                    postLoaiThongBao(newValue.toString());
+                    SharedPreferences sharedPreferences =
+                            PreferenceManager.getDefaultSharedPreferences(context);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(REGISTER_ANNOUNCES,newValue.toString());
+                    editor.apply();
+                    //todo : register with firebase
+
                     return true;
                 }
             });
@@ -307,7 +324,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             //initThongBao
             MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
 
-            //lấy được tất cả tin tức
+            //lấy được tất cả thongbao
             ArrayList<LoaiThongBao> loaiThongBaoArrayList = Utils.getAllLoaiThongBao(getActivity());
 
             CharSequence[] entriesThongBao = new CharSequence[loaiThongBaoArrayList.size()];
@@ -325,41 +342,71 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
         private void getRegister() {
-            Call<Subcribe> call;
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Config.API_HOSTNAME)
-                    // Sử dụng GSON cho việc parse và maps JSON data tới Object
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-            call = apiTinTuc.getSubcribeLoaiTinTuc(Utils.getUserToken(getActivity()));
-            call.enqueue(new Callback<Subcribe>() {
-                @Override
-                public void onResponse(Call<Subcribe> call, Response<Subcribe> response) {
+
+            SharedPreferences sharedPreferences =
+                    PreferenceManager.getDefaultSharedPreferences(context);
+            String stringNews = sharedPreferences.getString(REGISTER_NEWS,"[]");
+            String stringAnnounces=sharedPreferences.getString(REGISTER_ANNOUNCES,"[]");
+
+            try {
+                JSONArray announces = new JSONArray(stringAnnounces);
+                JSONArray news = new JSONArray(stringNews);
+
+                MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
+                Set<String> valueTinTuc = new HashSet<String>(); //setValue ~ check cai nao dung ID
+                for (int i = 0; i < news.length(); i++) {
+                    valueTinTuc.add(String.valueOf(news.get(i)));
+                }
+                tintuc.setValues(valueTinTuc);
+                MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
+                Set<String> valueThongBao = new HashSet<String>(); //setValue ~ check cai nao dung ID
+                for (int i = 0; i <announces.length(); i++) {
+                    valueThongBao.add(String.valueOf(announces.get(i)));
+                }
+                thongbao.setValues(valueThongBao);
+
+
+            } catch (JSONException e) {
+                Log.e(TAG, "getRegister: "+e.getMessage() );
+                e.printStackTrace();
+            }
+
+
+//            Call<Subcribe> call;
+//            Retrofit retrofit = new Retrofit.Builder()
+//                    .baseUrl(Config.API_HOSTNAME)
+//                    // Sử dụng GSON cho việc parse và maps JSON data tới Object
+//                    .addConverterFactory(GsonConverterFactory.create())
+//                    .build();
+//            ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
+//            call = apiTinTuc.getSubcribeLoaiTinTuc(Utils.getUserToken(getActivity()));
+//            call.enqueue(new Callback<Subcribe>() {
+//                @Override
+//                public void onResponse(Call<Subcribe> call, Response<Subcribe> response) {
 
                     //check Id
-                    MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
-                    Set<String> valueTinTuc = new HashSet<String>(); //setValue ~ check cai nao dung ID
-                    for (int i = 0; i < response.body().getIdLoaiTinTuc().size(); i++) {
-                        valueTinTuc.add(String.valueOf(response.body().getIdLoaiTinTuc().get(i)));
-                    }
-                    tintuc.setValues(valueTinTuc);
+//                    MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
+//                    Set<String> valueTinTuc = new HashSet<String>(); //setValue ~ check cai nao dung ID
+//                    for (int i = 0; i < response.body().getIdLoaiTinTuc().size(); i++) {
+//                        valueTinTuc.add(String.valueOf(response.body().getIdLoaiTinTuc().get(i)));
+//                    }
+//                    tintuc.setValues(valueTinTuc);
 
                     //==============================================================================
-                    MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
-                    Set<String> valueThongBao = new HashSet<String>(); //setValue ~ check cai nao dung ID
-                    for (int i = 0; i < response.body().getIdLoaiThongBao().size(); i++) {
-                        valueThongBao.add(String.valueOf(response.body().getIdLoaiThongBao().get(i)));
-                    }
-                    thongbao.setValues(valueThongBao);
-                }
-
-                @Override
-                public void onFailure(Call<Subcribe> call, Throwable t) {
-                    Log.e(TAG, t.getMessage());
-                    Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show();
-                }
-            });
+//                    MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
+//                    Set<String> valueThongBao = new HashSet<String>(); //setValue ~ check cai nao dung ID
+//                    for (int i = 0; i < response.body().getIdLoaiThongBao().size(); i++) {
+//                        valueThongBao.add(String.valueOf(response.body().getIdLoaiThongBao().get(i)));
+//                    }
+//                    thongbao.setValues(valueThongBao);
+//                }
+//
+//                @Override
+//                public void onFailure(Call<Subcribe> call, Throwable t) {
+//                    Log.e(TAG, t.getMessage());
+//                    Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show();
+//                }
+//            });
         }
 
         private void postLoaiThongBao(String value) {

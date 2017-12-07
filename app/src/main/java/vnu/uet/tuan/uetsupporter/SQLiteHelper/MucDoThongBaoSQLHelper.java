@@ -25,7 +25,7 @@ public class MucDoThongBaoSQLHelper extends SQLFather {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table " + Contract.MucDoThongBao.NAME_TABLE + " ( " +
-                Contract.MucDoThongBao._ID + " integer primary key, " +
+                Contract.MucDoThongBao._ID + " text primary key, " +
                 Contract.MucDoThongBao.TENMUCDOTHONGBAO + " text not null, " +
 
                 " UNIQUE ( " + Contract.MucDoThongBao._ID + ") ON CONFLICT REPLACE);";

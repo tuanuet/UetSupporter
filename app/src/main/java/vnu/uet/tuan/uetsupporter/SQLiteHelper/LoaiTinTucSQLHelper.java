@@ -16,6 +16,7 @@ import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 
 public class LoaiTinTucSQLHelper extends SQLFather {
 
+    private final String TAG = this.getClass().getName();
     Context context;
     public LoaiTinTucSQLHelper(Context context) {
         super(context, Contract.LoaiTinTuc.NAME_TABLE, null, Contract.LoaiTinTuc.VERSION);
@@ -24,7 +25,7 @@ public class LoaiTinTucSQLHelper extends SQLFather {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table " + Contract.LoaiTinTuc.NAME_TABLE + " ( " +
-                Contract.LoaiTinTuc._ID + " integer primary key, "+
+                Contract.LoaiTinTuc._ID + " text primary key, "+
                 Contract.LoaiTinTuc.LINKPAGE + " text not null, "+
                 Contract.LoaiTinTuc.KIND + " text not null, " +
 
@@ -38,6 +39,9 @@ public class LoaiTinTucSQLHelper extends SQLFather {
     @Override
     public int insertBulk(List list) {
         List<LoaiTinTuc> arr = list;
+        for (int i = 0; i < arr.size(); i++) {
+            Log.d(TAG, "insertBulk: "+ arr.get(i).getKind());
+        }
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         int countNumber= 0;

@@ -40,6 +40,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  */
 public class LoadingFragment extends Fragment {
 
+    private final String TAG = this.getClass().getName();
     private int currentTask = 0;
     private int maxTask = 3;
     private LoaiTinTucSQLHelper loaiTinTucSQLHelper;
@@ -97,6 +98,9 @@ public class LoadingFragment extends Fragment {
                 Response<List<LoaiThongBao>> responseThongBao = call.execute();
                 if (responseThongBao.isSuccessful() && responseThongBao.body() != null) {
                     List<LoaiThongBao> list = responseThongBao.body();
+                    for (int i = 0; i < list.size(); i++) {
+                        Log.d(TAG, list.get(i).getTenLoaiThongBao());
+                    }
                     int count = loaiThongBaoSQLHelper.insertBulk(list);
                     currentTask++;
                     publishProgress(currentTask);
