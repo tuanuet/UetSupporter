@@ -3,6 +3,7 @@ package vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.MainEmail;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -18,6 +19,7 @@ import vnu.uet.tuan.uetsupporter.R;
  */
 
 public class PresenterMainEmailModel implements IPresenterMainEmailModel {
+    private final String TAG = this.getClass().getName();
     private Context context;
     private OnLoadEmailFinish loadEmailFinish;
     private int epr = 10;
@@ -73,6 +75,8 @@ public class PresenterMainEmailModel implements IPresenterMainEmailModel {
         @Override
         protected ArrayList<Email> doInBackground(Void... params) {
             try {
+
+                Log.e(TAG, String.valueOf(pager+ " bai viet"));
                 return MailUet.getInstance(
 //                Utils.getEmailUser(getActivity()),
 //                Utils.getPassword(getActivity())
@@ -81,6 +85,7 @@ public class PresenterMainEmailModel implements IPresenterMainEmailModel {
                         .getMessage(pager * epr, pager * epr + epr);
 
             } catch (Exception e) {
+                Log.e(TAG,e.getMessage());
                 e.printStackTrace();
                 this.messageFailure = e.getMessage();
                 return null;

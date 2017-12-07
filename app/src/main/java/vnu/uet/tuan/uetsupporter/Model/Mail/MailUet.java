@@ -115,10 +115,16 @@ public class MailUet {
     }
 
     public ArrayList<Email> getMessage(int start, int stop) throws Exception {
-        Message messages[] = inbox.getMessages(inbox.getMessageCount() - stop, inbox.getMessageCount() - start);
-        messages = (Message[]) MailUet.reverse(messages);
-        ArrayList<Email> emails = this.covertIntoEmail(messages);
-        return emails;
+        try {
+            Message messages[] = inbox.getMessages(inbox.getMessageCount() - stop, inbox.getMessageCount() - start);
+            messages = (Message[]) MailUet.reverse(messages);
+            return this.covertIntoEmail(messages);
+
+        } catch (Exception ex) {
+            Log.e(TAG,ex.toString());
+            return null;
+        }
+
     }
 
     public Email getMessage(int i) throws Exception {
@@ -162,42 +168,48 @@ public class MailUet {
 
     private ArrayList<Email> covertIntoEmail(Message[] messages) throws Exception {
         ArrayList<Email> emails = new ArrayList<Email>();
+
         for (Message message : messages) {
-            Email email = new Email();
-            //position
-            email.setPosition(message.getMessageNumber());
-            Log.e(TAG, "Postion: " + email.getPosition());
-            //folder
-            email.setFolder(typeFolder);
-            // From
-            for (Address a : message.getFrom()) {
-                //=?UTF-8?Q?Ph=c3=b2ng_CTSV?= <ctsv_dhcn@vnu.edu.vn>
-                String temp = a.toString();
-                if (temp.contains("<")) {
-                    temp = temp.substring(temp.indexOf("<") + 1, temp.length() - 1);
+            try{
+                Email email = new Email();
+                //position
+                email.setPosition(message.getMessageNumber());
+
+                //folder
+                email.setFolder(typeFolder);
+                // From
+                for (Address a : message.getFrom()) {
+                    //=?UTF-8?Q?Ph=c3=b2ng_CTSV?= <ctsv_dhcn@vnu.edu.vn>
+                    String temp = a.toString();
+                    if (temp.contains("<")) {
+                        temp = temp.substring(temp.indexOf("<") + 1, temp.length() - 1);
+                    }
+                    email.setFrom(temp);
                 }
-                email.setFrom(temp);
-            }
-            //send date
-            email.setSendDate(message.getSentDate().toString());
-            //Recipient
-            if (message.getAllRecipients() != null)
-                for (Address a : message.getAllRecipients())
-                    email.getRecipient().add(a.toString());
-            //receive date
-            email.setReceiveDate(message.getReceivedDate().toString());
-            // Importance
-            if (message.getHeader("Importance") != null)
-                for (String st : message.getHeader("Importance"))
-                    email.setImportance(st.toString());
-            //setISREAD
-            email.setRead(message.getFlags().contains(Flags.Flag.SEEN));
-            //Title
-            email.setTitle(message.getSubject().toString());
-            //content
-            email = setFileExistAndGetContent(email, message);
+                //send date
+                email.setSendDate(message.getSentDate().toString());
+                //Recipient
+                if (message.getAllRecipients() != null)
+                    for (Address a : message.getAllRecipients())
+                        email.getRecipient().add(a.toString());
+                //receive date
+                email.setReceiveDate(message.getReceivedDate().toString());
+                // Importance
+                if (message.getHeader("Importance") != null)
+                    for (String st : message.getHeader("Importance"))
+                        email.setImportance(st);
+                //setISREAD
+                email.setRead(message.getFlags().contains(Flags.Flag.SEEN));
+                //Title
+                email.setTitle(message.getSubject());
+                //content
+                email = setFileExistAndGetContent(email, message);
 //                email= getDetailEmail(email,message);
-            emails.add(email);
+                emails.add(email);
+            } catch (Exception e) {
+                Log.d(TAG, "covertIntoEmail: "+message.getSubject());
+                Log.e(TAG,e.getMessage());
+            }
         }
         return emails;
     }
@@ -237,8 +249,8 @@ public class MailUet {
             //Title
             email.setTitle(message.getSubject().toString());
             //content
-//                email = setFileExistAndGetContent(email, message);
-            email = getDetailEmail(email, message);
+            email = setFileExistAndGetContent(email, message);
+//            email = getDetailEmail(email, message);
             emails.add(email);
         }
         return emails;
