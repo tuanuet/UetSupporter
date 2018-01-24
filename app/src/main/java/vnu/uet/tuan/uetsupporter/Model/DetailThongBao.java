@@ -41,31 +41,30 @@ public class DetailThongBao implements Serializable {
         JSONObject root = new JSONObject(json);
 
         this._id = root.getString("_id");
-        this.tieuDe = root.getString("tieuDe");
-        this.noiDung = root.getString("noiDung");
-//        this.idSender = root.getString("idSender");
-        this.idSender = "ahihi@123";
-        this.idReceiver = root.getString("idReceiver");
-        this.time = root.getString("time");
+        this.tieuDe = root.getString("title");
+        this.noiDung = root.getString("content");
+        this.idSender = root.getString("sender");
+        this.idReceiver = root.getString("receiver");
+        this.time = root.getString("createdAt");
         Log.e(TAG, time);
         //==================================================================//
-        JSONObject idMucDoThongBao = root.getJSONObject("idMucDoThongBao");
+        JSONObject idMucDoThongBao = root.getJSONObject("priorityNotify");
         String _id = idMucDoThongBao.getString("_id");
-        String tenMucDoThongBao = idMucDoThongBao.getString("tenMucDoThongBao");
+        String tenMucDoThongBao = idMucDoThongBao.getString("name");
         this.idMucDoThongBao = new MucDoThongBao(_id, tenMucDoThongBao);
         Log.e(TAG, tenMucDoThongBao);
         //==================================================================//
 
-        JSONObject idLoaiThongBao = root.getJSONObject("idLoaiThongBao");
+        JSONObject idLoaiThongBao = root.getJSONObject("kindOfAnnouncement");
         _id = idLoaiThongBao.getString("_id");
-        String tenLoaiThongBao = idLoaiThongBao.getString("tenLoaiThongBao");
+        String tenLoaiThongBao = idLoaiThongBao.getString("name");
         this.idLoaiThongBao = new LoaiThongBao(_id, tenLoaiThongBao);
         Log.e(TAG, tenLoaiThongBao);
 
         //==================================================================//
-        try {
+        /* try {
             ArrayList<File> files = new ArrayList<>();
-            JSONArray jsonFiles = root.getJSONArray("idFile");
+            JSONArray jsonFiles = root.getJSONArray("file");
             for (int i = 0; i < jsonFiles.length(); i++) {
                 JSONObject temp = jsonFiles.getJSONObject(i);
                 String id = temp.getString("_id");
@@ -74,6 +73,19 @@ public class DetailThongBao implements Serializable {
                 File file = new File(id, title, link);
                 files.add(file);
             }
+            this.idFile = files;
+        } catch (Exception e) {
+            this.idFile = new ArrayList<>();
+        }
+        */
+        try {
+            ArrayList<File> files = new ArrayList<>();
+            JSONObject fileJson = root.getJSONObject("file");
+            String id = fileJson.getString("_id");
+            String title = fileJson.getString("name");
+            String link = fileJson.getString("link");
+            File file = new File(id, title, link);
+            files.add(file);
             this.idFile = files;
         } catch (Exception e) {
             this.idFile = new ArrayList<>();

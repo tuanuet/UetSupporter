@@ -49,7 +49,7 @@ public interface ApiTinTuc {
     @GET("/diemmonhoc/lop/{id}")
     Call<List<DiemResponse>> getDiemSinhVienByIdLop(@Path("id") String id, @Header("Authorization") String authorization);
 
-    @GET("/thongbao/{id}")
+    @GET("/api/thongbao/{id}")
     Call<ResponseBody> getDetailThongBao(@Path("id") String id, @Header("Authorization") String authorization);
 
     @FormUrlEncoded
