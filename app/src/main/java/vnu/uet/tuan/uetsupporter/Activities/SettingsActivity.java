@@ -25,11 +25,17 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -266,7 +272,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         private void listenUI() {
             MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
-            MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
+            final MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
             tintuc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -286,17 +292,40 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             thongbao.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                    postLoaiThongBao(newValue.toString());
+
                     SharedPreferences sharedPreferences =
                             PreferenceManager.getDefaultSharedPreferences(context);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(REGISTER_ANNOUNCES,newValue.toString());
                     editor.apply();
                     //todo : register with firebase
+                    String[] registers = newValue.toString()
+                            .replace("[","").replace("]","")
+                            .trim().split(",");
+
+                    //unregister
+                    for (int i=0;i<thongbao.getEntryValues().length;i++){
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(String.valueOf(thongbao.getEntryValues()[i]));
+                    }
+
+                    // register
+                    for (String rg : registers){
+                        Log.e("SUB",rg.trim());
+                        FirebaseMessaging.getInstance().subscribeToTopic(rg.trim());
+                    }
 
                     return true;
                 }
             });
+        }
+        public static CharSequence[] removeElements(CharSequence[] input, String deleteMe) {
+            List result = new LinkedList();
+
+            for(CharSequence item : input)
+                if(!deleteMe.equals(String.valueOf(item)))
+                    result.add(item);
+
+            return (CharSequence[]) result.toArray(input);
         }
 
 
@@ -370,43 +399,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 Log.e(TAG, "getRegister: "+e.getMessage() );
                 e.printStackTrace();
             }
-
-
-//            Call<Subcribe> call;
-//            Retrofit retrofit = new Retrofit.Builder()
-//                    .baseUrl(Config.API_HOSTNAME)
-//                    // Sử dụng GSON cho việc parse và maps JSON data tới Object
-//                    .addConverterFactory(GsonConverterFactory.create())
-//                    .build();
-//            ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-//            call = apiTinTuc.getSubcribeLoaiTinTuc(Utils.getUserToken(getActivity()));
-//            call.enqueue(new Callback<Subcribe>() {
-//                @Override
-//                public void onResponse(Call<Subcribe> call, Response<Subcribe> response) {
-
-                    //check Id
-//                    MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
-//                    Set<String> valueTinTuc = new HashSet<String>(); //setValue ~ check cai nao dung ID
-//                    for (int i = 0; i < response.body().getIdLoaiTinTuc().size(); i++) {
-//                        valueTinTuc.add(String.valueOf(response.body().getIdLoaiTinTuc().get(i)));
-//                    }
-//                    tintuc.setValues(valueTinTuc);
-
-                    //==============================================================================
-//                    MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
-//                    Set<String> valueThongBao = new HashSet<String>(); //setValue ~ check cai nao dung ID
-//                    for (int i = 0; i < response.body().getIdLoaiThongBao().size(); i++) {
-//                        valueThongBao.add(String.valueOf(response.body().getIdLoaiThongBao().get(i)));
-//                    }
-//                    thongbao.setValues(valueThongBao);
-//                }
-//
-//                @Override
-//                public void onFailure(Call<Subcribe> call, Throwable t) {
-//                    Log.e(TAG, t.getMessage());
-//                    Toast.makeText(context, "Failure", Toast.LENGTH_SHORT).show();
-//                }
-//            });
         }
 
         private void postLoaiThongBao(String value) {

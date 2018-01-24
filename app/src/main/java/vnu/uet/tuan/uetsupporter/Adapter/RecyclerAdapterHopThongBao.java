@@ -172,7 +172,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      */
     private void setupLoaiThongBao(ItemViewHolder itemViewHolder, PushNotification notification) {
         for (int i = 0; i < loaiThongBaoList.size(); i++) {
-            if (loaiThongBaoList.get(i).get_id() == String.valueOf(notification.getIdLoaiThongBao())) {
+            if (loaiThongBaoList.get(i).get_id().equals(String.valueOf(notification.getIdLoaiThongBao()))) {
                 itemViewHolder.txt_loaithongbao.setText(loaiThongBaoList.get(i).getTenLoaiThongBao());
             }
         }

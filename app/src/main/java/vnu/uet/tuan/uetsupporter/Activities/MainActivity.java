@@ -71,8 +71,6 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        FirebaseMessaging.getInstance().subscribeToTopic("5a67e0824b9de90b1b8ad5fd");
-
         initNavHead();
 
     }
