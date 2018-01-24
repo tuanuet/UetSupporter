@@ -24,8 +24,8 @@ public class PushNotification implements Serializable {
     private Boolean isRead;
     private String thoiGianNhan;
     private int kind;
-    private int idMucDoThongBao;
-    private int idLoaiThongBao;
+    private String idMucDoThongBao;
+    private String idLoaiThongBao;
     private Boolean hasFile;
     private String idSender;
     private String nameSender;
@@ -47,7 +47,7 @@ public class PushNotification implements Serializable {
     }
 
     public PushNotification(String tieuDe, String noiDung, String link, Boolean isRead,
-                            String thoiGianNhan, int kind, int idMucDoThongBao, int idLoaiThongBao,
+                            String thoiGianNhan, int kind, String idMucDoThongBao, String idLoaiThongBao,
                             Boolean hasFile, String idSender, String nameSender) {
         this.tieuDe = tieuDe;
         this.noiDung = noiDung;
@@ -69,8 +69,8 @@ public class PushNotification implements Serializable {
         this.isRead = false;
         this.thoiGianNhan = "";
         this.kind = 0;
-        this.idMucDoThongBao = 0;
-        this.idLoaiThongBao = 0;
+        this.idMucDoThongBao = "";
+        this.idLoaiThongBao = "";
         this.hasFile = false;
         this.idSender = "phongban2";
         this.nameSender = "Phòng Đào Tạo";
@@ -78,7 +78,7 @@ public class PushNotification implements Serializable {
 
     public PushNotification(String tieuDe, String noiDung, String link,
                             Boolean isRead, String thoiGianNhan, int kind,
-                            int idMucDoThongBao, int idLoaiThongBao, Boolean hasFile) {
+                            String idMucDoThongBao, String idLoaiThongBao, Boolean hasFile) {
         this.tieuDe = tieuDe;
         this.noiDung = noiDung;
         this.link = link;
@@ -90,19 +90,19 @@ public class PushNotification implements Serializable {
         this.hasFile = hasFile;
     }
 
-    public int getIdMucDoThongBao() {
+    public String getIdMucDoThongBao() {
         return idMucDoThongBao;
     }
 
-    public void setIdMucDoThongBao(int idMucDoThongBao) {
+    public void setIdMucDoThongBao(String idMucDoThongBao) {
         this.idMucDoThongBao = idMucDoThongBao;
     }
 
-    public int getIdLoaiThongBao() {
+    public String getIdLoaiThongBao() {
         return idLoaiThongBao;
     }
 
-    public void setIdLoaiThongBao(int idLoaiThongBao) {
+    public void setIdLoaiThongBao(String idLoaiThongBao) {
         this.idLoaiThongBao = idLoaiThongBao;
     }
 
@@ -160,5 +160,10 @@ public class PushNotification implements Serializable {
 
     public void setKind(int kind) {
         this.kind = kind;
+    }
+
+    @Override
+    public String toString() {
+        return this.link + "--" +this.tieuDe;
     }
 }

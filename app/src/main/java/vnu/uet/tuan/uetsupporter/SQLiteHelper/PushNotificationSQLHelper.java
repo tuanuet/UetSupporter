@@ -88,6 +88,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         Log.e("sql", query);
 
         Cursor cursor = db.rawQuery(query, null);
+        Log.e("sql",cursor.getCount()+"");
         return cursor;
     }
 

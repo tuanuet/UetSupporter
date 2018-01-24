@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopThongBao.ClickListener,
         IViewHopThongBao {
 
+    private final String TAG = this.getClass().getSimpleName();
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private RecyclerAdapterHopThongBao adapter;
@@ -64,9 +66,9 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        Log.e(TAG,"onViewCreated");
         presenterHopThongBaoLogic = new PresenterHopThongBaoLogic(getActivity(), this);
-
+        presenterHopThongBaoLogic.executeRetrigerPushNotification();
     }
 
     @Override
@@ -91,6 +93,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     @Override
     public void OnGetHopThongBaoSuccess(List<PushNotification> notifications) {
         list.addAll(notifications);
+
         adapter.notifyItemInserted(list.size() - notifications.size());
     }
 

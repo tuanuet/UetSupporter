@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBao;
 
 import android.content.Context;
+import android.util.Log;
 
 import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
 import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.DetailHopThongBao.IViewDetailHopThongBao;
@@ -11,6 +12,7 @@ import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.DetailHopThongBao.IViewDe
 
 public class PresenterDetailHopThongBaoLogic implements IPresenterDetailHopThongBaoView, IPresenterDetailHopThongBaoModel.OnGetThongBaoFinish, IPresenterDetailHopThongBaoModel.OnCancelGetThongBaoFinish {
 
+    private final String TAG = this.getClass().getSimpleName();
     private IViewDetailHopThongBao iViewDetailHopThongBao;
     private PresenterDetailHopThongBaoModel presenter;
 
@@ -20,8 +22,9 @@ public class PresenterDetailHopThongBaoLogic implements IPresenterDetailHopThong
     }
 
     @Override
-    public void executeDetailHopThongBao(String linkClass) {
-        presenter.getDetailHopThongBao(linkClass, this);
+    public void executeDetailHopThongBao(String link) {
+        Log.e(TAG,link);
+        presenter.getDetailHopThongBao(link, this);
     }
 
     @Override

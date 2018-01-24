@@ -88,6 +88,7 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 
     private void interactPresent() {
         presenter = new PresenterDetailHopThongBaoLogic(getActivity(), this);
+        Log.e(TAG,notification.getLink());
         presenter.executeDetailHopThongBao(notification.getLink());
     }
 

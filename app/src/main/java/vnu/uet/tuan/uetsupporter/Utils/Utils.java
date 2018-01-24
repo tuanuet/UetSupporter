@@ -53,6 +53,8 @@ import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
  */
 
 public class Utils {
+    private static final String TAG = "Utils";
+
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
@@ -192,6 +194,7 @@ public class Utils {
 
         ArrayList<PushNotification> list = new ArrayList<PushNotification>();
         cursor.moveToFirst();
+        Log.e(TAG, "Notification has " + cursor.getCount());
         while (!cursor.isAfterLast()) {
             PushNotification pushNotification = new PushNotification();
             pushNotification.setTieuDe(cursor.getString(Contract.PushNotification.tieu_de));
@@ -199,8 +202,8 @@ public class Utils {
             pushNotification.setKind(cursor.getInt(Contract.PushNotification.kind));
             pushNotification.setLink(cursor.getString(Contract.PushNotification.link_page));
             pushNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
-            pushNotification.setIdLoaiThongBao(cursor.getInt(Contract.PushNotification.id_loai_thong_bao));
-            pushNotification.setIdMucDoThongBao(cursor.getInt(Contract.PushNotification.id_muc_mo_thong_bao));
+            pushNotification.setIdLoaiThongBao(cursor.getString(Contract.PushNotification.id_loai_thong_bao));
+            pushNotification.setIdMucDoThongBao(cursor.getString(Contract.PushNotification.id_muc_mo_thong_bao));
             pushNotification.setHasFile(cursor.getInt(Contract.PushNotification.has_file) == 1);
             pushNotification.setIdSender(cursor.getString(Contract.PushNotification.id_sender));
             pushNotification.setNameSender(cursor.getString(Contract.PushNotification.name_sender));
@@ -308,8 +311,6 @@ public class Utils {
 //        }
 //        return 0;
 //    }
-
-    private static final String TAG = "Utils";
 
     public static String getFirstChar(String title) {
         if (title.contains("@")) {

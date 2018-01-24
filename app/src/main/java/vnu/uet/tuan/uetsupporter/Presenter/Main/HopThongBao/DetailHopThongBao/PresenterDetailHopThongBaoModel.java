@@ -29,6 +29,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 
 public class PresenterDetailHopThongBaoModel implements IPresenterDetailHopThongBaoModel, Callback<ResponseBody> {
 
+    private final String TAG = this.getClass().getSimpleName();
     private Context context;
     private Call<ResponseBody> call;
     private OnGetThongBaoFinish onGetThongBaoFinish;
@@ -46,8 +47,7 @@ public class PresenterDetailHopThongBaoModel implements IPresenterDetailHopThong
                 .baseUrl(Config.API_HOSTNAME)
                 .build();
         ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        String idLop = getId(link);
-        call = apiTinTuc.getDetailThongBao(idLop, Utils.getUserToken(context));
+        call = apiTinTuc.getDetailThongBao(link, Utils.getUserToken(context));
         call.enqueue(this);
     }
 
@@ -63,20 +63,12 @@ public class PresenterDetailHopThongBaoModel implements IPresenterDetailHopThong
         }
     }
 
-    //link dang /avc/idThongbao;
-    //đưa về lay idThongbao
-    private String getId(String link) {
-        String[] arr = link.split("/");
-        if (arr.length == 3) {
-            return arr[2].trim();
-        } else return null;
-    }
-
     @Override
     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
         if (response.isSuccessful() && response.body() != null) {
             try {
                 String json = response.body().string();
+                Log.e(TAG,json);
                 onGetThongBaoFinish.OnSuccess(new DetailThongBao(json));
             } catch (Exception e) {
                 onGetThongBaoFinish.OnFailure(e.getMessage());

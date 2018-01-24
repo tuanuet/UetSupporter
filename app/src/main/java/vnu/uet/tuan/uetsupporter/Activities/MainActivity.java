@@ -18,6 +18,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import me.leolin.shortcutbadger.ShortcutBadger;
 import vnu.uet.tuan.uetsupporter.Async.EmailSyncAdapter;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.HopThongBaoFragment;
@@ -31,7 +33,7 @@ public class MainActivity extends AppCompatActivity
     private NavigationView navigationView;
     int postionNav = 0;
     private static final String POSITIONNAV = "postionNav";
-
+    private final String TAG =this.getClass().getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        FirebaseMessaging.getInstance().subscribeToTopic("5a67e0824b9de90b1b8ad5fd");
 
         initNavHead();
 
@@ -226,6 +229,7 @@ public class MainActivity extends AppCompatActivity
 
             } else if (id == R.id.nav_hopthongbao) {
                 Fragment hopthu = new HopThongBaoFragment();
+                Log.e(TAG,"FRAGMENT_HOPTHU");
                 showChangeFragment(hopthu, getString(R.string.nav_hopthongbao));
                 postionNav = R.id.nav_hopthongbao;
             } else if (id == R.id.nav_myprofile) {

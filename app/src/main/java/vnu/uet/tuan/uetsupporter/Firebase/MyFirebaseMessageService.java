@@ -2,6 +2,8 @@ package vnu.uet.tuan.uetsupporter.Firebase;
 
 
 
+import android.util.Log;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -20,12 +22,11 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
  */
 
 public class MyFirebaseMessageService extends FirebaseMessagingService {
-
+    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
-
         Map data = remoteMessage.getData();
         PushNotification pushNotification = getPushNotification(data);
 
@@ -38,6 +39,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
     }
 
     private PushNotification getPushNotification(Map data) {
+
         PushNotification push = new PushNotification();
         push.setKind(getIntFromString(String.valueOf(data.get(PushNotification.KIND))));
         push.setLink((String) data.get(PushNotification.LINK));
@@ -46,8 +48,8 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setThoiGianNhan(Utils.getThoiGian(System.currentTimeMillis()));
         push.setTieuDe((String) data.get(PushNotification.TIEUDE));
         push.setHasFile((getIntFromString(String.valueOf(data.get(PushNotification.HASFILE))) == 1)); //fix lai
-        push.setIdLoaiThongBao(getIntFromString(String.valueOf(data.get(PushNotification.IDLOAITHONGBAO))));
-        push.setIdMucDoThongBao(getIntFromString(String.valueOf(data.get(PushNotification.IDMUCDOTHONGBAO))));
+        push.setIdLoaiThongBao(String.valueOf(data.get(PushNotification.IDLOAITHONGBAO)));
+        push.setIdMucDoThongBao(String.valueOf(data.get(PushNotification.IDMUCDOTHONGBAO)));
         push.setIdSender(String.valueOf(data.get(PushNotification.IDSENDER)));
         push.setNameSender(String.valueOf(data.get(PushNotification.NAMESENDER)));
         return push;

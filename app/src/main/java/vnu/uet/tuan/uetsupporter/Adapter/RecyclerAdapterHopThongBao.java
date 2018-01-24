@@ -151,16 +151,16 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
         itemViewHolder.txt_sender.setText(notification.getNameSender());
 
-//        TextDrawable drawable = TextDrawable.builder()
-//                .beginConfig()
-//                .textColor(Color.WHITE)
-//                .useFont(Typeface.DEFAULT)
-//                .fontSize(30) /* size in px */
-//                .bold()
-//                .toUpperCase()
-//                .endConfig()
-//                .buildRoundRect(Utils.getFirstChar(notification.getTieuDe()), Utils.getRandomColor(notification.getTieuDe()), 15);
-//        itemViewHolder.avatar.setImageDrawable(drawable);
+        TextDrawable drawable = TextDrawable.builder()
+                .beginConfig()
+                .textColor(Color.WHITE)
+                .useFont(Typeface.DEFAULT)
+                .fontSize(30) /* size in px */
+                .bold()
+                .toUpperCase()
+                .endConfig()
+                .buildRoundRect(Utils.getFirstChar(notification.getTieuDe()), Utils.getRandomColor(notification.getTieuDe()), 15);
+        itemViewHolder.avatar.setImageDrawable(drawable);
     }
 
     /**
@@ -186,20 +186,21 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      * @param notification
      */
     private void setupMucDo(ItemViewHolder itemViewHolder, PushNotification notification) {
-        switch (notification.getIdMucDoThongBao()) {
-            case 1:
-                itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.dark_red));
-                break;
-            case 2:
-                itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.dark_yellow));
-                break;
-            case 3:
-                itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.black));
-                break;
-            default:
-
-                break;
-        }
+        itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.dark_red));
+//        switch (notification.getIdMucDoThongBao()) {
+//            case 1:
+//                itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.dark_red));
+//                break;
+//            case 2:
+//                itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.dark_yellow));
+//                break;
+//            case 3:
+//                itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.black));
+//                break;
+//            default:
+//
+//                break;
+//        }
     }
 
     @Override
