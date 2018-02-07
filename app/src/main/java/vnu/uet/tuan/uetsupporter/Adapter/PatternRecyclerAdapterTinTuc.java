@@ -78,7 +78,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
 
             itemViewHolder.txt_title.setText(list.get(position).getTitle());
             itemViewHolder.txt_postat.setText(Utils.getThoiGian(list.get(position).getPostAt()));
-            itemViewHolder.txt_loaitintuc.setText(list.get(position).getLoaiTinTuc().getKind());
+            itemViewHolder.txt_loaitintuc.setText(Utils.tranformTags(list.get(position).getTags()));
 
             if (list.get(position).getImageLink() != null) {
                 Glide.with(context)
@@ -112,7 +112,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
 
             itemViewHolder.txt_title.setText(list.get(position).getTitle());
             itemViewHolder.txt_postat.setText(Utils.getThoiGian(list.get(position).getPostAt()));
-            itemViewHolder.txt_loaitintuc.setText(list.get(position).getLoaiTinTuc().getKind());
+            itemViewHolder.txt_loaitintuc.setText(Utils.tranformTags(list.get(position).getTags()));
 
             Glide.with(context)
                     .load(list.get(position).getImageLink().replace("/imagecache/anhminhhoa_home", ""))

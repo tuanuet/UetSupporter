@@ -47,35 +47,55 @@ public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChan
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         switch (checkedId) {
             case R.id.tinall: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(-1), "all");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(-1), "tinall");
                 break;
             }
             case R.id.tindaotao: {
                 showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(0), "tindaotao");
                 break;
             }
-            case R.id.tinhoithao: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(1), "tinhoithao");
+            case R.id.tinsinhvien: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(1), "tinsinhvien");
+                break;
+            }
+            case R.id.tincohoivieclam: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(2), "tincohoivieclam");
                 break;
             }
             case R.id.tinhoptac: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(2), "tinhoptac");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(3), "tinhoptac");
                 break;
             }
             case R.id.tinnghiencuu: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(3), "tinnghiencuu");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(4), "tinnghiencuu");
                 break;
             }
-            case R.id.tinhoatdongdoanthe: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(4), "tinhoatdongdoanthe");
+            case R.id.tinhocphihocbong: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(5), "tinhocphihocbong");
                 break;
             }
-            case R.id.tinvanhoathethao: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(5), "tinvanhoathethao");
+            case R.id.tincuusinhvien: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(6), "tincuusinhvien");
                 break;
             }
-            case R.id.tintuyendung: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(6), "tintuyendung");
+            case R.id.tinquyche: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(7), "tinquyche");
+                break;
+            }
+            case R.id.tinsanpham: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(8), "tinsanpham");
+                break;
+            }
+            case R.id.tinsaudaihoc: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(9), "tinsaudaihoc");
+                break;
+            }
+            case R.id.tinthacsy: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(10), "tinthacsy");
+                break;
+            }
+            case R.id.tintiensy: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(11), "tintiensy");
                 break;
             }
         }

@@ -84,6 +84,6 @@ public class DetailTinTucFragment extends Fragment {
     }
 
     public String getURL(String hostname, String query) {
-        return hostname + "/tintuc/detail?url=" + query;
+        return hostname + "/api/new/detail?url=" + query;
     }
 }

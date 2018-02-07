@@ -3,8 +3,6 @@ package vnu.uet.tuan.uetsupporter.Model.Response;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
-
 /**
  * Created by Administrator on 19/01/2017.
  */
@@ -15,7 +13,7 @@ public class TinTuc implements Parcelable {
     private String imageLink;
     private String link;
     private String content;
-    private LoaiTinTuc loaiTinTuc;
+    private String[] tags;
     private String postAt;
 
     public TinTuc() {
@@ -61,12 +59,12 @@ public class TinTuc implements Parcelable {
         this.content = content;
     }
 
-    public LoaiTinTuc getLoaiTinTuc() {
-        return loaiTinTuc;
+    public String[] getTags() {
+        return tags;
     }
 
-    public void setLoaiTinTuc(LoaiTinTuc loaiTinTuc) {
-        this.loaiTinTuc = loaiTinTuc;
+    public void setTags(String[] tags) {
+        this.tags = tags;
     }
 
     public String getPostAt() {
@@ -77,13 +75,13 @@ public class TinTuc implements Parcelable {
         this.postAt = postAt;
     }
 
-    public TinTuc(String _id, String title, String imageLink, String link, String content, LoaiTinTuc loaiTinTuc, String postAt) {
+    public TinTuc(String _id, String title, String imageLink, String link, String content, String[] tags, String postAt) {
         this._id = _id;
         this.title = title;
         this.imageLink = imageLink;
         this.link = link;
         this.content = content;
-        this.loaiTinTuc = loaiTinTuc;
+        this.tags = tags;
         this.postAt = postAt;
     }
 

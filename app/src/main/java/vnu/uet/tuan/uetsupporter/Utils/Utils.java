@@ -21,10 +21,14 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -54,6 +58,14 @@ import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
 
 public class Utils {
     private static final String TAG = "Utils";
+
+    public static String tranformTags(String[] tags) {
+        String joinner = "";
+        for (String tag : tags){
+            joinner += (tag + " | ");
+        }
+        return joinner.trim().substring(0,joinner.trim().length()-1).trim();
+    };
 
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

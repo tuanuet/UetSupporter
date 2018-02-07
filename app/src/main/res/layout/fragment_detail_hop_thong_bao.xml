@@ -199,7 +199,7 @@
         fab:fab_colorPressed="@color/dark_yellow"
         fab:fab_colorRipple="#99d4d4d4"
         android:src="@drawable/ic_action_send_now"
-        fab:fab_label="@string/tindaotao"
+        fab:fab_label="@string/tinsinhvien"
         fab:fab_size="normal"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
