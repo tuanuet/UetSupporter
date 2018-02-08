@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 
 import vnu.uet.tuan.uetsupporter.Broascast.BroadcastPushNotification;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
@@ -19,7 +19,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 
 public class ThongBaoMessageNotification {
 
-    public static void notify(Context context, PushNotification notification, int position) {
+    public static void notify(Context context, AnnouncementNotification notification, int position) {
         Uri sound = Utils.getSoundNotification(context);
 
         long when = System.currentTimeMillis();
@@ -71,7 +71,7 @@ public class ThongBaoMessageNotification {
         mNotificationManager.notify(Config.IDNOTICATION, mBuilder.build());
     }
 
-    protected static PendingIntent getPendingIntent(Context context, String action, PushNotification notification, int position) {
+    protected static PendingIntent getPendingIntent(Context context, String action, AnnouncementNotification notification, int position) {
         Intent intent = new Intent(context,
                 BroadcastPushNotification.class);
 

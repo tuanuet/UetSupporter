@@ -1,22 +1,18 @@
 package vnu.uet.tuan.uetsupporter.Activities;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoDiemFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.DetailEmailFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Profile.DetailLopMonHocFragment;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -45,7 +41,7 @@ public class Result2Activity extends AppCompatActivity {
 
         //fragment DetailPushNotification
         if (getIntent().getSerializableExtra(Config.KEY_PUSHNOTIFICATION) != null) {
-            PushNotification notification = (PushNotification) getIntent().getSerializableExtra(Config.KEY_PUSHNOTIFICATION);
+            AnnouncementNotification notification = (AnnouncementNotification) getIntent().getSerializableExtra(Config.KEY_PUSHNOTIFICATION);
             Bundle bundle = new Bundle();
             bundle.putSerializable(Config.KEY_PUSHNOTIFICATION, notification);
 

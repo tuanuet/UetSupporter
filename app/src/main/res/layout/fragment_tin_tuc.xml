@@ -64,9 +64,15 @@
                             <RadioButton
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tinall"
+                                android:id="@+id/tatca"
                                 style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
-                                android:text="@string/tinall" />
+                                android:text="@string/tatca" />
+                            <RadioButton
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/tintuc"
+                                style="@style/TextAppearance.MaterialSheetFab.Sheet.Item"
+                                android:text="@string/tintuc" />
                             <RadioButton
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

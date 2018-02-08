@@ -17,7 +17,7 @@ public interface IPresenterTinTucModel {
         void OnFailure(String fail);
     }
 
-    void sendRequest(int loaitintuc, int offset, OnGetTinTucFinishListener listener);
+    void sendRequest(String loaitintuc, int offset, OnGetTinTucFinishListener listener);
 
     void cancelSendRequest(OnCancelRequest listener);
 }

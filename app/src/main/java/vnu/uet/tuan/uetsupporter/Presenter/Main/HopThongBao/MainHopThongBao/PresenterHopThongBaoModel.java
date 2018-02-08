@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
 /**
@@ -23,11 +23,11 @@ public class PresenterHopThongBaoModel implements IPresenterHopThongBaoModel {
     public void getPushNotification(OnGetPushNotificationFinish listener) {
 
         try {
-            ArrayList<PushNotification> list = Utils.getPushNotification(context);
+            ArrayList<AnnouncementNotification> list = Utils.getPushNotification(context);
             if (list != null) {
                 listener.OnSuccess(list);
             } else {
-                listener.OnSuccess(new ArrayList<PushNotification>());
+                listener.OnSuccess(new ArrayList<AnnouncementNotification>());
             }
 
         } catch (Exception e) {

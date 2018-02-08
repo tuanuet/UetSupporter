@@ -271,7 +271,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
 
         private void listenUI() {
-            MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
+            final MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
             final MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
             tintuc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
@@ -283,9 +283,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     editor.putString(REGISTER_NEWS,newValue.toString());
                     editor.apply();
                     //todo : register with firebase
+                    String[] registers = newValue.toString()
+                            .replace("[","").replace("]","")
+                            .trim().split(",");
 
-                    //đưa lên server
-//                    postLoaiTinTuc(newValue.toString());
+                    //unregister
+                    for (int i=0;i<tintuc.getEntryValues().length;i++){
+                        FirebaseMessaging.getInstance().unsubscribeFromTopic(String.valueOf(tintuc.getEntryValues()[i]));
+                    }
+
+                    // register
+                    for (String rg : registers){
+                        Log.e("SUB",rg.trim());
+                        FirebaseMessaging.getInstance().subscribeToTopic(rg.trim());
+                    }
+
                     return true;
                 }
             });
@@ -344,7 +356,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             for (int i = 0; i < loaiTinTucArrayList.size(); i++) {
                 entriesTinTuc[i] = (loaiTinTucArrayList.get(i).getKind());
                 entriesValueTinTuc[i] = (String.valueOf(loaiTinTucArrayList.get(i).get_id()));
-
             }
             tintuc.setEntries(entriesTinTuc);
             tintuc.setEntryValues(entriesValueTinTuc);

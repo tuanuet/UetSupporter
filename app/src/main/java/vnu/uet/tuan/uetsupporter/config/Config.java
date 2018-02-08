@@ -24,8 +24,6 @@ public class Config {
     /**í
      * ===================================================
      */
-    public static final int daotao = 0;
-    public static final int tuyendung = 7;
     public static final String POSITION_LOPMONHOC = "positionlopmonhoc";
     public static final String POSITION_EMAIL = "positionemail";
     public static final String FOLDER_EMAIL = "folderemail";

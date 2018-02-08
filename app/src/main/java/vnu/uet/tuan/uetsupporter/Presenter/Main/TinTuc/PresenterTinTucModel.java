@@ -43,11 +43,11 @@ public class PresenterTinTucModel implements IPresenterTinTucModel, Callback<Arr
     }
 
     @Override
-    public void sendRequest(int loaitintuc, int offset, OnGetTinTucFinishListener listener) {
+    public void sendRequest(String loaitintuc, int offset, OnGetTinTucFinishListener listener) {
         this.listener = listener;
         //retrofit
 
-        call = api.getDataTinTuc(loaitintuc, offset * 10);
+        call = api.getDataTinTuc(loaitintuc, offset * 20);
         call.enqueue(this);
     }
 

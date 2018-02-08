@@ -6,29 +6,24 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import java.io.IOException;
+import java.text.Normalizer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
+import java.util.regex.Pattern;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -40,7 +35,7 @@ import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiThongBaoSQLHelper;
@@ -58,6 +53,11 @@ import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
 
 public class Utils {
     private static final String TAG = "Utils";
+
+    public static String snakeCase(String str) {
+        String result = VNCharacterUtils.removeAccent(str).trim().toLowerCase().replaceAll(" ","_");
+        return result;
+    }
 
     public static String tranformTags(String[] tags) {
         String joinner = "";
@@ -173,8 +173,7 @@ public class Utils {
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             LoaiTinTuc loaiTinTuc = new LoaiTinTuc();
-            loaiTinTuc.set_id(cursor.getInt(Contract.LoaiTinTuc._id));
-            loaiTinTuc.setLinkPage(cursor.getString(Contract.LoaiTinTuc.linkpage));
+            loaiTinTuc.set_id(cursor.getString(Contract.LoaiTinTuc._id));
             loaiTinTuc.setKind(cursor.getString(Contract.LoaiTinTuc.kind));
             list.add(loaiTinTuc);
             cursor.moveToNext();
@@ -200,28 +199,28 @@ public class Utils {
         return list;
     }
 
-    public static ArrayList<PushNotification> getPushNotification(Context context) {
+    public static ArrayList<AnnouncementNotification> getPushNotification(Context context) {
         PushNotificationSQLHelper db = new PushNotificationSQLHelper(context);
         Cursor cursor = db.getArrayPushNotification();
 
-        ArrayList<PushNotification> list = new ArrayList<PushNotification>();
+        ArrayList<AnnouncementNotification> list = new ArrayList<AnnouncementNotification>();
         cursor.moveToFirst();
         Log.e(TAG, "Notification has " + cursor.getCount());
         while (!cursor.isAfterLast()) {
-            PushNotification pushNotification = new PushNotification();
-            pushNotification.setTieuDe(cursor.getString(Contract.PushNotification.tieu_de));
-            pushNotification.setNoiDung(cursor.getString(Contract.PushNotification.noi_dung));
-            pushNotification.setKind(cursor.getInt(Contract.PushNotification.kind));
-            pushNotification.setLink(cursor.getString(Contract.PushNotification.link_page));
-            pushNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
-            pushNotification.setIdLoaiThongBao(cursor.getString(Contract.PushNotification.id_loai_thong_bao));
-            pushNotification.setIdMucDoThongBao(cursor.getString(Contract.PushNotification.id_muc_mo_thong_bao));
-            pushNotification.setHasFile(cursor.getInt(Contract.PushNotification.has_file) == 1);
-            pushNotification.setIdSender(cursor.getString(Contract.PushNotification.id_sender));
-            pushNotification.setNameSender(cursor.getString(Contract.PushNotification.name_sender));
-            pushNotification.setRead(cursor.getInt(Contract.PushNotification.is_read) == 1);
+            AnnouncementNotification announcementNotification = new AnnouncementNotification();
+            announcementNotification.setTieuDe(cursor.getString(Contract.PushNotification.tieu_de));
+            announcementNotification.setNoiDung(cursor.getString(Contract.PushNotification.noi_dung));
+            announcementNotification.setKind(cursor.getInt(Contract.PushNotification.kind));
+            announcementNotification.setLink(cursor.getString(Contract.PushNotification.link_page));
+            announcementNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
+            announcementNotification.setIdLoaiThongBao(cursor.getString(Contract.PushNotification.id_loai_thong_bao));
+            announcementNotification.setIdMucDoThongBao(cursor.getString(Contract.PushNotification.id_muc_mo_thong_bao));
+            announcementNotification.setHasFile(cursor.getInt(Contract.PushNotification.has_file) == 1);
+            announcementNotification.setIdSender(cursor.getString(Contract.PushNotification.id_sender));
+            announcementNotification.setNameSender(cursor.getString(Contract.PushNotification.name_sender));
+            announcementNotification.setRead(cursor.getInt(Contract.PushNotification.is_read) == 1);
 
-            list.add(pushNotification);
+            list.add(announcementNotification);
             cursor.moveToNext();
         }
         return list;

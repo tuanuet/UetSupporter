@@ -46,56 +46,60 @@ public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChan
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         switch (checkedId) {
-            case R.id.tinall: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(-1), "tinall");
+            case R.id.tatca: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tatca)), "tatca");
+                break;
+            }
+            case R.id.tintuc: {
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tintuc)), "tintuc");
                 break;
             }
             case R.id.tindaotao: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(0), "tindaotao");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tindaotao)), "tindaotao");
                 break;
             }
             case R.id.tinsinhvien: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(1), "tinsinhvien");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tinsinhvien)), "tinsinhvien");
                 break;
             }
             case R.id.tincohoivieclam: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(2), "tincohoivieclam");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tincohoivieclam)), "tincohoivieclam");
                 break;
             }
             case R.id.tinhoptac: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(3), "tinhoptac");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tinhoptac)), "tinhoptac");
                 break;
             }
             case R.id.tinnghiencuu: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(4), "tinnghiencuu");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tinnghiencuu)), "tinnghiencuu");
                 break;
             }
             case R.id.tinhocphihocbong: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(5), "tinhocphihocbong");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tinhocphihocbong)), "tinhocphihocbong");
                 break;
             }
             case R.id.tincuusinhvien: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(6), "tincuusinhvien");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tincuusinhvien)), "tincuusinhvien");
                 break;
             }
             case R.id.tinquyche: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(7), "tinquyche");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tinquyche)), "tinquyche");
                 break;
             }
             case R.id.tinsanpham: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(8), "tinsanpham");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tinsanpham)), "tinsanpham");
                 break;
             }
             case R.id.tinsaudaihoc: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(9), "tinsaudaihoc");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tinsaudaihoc)), "tinsaudaihoc");
                 break;
             }
             case R.id.tinthacsy: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(10), "tinthacsy");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tinthacsy)), "tinthacsy");
                 break;
             }
             case R.id.tintiensy: {
-                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(11), "tintiensy");
+                showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tintiensy)), "tintiensy");
                 break;
             }
         }
@@ -120,7 +124,7 @@ public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChan
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tin_tuc, container, false);
         initUI(view);
-        showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(-1), "all");
+        showChangeFragment(PatternFactoryFragmentTinTuc.newInstance(getContext().getString(R.string.tatca)), "tatca");
         return view;
     }
 

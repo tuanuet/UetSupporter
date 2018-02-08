@@ -35,12 +35,10 @@ public class Contract {
 
     public class LoaiTinTuc implements BaseColumns{
         public static final int _id = 0;
-        public static final int kind = 2;
-        public static final int linkpage = 1;
+        public static final int kind = 1;
         public static final String NAME_TABLE = "loaitintuc";
         public static final String _ID = "_id";
         public static final String KIND = "name";
-        public static final String LINKPAGE = "linkPage";
         public static final int VERSION = 1;
     }
 

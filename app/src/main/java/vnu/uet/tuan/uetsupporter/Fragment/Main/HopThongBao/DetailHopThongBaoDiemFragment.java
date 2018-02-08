@@ -3,15 +3,12 @@ package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
-import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -36,22 +33,15 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.MPPointF;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBaoDiem.IPresenterDetailHopThongBaoDiemView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBaoDiem.PresenterDetailHopThongBaoDiemLogic;
 import vnu.uet.tuan.uetsupporter.R;
-import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.DetailHopThongBaoDiem.IViewDetailHopThongBaoDiem;
 import vnu.uet.tuan.uetsupporter.config.Config;
@@ -63,7 +53,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
 
     private final String TAG = this.getClass().getSimpleName();
     private Toolbar toolbar;
-    private PushNotification notification;
+    private AnnouncementNotification notification;
     private List<DiemResponse> listDiem;
 
     private Button btn_xemthem;
@@ -365,7 +355,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
  */
 
     private void getDataFromIntent() {
-        notification = (PushNotification) getArguments().getSerializable(Config.KEY_PUSHNOTIFICATION);
+        notification = (AnnouncementNotification) getArguments().getSerializable(Config.KEY_PUSHNOTIFICATION);
     }
 
     private void createRow(DiemResponse item) {

@@ -2,9 +2,6 @@ package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,33 +16,17 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.util.Util;
 import com.github.clans.fab.FloatingActionButton;
 
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Activities.FeedBackActivity;
-import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterHopThongBao;
 import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
-import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.File;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
-import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBao.IPresenterDetailHopThongBaoModel;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBao.IPresenterDetailHopThongBaoView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBao.PresenterDetailHopThongBaoLogic;
 import vnu.uet.tuan.uetsupporter.R;
-import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.DetailHopThongBao.IViewDetailHopThongBao;
 import vnu.uet.tuan.uetsupporter.config.Config;
@@ -55,7 +36,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  */
 public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHopThongBao {
 
-    private PushNotification notification;
+    private AnnouncementNotification notification;
     private TextView title, noidung, time, sender, loaithongbao;
     private ImageView avatar;
     private LinearLayout layout_attachfile;
@@ -99,7 +80,7 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
     }
 
     private void getData() {
-        notification = (PushNotification) getArguments().getSerializable(Config.KEY_PUSHNOTIFICATION);
+        notification = (AnnouncementNotification) getArguments().getSerializable(Config.KEY_PUSHNOTIFICATION);
     }
 
     private void initUI(View view) {

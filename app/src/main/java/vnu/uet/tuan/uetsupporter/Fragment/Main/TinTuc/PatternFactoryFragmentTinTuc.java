@@ -46,7 +46,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
 
     private final String TAG = this.getClass().getSimpleName();
     private ArrayList<TinTuc> listTinTuc;
-    private int loaiTinTuc;
+    private String loaiTinTuc;
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private PatternRecyclerAdapterTinTuc adapter;
@@ -64,10 +64,10 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
      * @return A new instance of fragment PatternFactoryFragmentNotification.
      */
     // TODO: Rename and change types and number of parameters
-    public static PatternFactoryFragmentTinTuc newInstance(int loaitintuc) {
+    public static PatternFactoryFragmentTinTuc newInstance(String loaitintuc) {
         PatternFactoryFragmentTinTuc fragment = new PatternFactoryFragmentTinTuc();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, loaitintuc);
+        args.putString(ARG_PARAM1, loaitintuc);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,7 +77,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
         super.onCreate(savedInstanceState);
         Log.e("TAG", "onCreate");
         if (getArguments() != null) {
-            loaiTinTuc = getArguments().getInt(ARG_PARAM1);
+            loaiTinTuc = getArguments().getString(ARG_PARAM1);
             listTinTuc = new ArrayList<>();
         }
 
@@ -98,7 +98,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
         initUI(view);
 
         presenterTinTucLogic = new PresenterTinTucLogic(getActivity(), this);
-        presenterTinTucLogic.executeTinTuc(-1, 0);
+        presenterTinTucLogic.executeTinTuc(loaiTinTuc, 0);
 
         return view;
     }

@@ -29,7 +29,7 @@ import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
 
 public interface ApiTinTuc {
     @GET("/api/news")
-    Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") int loaitintuc, @Query("offset") int offset);
+    Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") String loaitintuc, @Query("offset") int offset);
 
     @GET("/api/loaitintuc")
     Call<ArrayList<LoaiTinTuc>> getAllLoaiTinTuc();

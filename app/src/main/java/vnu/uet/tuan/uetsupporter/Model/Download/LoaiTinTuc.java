@@ -9,14 +9,13 @@ import java.io.Serializable;
  * Created by Administrator on 19/01/2017.
  */
 public class LoaiTinTuc implements Parcelable, Serializable {
-    private int _id;
+    private String _id;
     private String name;
-    private String linkPage;
+
 
     protected LoaiTinTuc(Parcel in) {
-        _id = in.readInt();
+        _id = in.readString();
         name = in.readString();
-        linkPage = in.readString();
     }
 
     public static final Creator<LoaiTinTuc> CREATOR = new Creator<LoaiTinTuc>() {
@@ -38,26 +37,24 @@ public class LoaiTinTuc implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(_id);
+        dest.writeString(_id);
         dest.writeString(name);
-        dest.writeString(linkPage);
     }
 
-    public LoaiTinTuc(int _id, String kind, String linkPage) {
+    public LoaiTinTuc(String _id, String kind) {
         this._id = _id;
         this.name = kind;
-        this.linkPage = linkPage;
     }
 
 
     public LoaiTinTuc() {
     }
 
-    public int get_id() {
+    public String get_id() {
         return _id;
     }
 
-    public void set_id(int _id) {
+    public void set_id(String _id) {
         this._id = _id;
     }
 
@@ -67,13 +64,5 @@ public class LoaiTinTuc implements Parcelable, Serializable {
 
     public void setKind(String kind) {
         this.name = kind;
-    }
-
-    public String getLinkPage() {
-        return linkPage;
-    }
-
-    public void setLinkPage(String linkPage) {
-        this.linkPage = linkPage;
     }
 }

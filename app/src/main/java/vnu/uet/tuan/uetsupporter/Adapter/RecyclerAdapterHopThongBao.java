@@ -2,14 +2,10 @@ package vnu.uet.tuan.uetsupporter.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -25,13 +21,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
@@ -41,7 +34,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  */
 
 public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
-    private ArrayList<PushNotification> list;
+    private ArrayList<AnnouncementNotification> list;
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
     private final int VIEW_TYPE_ITEM_WARNING = 1;
@@ -52,7 +45,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
     private ArrayList<LoaiThongBao> loaiThongBaoList;
     private final String TAG = this.getClass().getSimpleName();
 
-    public RecyclerAdapterHopThongBao(Context context, ArrayList<PushNotification> list) {
+    public RecyclerAdapterHopThongBao(Context context, ArrayList<AnnouncementNotification> list) {
         this.context = context;
         this.list = list;
 //        this.mucDoThongBaoList = Utils.getAllMucDoThongBao(context);
@@ -82,7 +75,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             //===================INIT ITEM==============================
 
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            PushNotification notification = list.get(position);
+            AnnouncementNotification notification = list.get(position);
 
             itemViewHolder.txt_tieuDe.setText(notification.getTieuDe());
             itemViewHolder.txt_noiDung.setText(notification.getNoiDung());
@@ -104,7 +97,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
     }
 
-    private void setupRead(ItemViewHolder itemViewHolder, PushNotification notification) {
+    private void setupRead(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
         itemViewHolder.img_read.setImageResource(notification.getRead() ?
                 R.drawable.ic_icon_read : R.drawable.ic_action_unread);
     }
@@ -140,7 +133,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      * @param itemViewHolder
      * @param notification
      */
-    private void setupAvatarWithAuthor(ItemViewHolder itemViewHolder, PushNotification notification) {
+    private void setupAvatarWithAuthor(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
 
         String urlAvatar = Config.API_HOSTNAME + "/avatar/" + notification.getIdSender();
         Log.e(TAG, urlAvatar);
@@ -170,7 +163,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      * @param itemViewHolder
      * @param notification
      */
-    private void setupLoaiThongBao(ItemViewHolder itemViewHolder, PushNotification notification) {
+    private void setupLoaiThongBao(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
         for (int i = 0; i < loaiThongBaoList.size(); i++) {
             if (loaiThongBaoList.get(i).get_id().equals(String.valueOf(notification.getIdLoaiThongBao()))) {
                 itemViewHolder.txt_loaithongbao.setText(loaiThongBaoList.get(i).getTenLoaiThongBao());
@@ -185,7 +178,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      * @param itemViewHolder
      * @param notification
      */
-    private void setupMucDo(ItemViewHolder itemViewHolder, PushNotification notification) {
+    private void setupMucDo(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
         itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.dark_red));
 //        switch (notification.getIdMucDoThongBao()) {
 //            case 1:

@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 
 /**
  * Created by Vu Minh Tuan on 2/16/2017.
@@ -52,7 +52,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         else return false;
     }
 
-    public int insertOne(PushNotification notification) {
+    public int insertOne(AnnouncementNotification notification) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();

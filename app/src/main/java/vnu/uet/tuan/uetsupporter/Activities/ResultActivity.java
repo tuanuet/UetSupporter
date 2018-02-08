@@ -4,11 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.DetailHopThongBaoFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.DetailTinTucFragment;
-import vnu.uet.tuan.uetsupporter.Fragment.Profile.DetailLopMonHocFragment;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.config.Config;
 

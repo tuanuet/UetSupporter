@@ -26,11 +26,9 @@ public class LoaiTinTucSQLHelper extends SQLFather {
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table " + Contract.LoaiTinTuc.NAME_TABLE + " ( " +
                 Contract.LoaiTinTuc._ID + " text primary key, "+
-                Contract.LoaiTinTuc.LINKPAGE + " text not null, "+
                 Contract.LoaiTinTuc.KIND + " text not null, " +
 
                 " UNIQUE (" + Contract.LoaiTinTuc._ID + ", " +
-                Contract.LoaiTinTuc.LINKPAGE + ", " +
                 Contract.LoaiTinTuc.KIND +") ON CONFLICT REPLACE);";
 
         db.execSQL(sql);
@@ -52,7 +50,6 @@ public class LoaiTinTucSQLHelper extends SQLFather {
                 LoaiTinTuc loaiTinTuc = arr.get(i);
 
                 values.put(Contract.LoaiTinTuc._ID,loaiTinTuc.get_id());
-                values.put(Contract.LoaiTinTuc.LINKPAGE,loaiTinTuc.getLinkPage());
                 values.put(Contract.LoaiTinTuc.KIND,loaiTinTuc.getKind());
 
                 long _id = db.insert(Contract.LoaiTinTuc.NAME_TABLE, null, values);

@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by Vu Minh Tuan on 2/13/2017.
  */
 
-public class PushNotification implements Serializable {
+public class AnnouncementNotification implements Serializable {
     public static final String TIEUDE = "tieuDe";
     public static final String KIND = "kind";
     public static final String NOIDUNG = "noiDung";
@@ -46,9 +46,9 @@ public class PushNotification implements Serializable {
         this.nameSender = nameSender;
     }
 
-    public PushNotification(String tieuDe, String noiDung, String link, Boolean isRead,
-                            String thoiGianNhan, int kind, String idMucDoThongBao, String idLoaiThongBao,
-                            Boolean hasFile, String idSender, String nameSender) {
+    public AnnouncementNotification(String tieuDe, String noiDung, String link, Boolean isRead,
+                                    String thoiGianNhan, int kind, String idMucDoThongBao, String idLoaiThongBao,
+                                    Boolean hasFile, String idSender, String nameSender) {
         this.tieuDe = tieuDe;
         this.noiDung = noiDung;
         this.link = link;
@@ -62,7 +62,7 @@ public class PushNotification implements Serializable {
         this.nameSender = nameSender;
     }
 
-    public PushNotification() {
+    public AnnouncementNotification() {
         this.tieuDe = "";
         this.noiDung = "";
         this.link = "";
@@ -76,9 +76,9 @@ public class PushNotification implements Serializable {
         this.nameSender = "Phòng Đào Tạo";
     }
 
-    public PushNotification(String tieuDe, String noiDung, String link,
-                            Boolean isRead, String thoiGianNhan, int kind,
-                            String idMucDoThongBao, String idLoaiThongBao, Boolean hasFile) {
+    public AnnouncementNotification(String tieuDe, String noiDung, String link,
+                                    Boolean isRead, String thoiGianNhan, int kind,
+                                    String idMucDoThongBao, String idLoaiThongBao, Boolean hasFile) {
         this.tieuDe = tieuDe;
         this.noiDung = noiDung;
         this.link = link;

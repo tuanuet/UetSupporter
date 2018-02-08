@@ -2,7 +2,7 @@ package vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.MainHopThongBao;
 
 import java.util.List;
 
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 
 /**
  * Created by vmtuan on 3/24/2017.
@@ -10,7 +10,7 @@ import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 
 public interface IPresenterHopThongBaoModel {
     interface OnGetPushNotificationFinish {
-        void OnSuccess(List<PushNotification> notifications);
+        void OnSuccess(List<AnnouncementNotification> notifications);
 
         void OnFailure(String fail);
     }

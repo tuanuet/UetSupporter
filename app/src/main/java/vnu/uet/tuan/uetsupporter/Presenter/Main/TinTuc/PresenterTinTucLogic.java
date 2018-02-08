@@ -6,6 +6,7 @@ import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Listener.OnCancelRequest;
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.View.Main.TinTuc.IViewTinTuc;
 
 /**
@@ -23,9 +24,10 @@ public class PresenterTinTucLogic implements IPresenterTinTucView, IPresenterTin
     }
 
     @Override
-    public void executeTinTuc(int loaitintuc, int offset) {
+    public void executeTinTuc(String loaitintuc, int offset) {
         iViewTinTuc.OnPreSendRequest();
-        presenterTinTucModel.sendRequest(loaitintuc, offset, this);
+        String snakeCase = Utils.snakeCase(loaitintuc);
+        presenterTinTucModel.sendRequest(snakeCase, offset, this);
     }
 
     @Override

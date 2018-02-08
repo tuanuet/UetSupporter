@@ -18,7 +18,7 @@ import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterHopThongBao;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.MainHopThongBao.IPresenterHopThongBaoView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.MainHopThongBao.PresenterHopThongBaoLogic;
 import vnu.uet.tuan.uetsupporter.R;
@@ -35,7 +35,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     private RecyclerView recyclerView;
     private LinearLayoutManager mLayoutManager;
     private RecyclerAdapterHopThongBao adapter;
-    private ArrayList<PushNotification> list;
+    private ArrayList<AnnouncementNotification> list;
     private IPresenterHopThongBaoView presenterHopThongBaoLogic;
 
 
@@ -73,7 +73,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
 
     @Override
     public void onItemClick(int position, View v) {
-        PushNotification notification = list.get(position);
+        AnnouncementNotification notification = list.get(position);
         Intent intent = new Intent(getActivity(), Result2Activity.class);
         intent.putExtra(Config.KEY_PUSHNOTIFICATION, notification);
         startActivity(intent);
@@ -91,7 +91,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     }
 
     @Override
-    public void OnGetHopThongBaoSuccess(List<PushNotification> notifications) {
+    public void OnGetHopThongBaoSuccess(List<AnnouncementNotification> notifications) {
         list.addAll(notifications);
 
         adapter.notifyItemInserted(list.size() - notifications.size());

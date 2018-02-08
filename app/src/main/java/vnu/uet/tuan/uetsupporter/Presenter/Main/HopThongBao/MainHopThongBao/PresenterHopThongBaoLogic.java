@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
+import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.MainHopThongBao.IViewHopThongBao;
 
 /**
@@ -29,7 +29,7 @@ public class PresenterHopThongBaoLogic implements IPresenterHopThongBaoView, IPr
     }
 
     @Override
-    public void OnSuccess(List<PushNotification> notifications) {
+    public void OnSuccess(List<AnnouncementNotification> notifications) {
         iViewHopThongBao.OnGetHopThongBaoSuccess(notifications);
     }
 

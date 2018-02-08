@@ -1,9 +1,6 @@
 package vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBao;
 
-import java.util.List;
-
 import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
-import vnu.uet.tuan.uetsupporter.Model.PushNotification;
 
 /**
  * Created by vmtuan on 3/24/2017.
