@@ -17,6 +17,7 @@ public class AnnouncementNotification implements Serializable {
     public static final String HASFILE = "hasfile";
     public static final String IDSENDER = "idSender";
     public static final String NAMESENDER = "nameSender";
+    public static final String  CODEKINDANNOUNCE = "codeMucDoThongBao";
 
     private String tieuDe;
     private String noiDung;
@@ -29,6 +30,7 @@ public class AnnouncementNotification implements Serializable {
     private Boolean hasFile;
     private String idSender;
     private String nameSender;
+    private String codeMucDoThongBao;
 
     public String getIdSender() {
         return idSender;
@@ -48,7 +50,7 @@ public class AnnouncementNotification implements Serializable {
 
     public AnnouncementNotification(String tieuDe, String noiDung, String link, Boolean isRead,
                                     String thoiGianNhan, int kind, String idMucDoThongBao, String idLoaiThongBao,
-                                    Boolean hasFile, String idSender, String nameSender) {
+                                    Boolean hasFile, String idSender, String nameSender,String codeMucDoThongBao) {
         this.tieuDe = tieuDe;
         this.noiDung = noiDung;
         this.link = link;
@@ -60,6 +62,7 @@ public class AnnouncementNotification implements Serializable {
         this.hasFile = hasFile;
         this.idSender = idSender;
         this.nameSender = nameSender;
+        this.codeMucDoThongBao = codeMucDoThongBao;
     }
 
     public AnnouncementNotification() {
@@ -74,6 +77,7 @@ public class AnnouncementNotification implements Serializable {
         this.hasFile = false;
         this.idSender = "phongban2";
         this.nameSender = "Phòng Đào Tạo";
+        this.codeMucDoThongBao ="binh_thuong";
     }
 
     public AnnouncementNotification(String tieuDe, String noiDung, String link,
@@ -96,6 +100,14 @@ public class AnnouncementNotification implements Serializable {
 
     public void setIdMucDoThongBao(String idMucDoThongBao) {
         this.idMucDoThongBao = idMucDoThongBao;
+    }
+
+    public String getCodeMucDoThongBao() {
+        return codeMucDoThongBao;
+    }
+
+    public void setCodeMucDoThongBao(String codeMucDoThongBao) {
+        this.codeMucDoThongBao = codeMucDoThongBao;
     }
 
     public String getIdLoaiThongBao() {

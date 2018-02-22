@@ -9,7 +9,6 @@
     <color name="light_black">#2b2b2b</color>
     <color name="darkwhite">#e4e3e3</color>
     <color name="half_black">#80000000</color>
-
     <color name="theme_primary">#00BCD4</color>
     <color name="theme_primary_dark">#0097A7</color>
     <color name="theme_primary_dark2">#006064</color>
@@ -25,16 +24,20 @@
     <color name="dark_yellow">#f1c40f</color>
     <color name="light_grey">#cacaca</color>
 
+    <color name="card_read">#f5f4f4</color>
+    <color name="card_unread">#d2d2d2</color>
+
+    <color name="card_view_header">#348ddb</color>
     <array name="note_neutral_colors">
         <item>#9E9E9E</item>
         <item>#455A64</item>
         <item>#607D8B</item>
     </array>
 
-    <!--<array name="note_accent_colors">-->
-    <!--<item>#039BE5</item>-->
-    <!--<item>#3D51B3</item>-->
-    <!--<item>#689f38</item>-->
-    <!--<item>#FD7044</item>-->
-    <!--</array>-->
+    <array name="note_accent_colors">
+        <item>#039BE5</item>
+        <item>#3D51B3</item>
+        <item>#689f38</item>
+        <item>#FD7044</item>
+    </array>
 </resources>

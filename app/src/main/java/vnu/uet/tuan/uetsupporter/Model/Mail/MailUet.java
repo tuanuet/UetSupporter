@@ -415,10 +415,6 @@ public class MailUet {
 
     public boolean cancelRequesEmail() throws Exception {
         inbox.close(true);
-        if (inbox.isOpen()) {
-            return false;
-        } else {
-            return true;
-        }
+        return !inbox.isOpen();
     }
 }

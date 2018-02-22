@@ -93,6 +93,8 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     @Override
     public void OnGetHopThongBaoSuccess(List<AnnouncementNotification> notifications) {
         list.addAll(notifications);
+        Log.e(TAG,"Run here!");
+        Log.e(TAG,notifications.get(0).getCodeMucDoThongBao());
 
         adapter.notifyItemInserted(list.size() - notifications.size());
     }

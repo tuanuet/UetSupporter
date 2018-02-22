@@ -138,9 +138,6 @@ public class EmailSQLHelper extends SQLFather {
                 "      LIMIT 1 OFFSET " + i +
                 "    ) ";
         db.execSQL(sqlDetele);
-        if (true) {
-            return true;
-        }
-        return false;
+        return true;
     }
 }

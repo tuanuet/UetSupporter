@@ -7,22 +7,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
-    android:layout_marginStart="5dp"
-    android:layout_marginEnd="5dp"
+    android:layout_marginStart="2dp"
+    android:layout_marginEnd="2dp"
     card_view:cardElevation="5dp"
-    card_view:cardCornerRadius="5dp">
+    card_view:cardCornerRadius="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:id="@+id/recycle_item_isread"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dp">
+            android:padding="3dp">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatar"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
@@ -35,7 +36,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
                 android:layout_toEndOf="@+id/avatar"
                 android:layout_toRightOf="@+id/avatar"
                 android:orientation="vertical">
@@ -45,28 +45,36 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="3dp"
                     android:maxLines="1"
                     fontPath="fonts/Roboto-Bold.ttf"
                     android:text="@string/user_pdt"
                     android:textColor="@color/black"
                     android:textSize="18sp" />
-
+                <TextView
+                    android:id="@+id/recycle_item_loaithongbao"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:textSize="14sp"
+                    android:text="@string/tuyendungt"
+                    android:paddingLeft="5dp"
+                    />
                 <TextView
                     android:id="@+id/recycle_item_postat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
                     android:gravity="center"
                     android:maxLines="1"
                     android:text="@string/date_test"
-                    android:textSize="12sp" />
+                    android:textSize="14sp"
+                    android:paddingLeft="5dp"/>
+
             </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/recycle_item_tool"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true">
@@ -82,21 +90,12 @@
 
         </RelativeLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="65dp"
-            android:layout_marginStart="65dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            android:background="@color/light_grey" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:orientation="horizontal"
-            android:padding="3dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/recycle_item_tieude"
@@ -107,75 +106,30 @@
                 android:textColor="@color/black"
                 android:textSize="18sp" />
 
-        </LinearLayout>
+            <ImageView
+                android:id="@+id/recycle_item_hasfile"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:padding="3dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_action_attachfile" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="3dp">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/recycle_item_noidung"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxLines="3"
+                android:paddingStart="5dp"
                 android:text="@string/testtext"
                 android:textColor="@color/black" />
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/recycle_item_loaithongbao"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:text="@string/tuyendungt"
-                android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginStart="10dp" />
-
-            <ImageView
-                android:id="@+id/recycle_item_hasfile"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:padding="3dp"
-                android:src="@drawable/ic_action_attachfile"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/recycle_item_isread"
-                android:layout_toStartOf="@+id/recycle_item_isread"
-                android:layout_marginRight="12dp"
-                android:layout_marginEnd="12dp" />
-
-            <ImageView
-                android:id="@+id/recycle_item_isread"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:padding="3dp"
-                android:src="@drawable/ic_icon_read"
-                android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@+id/recycle_item_sendfeedback"
-                android:layout_toStartOf="@+id/recycle_item_sendfeedback"
-                android:layout_marginRight="12dp"
-                android:layout_marginEnd="12dp" />
-            <ImageView
-                android:id="@+id/recycle_item_sendfeedback"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/tuyendungt"
-                android:padding="3dp"
-                android:src="@drawable/ic_action_send_now"
-                android:layout_marginRight="13dp"
-                android:layout_marginEnd="13dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

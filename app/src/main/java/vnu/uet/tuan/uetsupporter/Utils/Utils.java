@@ -65,7 +65,7 @@ public class Utils {
             joinner += (tag + " | ");
         }
         return joinner.trim().substring(0,joinner.trim().length()-1).trim();
-    };
+    }
 
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -214,7 +214,8 @@ public class Utils {
             announcementNotification.setLink(cursor.getString(Contract.PushNotification.link_page));
             announcementNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
             announcementNotification.setIdLoaiThongBao(cursor.getString(Contract.PushNotification.id_loai_thong_bao));
-            announcementNotification.setIdMucDoThongBao(cursor.getString(Contract.PushNotification.id_muc_mo_thong_bao));
+            announcementNotification.setIdMucDoThongBao(cursor.getString(Contract.PushNotification.id_muc_do_thong_bao));
+            announcementNotification.setCodeMucDoThongBao(cursor.getString(Contract.PushNotification.code_muc_do_thong_bao));
             announcementNotification.setHasFile(cursor.getInt(Contract.PushNotification.has_file) == 1);
             announcementNotification.setIdSender(cursor.getString(Contract.PushNotification.id_sender));
             announcementNotification.setNameSender(cursor.getString(Contract.PushNotification.name_sender));

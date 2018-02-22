@@ -70,9 +70,10 @@ public class Contract {
         public static final int thoi_gian_nhan = 6;
         public static final int has_file = 7;
         public static final int id_loai_thong_bao = 8;
-        public static final int id_muc_mo_thong_bao = 9;
+        public static final int id_muc_do_thong_bao = 9;
         public static final int id_sender = 10;
         public static final int name_sender = 11;
+        public static final int code_muc_do_thong_bao = 12;
         public static final int VERSION = 1;
 
         public static final String NAME_TABLE = "pushnotification";
@@ -88,6 +89,6 @@ public class Contract {
         public static final String IDMUCHOTHONGBAO = "idmucdothongbao";
         public static final String IDSENDER = "idsender";
         public static final String NAMESENDER = "namesender";
-
+        public static final String CODEMUCDOTHONGBAO = "codemucdothongbao";
     }
 }

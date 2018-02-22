@@ -96,8 +96,8 @@ public class MainActivity extends AppCompatActivity
 
     //load số lượng các notifi chưa được đọc
     private void setupNumberForNav() {
-        navigationView.getMenu().getItem(2).setActionView(R.layout.nav_item_number);
-        TextView homthu_number = (TextView) navigationView.getMenu().getItem(2)
+        navigationView.getMenu().getItem(1).setActionView(R.layout.nav_item_number);
+        TextView homthu_number = (TextView) navigationView.getMenu().getItem(1)
                 .getActionView().findViewById(R.id.hopthu_number);
         homthu_number.setText(String.valueOf(Utils.getNumberOnNav(getApplicationContext())));
     }
@@ -217,9 +217,7 @@ public class MainActivity extends AppCompatActivity
 
     private boolean setFragment(int id) {
         try {
-            if (id == R.id.nav_thongbao) {
-
-            } else if (id == R.id.nav_tintuc) {
+            if (id == R.id.nav_tintuc) {
 
                 Fragment tintuc = new TinTucFragment();
                 showChangeFragment(tintuc, getString(R.string.nav_tintuc));

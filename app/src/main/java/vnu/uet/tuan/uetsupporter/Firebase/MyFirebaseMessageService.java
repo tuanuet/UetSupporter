@@ -4,6 +4,7 @@ package vnu.uet.tuan.uetsupporter.Firebase;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -94,11 +95,14 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
 
     private AnnouncementNotification getPushNotification(Map data) {
 
+        Log.e(TAG,(String) data.get(AnnouncementNotification.CODEKINDANNOUNCE));
+
         AnnouncementNotification push = new AnnouncementNotification();
         push.setKind(getIntFromString(String.valueOf(data.get(AnnouncementNotification.KIND))));
         push.setLink((String) data.get(AnnouncementNotification.LINK));
         push.setNoiDung((String) data.get(AnnouncementNotification.NOIDUNG));
         push.setRead(false);
+        push.setCodeMucDoThongBao((String) data.get(AnnouncementNotification.CODEKINDANNOUNCE));
         push.setThoiGianNhan(Utils.getThoiGian(System.currentTimeMillis()));
         push.setTieuDe((String) data.get(AnnouncementNotification.TIEUDE));
         push.setHasFile((getIntFromString(String.valueOf(data.get(AnnouncementNotification.HASFILE))) == 1)); //fix lai
