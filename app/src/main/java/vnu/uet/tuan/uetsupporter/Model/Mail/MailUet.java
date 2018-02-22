@@ -22,7 +22,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Address;
+import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Flags;
 import javax.mail.Folder;
@@ -30,15 +34,31 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Part;
+import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Store;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.mail.search.FlagTerm;
 
 public class MailUet {
 
+    private enum Protocol {
+        SMTP,
+        SMTPS,
+        TLS
+    }
+
+    private final String TAG = this.getClass().getName();
+
     private static MailUet instance;
     private static Folder inbox = null;
 
+    private String server = "ctmail.vnu.edu.vn";
     private static String user = "";
     private static String pass = "";
 
@@ -75,7 +95,6 @@ public class MailUet {
             Store store = session.getStore(storeName);
 
             // Set the server depending on the parameter flag value
-            String server = "ctmail.vnu.edu.vn";
             store.connect(server, user, pass);
 
             Log.e("MAIL", "done!");
@@ -142,7 +161,6 @@ public class MailUet {
         inbox.close(true);
         return emails;
     }
-
 
     public Boolean deleteEmail(int i) {
         try {
@@ -257,8 +275,7 @@ public class MailUet {
     }
 
     // get text of content message
-    private Email getDetailEmail(Email email, Part p) throws
-            Exception {
+    private Email getDetailEmail(Email email, Part p) throws Exception {
         //check type mixed: mixed include alternative, html, text, file
         if (p.isMimeType("multipart/mixed")) {
             // prefer html text over plain text
@@ -302,10 +319,8 @@ public class MailUet {
         return email;
     }
 
-
     // get text of content message
-    private Email setFileExistAndGetContent(Email email, Part p) throws
-            Exception {
+    private Email setFileExistAndGetContent(Email email, Part p) throws Exception {
         //check type mixed: mixed include alternative, html, text, file
         if (p.isMimeType("multipart/mixed")) {
             // prefer html text over plain text
@@ -381,14 +396,10 @@ public class MailUet {
     }
 
     // get content text (text/*)
-    private String processText(Part p) throws
-            Exception {
+    private String processText(Part p) throws Exception {
         String s = (String) p.getContent();
-
         return s;
     }
-
-    private final String TAG = this.getClass().getName();
 
     // reverse array message
     private static Object[] reverse(Object[] arr) {
@@ -417,4 +428,135 @@ public class MailUet {
         inbox.close(true);
         return !inbox.isOpen();
     }
+
+    public void sendEmail(String to, String from, String cc, String bcc, String subject,String bodyText) throws MessagingException {
+
+        InternetAddress[] myToList = InternetAddress.parse(to);
+        InternetAddress[] myBccList = InternetAddress.parse(bcc);
+        InternetAddress[] myCcList = InternetAddress.parse(cc);
+
+        // Get system properties
+        Properties properties = new Properties();
+
+        properties.put("mail.smtp.starttls.enable", true);
+        properties.put("mail.smtp.host", server);
+        properties.put("mail.smtp.port", 25);
+        properties.put("mail.smtp.auth", true);
+
+        Log.e(TAG,MailUet.user+"@vnu.edu.vn" + MailUet.pass);
+        Authenticator authenticator = new Authenticator() {
+            private PasswordAuthentication pa = new PasswordAuthentication(MailUet.user+"@vnu.edu.vn", MailUet.pass);
+
+            @Override
+            public PasswordAuthentication getPasswordAuthentication() {
+                return pa;
+            }
+        };
+        // Get the Session object.
+        Session session = Session.getInstance(properties,authenticator);
+        session.setDebug(true);
+
+        // Create a default MimeMessage object.
+        MimeMessage message = new MimeMessage(session);
+
+        // Set From: header field of the header.
+        message.setFrom(new InternetAddress(from));
+
+        // Set To: header field of the header.
+        message.setRecipients(Message.RecipientType.TO,myToList);
+        message.addRecipients(Message.RecipientType.BCC,myBccList);
+        message.addRecipients(Message.RecipientType.CC,myCcList);
+
+        // Set Subject: header field
+        message.setSubject(subject);
+
+        // Create the message part
+        BodyPart messageBodyPart = new MimeBodyPart();
+
+        // Fill the message
+        messageBodyPart.setText(bodyText);
+
+        // Create a multipar message
+        Multipart multipart = new MimeMultipart();
+
+        // Set text message part
+        multipart.addBodyPart(messageBodyPart);
+
+        // Send the complete message parts
+        message.setContent(multipart );
+
+        // Send message
+        Transport.send(message);
+    }
+
+    public void sendEmail(String to, String from, String cc, String bcc, String subject, String bodyText, String pathFile) throws MessagingException {
+
+        InternetAddress[] myToList = InternetAddress.parse(to);
+        InternetAddress[] myBccList = InternetAddress.parse(bcc);
+        InternetAddress[] myCcList = InternetAddress.parse(cc);
+
+        MailUet.Protocol protocol = MailUet.Protocol.SMTP;// default SMTP
+
+        // Get system properties
+        Properties properties = System.getProperties();
+
+        // Setup mail server
+        properties.setProperty("mail.user", MailUet.user);
+        properties.setProperty("mail.password", MailUet.pass);
+        properties.setProperty("mail.smtp.host", server);
+        switch (protocol) {
+            case SMTPS:
+                properties.put("mail.smtp.ssl.enable", true);
+                break;
+            case TLS:
+                properties.put("mail.smtp.starttls.enable", true);
+                break;
+        }
+        // Get the default Session object.
+        Session session = Session.getDefaultInstance(properties);
+
+        // Create a default MimeMessage object.
+        MimeMessage message = new MimeMessage(session);
+
+        // Set From: header field of the header.
+        message.setFrom(new InternetAddress(from));
+
+        // Set To: header field of the header.
+        message.setRecipients(Message.RecipientType.TO,myToList);
+        // changes,...
+        message.addRecipients(Message.RecipientType.BCC,myBccList);
+        message.addRecipients(Message.RecipientType.CC,myCcList);
+
+        // Set Subject: header field
+        message.setSubject(subject);
+
+        // Create the message part
+        BodyPart messageBodyPart = new MimeBodyPart();
+
+        // Fill the message
+        messageBodyPart.setText(bodyText);
+
+        // Create a multipar message
+        Multipart multipart = new MimeMultipart();
+
+        // Set text message part
+        multipart.addBodyPart(messageBodyPart);
+
+        // Part two is attachment
+        messageBodyPart = new MimeBodyPart();
+        String filename = pathFile;
+        DataSource source = new FileDataSource(filename);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(filename);
+        multipart.addBodyPart(messageBodyPart);
+
+        // Send the complete message parts
+        message.setContent(multipart );
+
+        // Send message
+        Transport.send(message);
+
+
+    }
+
 }
