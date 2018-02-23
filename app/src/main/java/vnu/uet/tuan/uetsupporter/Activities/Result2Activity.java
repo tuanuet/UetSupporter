@@ -17,6 +17,7 @@ import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 public class Result2Activity extends AppCompatActivity {
+    private final String TAG = this.getClass().getSimpleName();
     private Fragment fragment;
     private String name;
     private Toolbar toolbar;
@@ -44,20 +45,17 @@ public class Result2Activity extends AppCompatActivity {
             AnnouncementNotification notification = (AnnouncementNotification) getIntent().getSerializableExtra(Config.KEY_PUSHNOTIFICATION);
             Bundle bundle = new Bundle();
             bundle.putSerializable(Config.KEY_PUSHNOTIFICATION, notification);
-
-            switch (notification.getKind()) {
+            Log.e(TAG,notification.getTypeNotification()+notification.getNameSender());
+            switch (notification.getTypeNotification()) {
                 case 1: {
                     toolbar.setTitle("Thông báo");
 
                     fragment = new DetailHopThongBaoFragment();
                     break;
                 }
-                case 2: {
+                case 3: {
                     toolbar.setVisibility(View.GONE);
                     fragment = new DetailHopThongBaoDiemFragment();
-                    break;
-                }
-                case 3: {
                     break;
                 }
             }

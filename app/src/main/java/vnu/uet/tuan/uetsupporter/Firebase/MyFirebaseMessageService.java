@@ -41,15 +41,15 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
 
 //        export const KIND_ANNOUNCEMENT_NOTIFICATION = 1;
 //        export const KIND_NEW_NOTIFICATION = 2;
-        Integer kindNotification = Integer.parseInt((String) data.get("typeNotification"));
-        Log.e(TAG,"RUN HERE");
+//        export const KIND_MARK_NOTIFICATION = 3;
+
+        Integer kindNotification = Integer.parseInt((String) data.get(AnnouncementNotification.TYPENOTIFICATION));
+        //lưu vao database
+        PushNotificationSQLHelper db = new PushNotificationSQLHelper(getApplicationContext());
         switch (kindNotification) {
             case 1 : {
                 AnnouncementNotification announcementNotification = getPushNotification(data);
-                //lưu vao database
-                PushNotificationSQLHelper db = new PushNotificationSQLHelper(getApplicationContext());
                 int pos = db.insertOne(announcementNotification);
-
                 ThongBaoMessageNotification.notify(getApplicationContext(), announcementNotification, pos);
                 break;
             }
@@ -58,16 +58,38 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 NewMessageNotification.notify(getApplicationContext(),newNotification);
                 break;
             }
+            case 3 : {
+                AnnouncementNotification announcementNotification = getMarkNotification(data);
+                int pos = db.insertOne(announcementNotification);
+                ThongBaoMessageNotification.notify(getApplicationContext(), announcementNotification, pos);
+            }
         }
 
 
 
     }
 
+    private AnnouncementNotification getMarkNotification(Map data) {
+        AnnouncementNotification push = new AnnouncementNotification();
+        push.setLink((String) data.get(AnnouncementNotification.LINK));
+        push.setNoiDung((String) data.get(AnnouncementNotification.NOIDUNG));
+        push.setRead(false);
+        push.setCodeMucDoThongBao("canh_bao");
+        push.setThoiGianNhan(Utils.getThoiGian(System.currentTimeMillis()));
+        push.setTieuDe((String) data.get(AnnouncementNotification.TIEUDE));
+        push.setHasFile(false); //fix lai
+        push.setIdLoaiThongBao("");
+        push.setIdMucDoThongBao("");
+        push.setIdSender(String.valueOf(data.get(AnnouncementNotification.IDSENDER)));
+        push.setTypeNotification(getIntFromString(String.valueOf(data.get(AnnouncementNotification.TYPENOTIFICATION))));
+        push.setNameSender(String.valueOf(data.get(AnnouncementNotification.NAMESENDER)));
+        return push;
+
+    }
+
     private NewNotification getNewNotification(Map data) {
         NewNotification push = new NewNotification();
         push.setTitle((String) data.get(NewNotification.TITLE));
-        push.setKind(Integer.parseInt((String) data.get(NewNotification.KIND)));
         push.setLink((String) data.get(NewNotification.LINK));
         push.set_id((String) data.get(NewNotification._ID));
         push.setContent((String) data.get(NewNotification.CONTENT));
@@ -86,7 +108,6 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        Log.e(TAG, "getNewNotification: "+ tags.get(0).getKind());
         push.setTags(tags.toArray(new LoaiTinTuc[tags.size()]));
         push.setTypeNotification(Integer.parseInt((String) data.get(NewNotification.TYPENOTIFICATION)));
         return push;
@@ -94,10 +115,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
 
     private AnnouncementNotification getPushNotification(Map data) {
 
-        Log.e(TAG,(String) data.get(AnnouncementNotification.CODEKINDANNOUNCE));
-
         AnnouncementNotification push = new AnnouncementNotification();
-        push.setKind(getIntFromString(String.valueOf(data.get(AnnouncementNotification.KIND))));
         push.setLink((String) data.get(AnnouncementNotification.LINK));
         push.setNoiDung((String) data.get(AnnouncementNotification.NOIDUNG));
         push.setRead(false);
@@ -108,6 +126,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setIdLoaiThongBao(String.valueOf(data.get(AnnouncementNotification.IDLOAITHONGBAO)));
         push.setIdMucDoThongBao(String.valueOf(data.get(AnnouncementNotification.IDMUCDOTHONGBAO)));
         push.setIdSender(String.valueOf(data.get(AnnouncementNotification.IDSENDER)));
+        push.setTypeNotification(getIntFromString(String.valueOf(data.get(AnnouncementNotification.TYPENOTIFICATION))));
         push.setNameSender(String.valueOf(data.get(AnnouncementNotification.NAMESENDER)));
         return push;
     }

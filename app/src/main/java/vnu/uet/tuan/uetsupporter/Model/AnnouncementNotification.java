@@ -11,7 +11,7 @@ import vnu.uet.tuan.uetsupporter.Model.interfaces.INotification;
 
 public class AnnouncementNotification implements Serializable,INotification {
     public static final String TIEUDE = "tieuDe";
-    public static final String KIND = "kind";
+    public static final String TYPENOTIFICATION = "typeNotification";
     public static final String NOIDUNG = "noiDung";
     public static final String LINK = "link";
     public static final String IDLOAITHONGBAO = "idLoaiThongBao";
@@ -26,7 +26,7 @@ public class AnnouncementNotification implements Serializable,INotification {
     private String link;
     private Boolean isRead;
     private String thoiGianNhan;
-    private int kind;
+    private int typeNotification;
     private String idMucDoThongBao;
     private String idLoaiThongBao;
     private Boolean hasFile;
@@ -51,14 +51,14 @@ public class AnnouncementNotification implements Serializable,INotification {
     }
 
     public AnnouncementNotification(String tieuDe, String noiDung, String link, Boolean isRead,
-                                    String thoiGianNhan, int kind, String idMucDoThongBao, String idLoaiThongBao,
+                                    String thoiGianNhan, int typeNotification, String idMucDoThongBao, String idLoaiThongBao,
                                     Boolean hasFile, String idSender, String nameSender,String codeMucDoThongBao) {
         this.tieuDe = tieuDe;
         this.noiDung = noiDung;
         this.link = link;
         this.isRead = isRead;
         this.thoiGianNhan = thoiGianNhan;
-        this.kind = kind;
+        this.typeNotification = typeNotification;
         this.idMucDoThongBao = idMucDoThongBao;
         this.idLoaiThongBao = idLoaiThongBao;
         this.hasFile = hasFile;
@@ -73,7 +73,7 @@ public class AnnouncementNotification implements Serializable,INotification {
         this.link = "";
         this.isRead = false;
         this.thoiGianNhan = "";
-        this.kind = 0;
+        this.typeNotification = 0;
         this.idMucDoThongBao = "";
         this.idLoaiThongBao = "";
         this.hasFile = false;
@@ -83,14 +83,14 @@ public class AnnouncementNotification implements Serializable,INotification {
     }
 
     public AnnouncementNotification(String tieuDe, String noiDung, String link,
-                                    Boolean isRead, String thoiGianNhan, int kind,
+                                    Boolean isRead, String thoiGianNhan, int typeNotification,
                                     String idMucDoThongBao, String idLoaiThongBao, Boolean hasFile) {
         this.tieuDe = tieuDe;
         this.noiDung = noiDung;
         this.link = link;
         this.isRead = isRead;
         this.thoiGianNhan = thoiGianNhan;
-        this.kind = kind;
+        this.typeNotification = typeNotification;
         this.idMucDoThongBao = idMucDoThongBao;
         this.idLoaiThongBao = idLoaiThongBao;
         this.hasFile = hasFile;
@@ -168,12 +168,12 @@ public class AnnouncementNotification implements Serializable,INotification {
         this.thoiGianNhan = thoiGianNhan;
     }
 
-    public int getKind() {
-        return kind;
+    public int getTypeNotification() {
+        return typeNotification;
     }
 
-    public void setKind(int kind) {
-        this.kind = kind;
+    public void setTypeNotification(int typeNotification) {
+        this.typeNotification = typeNotification;
     }
 
     @Override

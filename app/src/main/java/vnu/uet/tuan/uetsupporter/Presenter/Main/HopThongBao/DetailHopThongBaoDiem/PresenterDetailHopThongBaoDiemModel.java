@@ -44,19 +44,8 @@ public class PresenterDetailHopThongBaoDiemModel implements IPresenterDetailHopT
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        Log.e(TAG, link);
-        String idLop = getidLop(link);
-        call = apiTinTuc.getDiemSinhVienByIdLop(idLop, Utils.getUserToken(context));
+        call = apiTinTuc.getDiemSinhVienByIdLop(link, Utils.getUserToken(context));
         call.enqueue(this);
-    }
-
-    //link dang /avc/avc/idLop;
-    //đưa về lay idlop
-    private String getidLop(String link) {
-        String[] arr = link.split("/");
-        if (arr.length == 4) {
-            return arr[3].trim();
-        } else return null;
     }
 
 

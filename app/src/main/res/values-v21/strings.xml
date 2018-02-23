@@ -125,5 +125,6 @@
     <string name="cancel_success">Cancel Success</string>
     <string name="cancel_failure">Cancel Failure</string>
     <string name="title_inbox">Thư đến</string>
+    <string name="pref_title_mark">Điểm Thi</string>
 
 </resources>

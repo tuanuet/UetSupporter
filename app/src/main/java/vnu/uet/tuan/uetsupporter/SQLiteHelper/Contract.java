@@ -64,23 +64,22 @@ public class Contract {
         public static final int _id = 0;
         public static final int tieu_de = 1;
         public static final int noi_dung = 2;
-        public static final int kind = 3;
-        public static final int link_page = 4;
-        public static final int is_read = 5;
-        public static final int thoi_gian_nhan = 6;
-        public static final int has_file = 7;
-        public static final int id_loai_thong_bao = 8;
-        public static final int id_muc_do_thong_bao = 9;
-        public static final int id_sender = 10;
-        public static final int name_sender = 11;
-        public static final int code_muc_do_thong_bao = 12;
+        public static final int link_page = 3;
+        public static final int is_read = 4;
+        public static final int thoi_gian_nhan = 5;
+        public static final int has_file = 6;
+        public static final int id_loai_thong_bao = 7;
+        public static final int id_muc_do_thong_bao = 8;
+        public static final int id_sender = 9;
+        public static final int name_sender = 10;
+        public static final int code_muc_do_thong_bao = 11;
+        public static final int type_notification = 12;
         public static final int VERSION = 1;
 
         public static final String NAME_TABLE = "pushnotification";
         public static final String _ID = "id";
         public static final String TIEU_DE = "tieude";
         public static final String NOI_DUNG = "noidung";
-        public static final String KIND = "loai";
         public static final String LINK = "link";
         public static final String ISREAD = "isread";
         public static final String THOIGIANNHAN = "thoigiannhan";
@@ -90,5 +89,6 @@ public class Contract {
         public static final String IDSENDER = "idsender";
         public static final String NAMESENDER = "namesender";
         public static final String CODEMUCDOTHONGBAO = "codemucdothongbao";
+        public static final String TYPENOTIFICATION = "typenotification";
     }
 }

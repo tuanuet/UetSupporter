@@ -210,7 +210,6 @@ public class Utils {
             AnnouncementNotification announcementNotification = new AnnouncementNotification();
             announcementNotification.setTieuDe(cursor.getString(Contract.PushNotification.tieu_de));
             announcementNotification.setNoiDung(cursor.getString(Contract.PushNotification.noi_dung));
-            announcementNotification.setKind(cursor.getInt(Contract.PushNotification.kind));
             announcementNotification.setLink(cursor.getString(Contract.PushNotification.link_page));
             announcementNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
             announcementNotification.setIdLoaiThongBao(cursor.getString(Contract.PushNotification.id_loai_thong_bao));
@@ -220,6 +219,7 @@ public class Utils {
             announcementNotification.setIdSender(cursor.getString(Contract.PushNotification.id_sender));
             announcementNotification.setNameSender(cursor.getString(Contract.PushNotification.name_sender));
             announcementNotification.setRead(cursor.getInt(Contract.PushNotification.is_read) == 1);
+            announcementNotification.setTypeNotification(cursor.getInt(Contract.PushNotification.type_notification));
 
             list.add(announcementNotification);
             cursor.moveToNext();

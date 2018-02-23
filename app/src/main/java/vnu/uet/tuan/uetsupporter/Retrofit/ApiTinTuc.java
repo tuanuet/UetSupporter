@@ -28,6 +28,9 @@ import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
  */
 
 public interface ApiTinTuc {
+    @GET("/api/courses")
+    Call<String[]> getCourseIds(@Header("Authorization") String authorization);
+
     @GET("/api/news")
     Call<ArrayList<TinTuc>> getDataTinTuc(@Query("loaitintuc") String loaitintuc, @Query("offset") int offset);
 
@@ -40,25 +43,14 @@ public interface ApiTinTuc {
     @GET("/api/mucdothongbao")
     Call<List<MucDoThongBao>> getAllMucDoThongBao();
 
-    @GET("/subscribe")
-    Call<Subcribe> getSubcribeLoaiTinTuc(@Header("Authorization") String authorization);
-
     @GET("/sinhvien/profile")
     Call<SinhVien> getInformationSinhVien(@Header("Authorization") String authorization);
 
-    @GET("/diemmonhoc/lop/{id}")
-    Call<List<DiemResponse>> getDiemSinhVienByIdLop(@Path("id") String id, @Header("Authorization") String authorization);
+    @GET("/api/mark/{idCourse}")
+    Call<List<DiemResponse>> getDiemSinhVienByIdLop(@Path("idCourse") String link, @Header("Authorization") String authorization);
 
     @GET("/api/thongbao/{id}")
     Call<ResponseBody> getDetailThongBao(@Path("id") String id, @Header("Authorization") String authorization);
-
-    @FormUrlEncoded
-    @POST("/sinhvien/guiloaitintuc")
-    Call<Message> postLoaiTinTuc(@Field("srrayObj") String arr, @Header("Authorization") String authorization);
-
-    @FormUrlEncoded
-    @POST("/sinhvien/guiloaithongbao")
-    Call<Message> postLoaiThongBao(@Field("srrayObj") String arr, @Header("Authorization") String authorization);
 
     @FormUrlEncoded
     @POST("/sinhvien/deletefirebasetoken")

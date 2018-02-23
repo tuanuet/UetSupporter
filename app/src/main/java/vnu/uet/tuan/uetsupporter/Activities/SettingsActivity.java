@@ -12,6 +12,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
@@ -30,6 +32,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -273,6 +276,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         private void listenUI() {
             final MultiSelectListPreference tintuc = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_tintuc));
             final MultiSelectListPreference thongbao = (MultiSelectListPreference) findPreference(getString(R.string.pref_title_thongbao));
+            //init announcemark
+            final CheckBoxPreference mark = (CheckBoxPreference) findPreference(getString(R.string.pref_title_mark));
+            mark.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    Boolean isRegister = (Boolean) newValue;
+                    registCourseIds(isRegister);
+                    return true;
+                }
+            });
             tintuc.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
@@ -329,6 +342,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     return true;
                 }
             });
+
         }
         public static CharSequence[] removeElements(CharSequence[] input, String deleteMe) {
             List result = new LinkedList();
@@ -412,55 +426,38 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
         }
 
-        private void postLoaiThongBao(String value) {
+        private void registCourseIds(final Boolean isRegister) {
 
-            Call<Message> call;
+            Call<String[]> call;
             Retrofit retrofit = new Retrofit.Builder()
                     .baseUrl(Config.API_HOSTNAME)
                     // Sử dụng GSON cho việc parse và maps JSON data tới Object
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
             ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-            call = apiTinTuc.postLoaiThongBao(value, Utils.getUserToken(getActivity()));
-            call.enqueue(new Callback<Message>() {
+            call = apiTinTuc.getCourseIds(Utils.getUserToken(getActivity()));
+            call.enqueue(new Callback<String[]>() {
                 @Override
-                public void onResponse(Call<Message> call, Response<Message> response) {
-//                    int statusCode = response.code();
-                    Message message = response.body();
-                    Toast.makeText(getActivity(), message.getMessage(), Toast.LENGTH_SHORT).show();
+                public void onResponse(Call<String[]> call, Response<String[]> response) {
+                    if (isRegister){ //sub
+                        for (String cId : response.body()){
+                            Log.e(TAG,cId);
+                            FirebaseMessaging.getInstance().subscribeToTopic(cId);
+                        }
+                    } else { //un sub
+                        for (String cId : response.body()){
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(cId);
+                        }
+                    }
                 }
 
                 @Override
-                public void onFailure(Call<Message> call, Throwable t) {
-
-                }
-            });
-        }
-
-        private void postLoaiTinTuc(String value) {
-            Call<Message> call;
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(Config.API_HOSTNAME)
-                    // Sử dụng GSON cho việc parse và maps JSON data tới Object
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-            call = apiTinTuc.postLoaiTinTuc(value, Utils.getUserToken(getActivity()));
-            call.enqueue(new Callback<Message>() {
-                @Override
-                public void onResponse(Call<Message> call, Response<Message> response) {
-//                    int statusCode = response.code();
-                    Message message = response.body();
-                    Toast.makeText(getActivity(), message.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(Call<Message> call, Throwable t) {
-
+                public void onFailure(Call<String[]> call, Throwable t) {
+                    CheckBoxPreference mark = (CheckBoxPreference) findPreference(getString(R.string.pref_title_mark));
+                    mark.setChecked(!mark.isChecked());
                 }
             });
         }
-
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {

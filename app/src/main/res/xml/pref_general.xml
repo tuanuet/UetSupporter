@@ -1,20 +1,10 @@
 <PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!--<MultiSelectListPreference-->
-        <!--android:key="@string/pref_title_daotao"-->
-        <!--android:title="@string/pref_title_daotao"-->
-        <!--android:entries="@array/type_data_notifi_lables"-->
-        <!--android:entryValues="@array/type_data_notifi_values"-->
-        <!--android:defaultValue="@array/type_data_notifi_default"/>-->
-
-    <!--<MultiSelectListPreference-->
-        <!--android:key="@string/pref_title_congtac"-->
-        <!--android:title="@string/pref_title_congtac"-->
-        <!--android:entries="@array/type_data_notifi_lables"-->
-        <!--android:entryValues="@array/type_data_notifi_values"-->
-        <!--android:defaultValue="@array/type_data_notifi_default"/>-->
     <vnu.uet.tuan.uetsupporter.Model.Customize.CustomizePreferenceCatology android:title="@string/lable_subcriber_notification">
+        <CheckBoxPreference
+            android:key="@string/pref_title_mark"
+            android:title="@string/pref_title_mark"
+            android:icon="@drawable/ic_action_choose_kind" />
         <MultiSelectListPreference
             android:key="@string/pref_title_tintuc"
             android:title="@string/pref_title_tintuc"

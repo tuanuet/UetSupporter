@@ -28,7 +28,6 @@ public class NewNotification implements Serializable,INotification{
     private String link;
     private LoaiTinTuc[] tags;
     private String postAt;
-    private int kind;
     private int typeNotification;
 
     public NewNotification() {
@@ -39,7 +38,6 @@ public class NewNotification implements Serializable,INotification{
         this.link = "";
         this.tags = new LoaiTinTuc[100];
         this.postAt = "";
-        this.kind = 1;
         this.typeNotification = 1;
     }
 
@@ -51,7 +49,6 @@ public class NewNotification implements Serializable,INotification{
         this.link = link;
         this.tags = tags;
         this.postAt = postAt;
-        this.kind = kind;
         this.typeNotification = typeNotification;
     }
 
@@ -109,14 +106,6 @@ public class NewNotification implements Serializable,INotification{
 
     public void setPostAt(String postAt) {
         this.postAt = postAt;
-    }
-
-    public int getKind() {
-        return kind;
-    }
-
-    public void setKind(int kind) {
-        this.kind = kind;
     }
 
     public int getTypeNotification() {

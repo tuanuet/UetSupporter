@@ -28,7 +28,6 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
                 Contract.PushNotification._ID + " integer primary key AUTOINCREMENT , " +
                 Contract.PushNotification.TIEU_DE + " text not null, " +
                 Contract.PushNotification.NOI_DUNG + " text not null, " +
-                Contract.PushNotification.KIND + " integer not null, " +
                 Contract.PushNotification.LINK + " text not null, " +
                 Contract.PushNotification.ISREAD + " integer not null, " +
                 Contract.PushNotification.THOIGIANNHAN + " text not null, " +
@@ -38,6 +37,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
                 Contract.PushNotification.IDSENDER + " text not null, " +
                 Contract.PushNotification.NAMESENDER + " text not null, " +
                 Contract.PushNotification.CODEMUCDOTHONGBAO + " text not null, " +
+                Contract.PushNotification.TYPENOTIFICATION + " integer not null, " +
                 " UNIQUE (" + Contract.PushNotification._ID + ") ON CONFLICT REPLACE);";
 
         db.execSQL(sql);
@@ -59,7 +59,6 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         values.put(Contract.PushNotification.TIEU_DE, notification.getTieuDe());
         values.put(Contract.PushNotification.NOI_DUNG, notification.getNoiDung());
         values.put(Contract.PushNotification.THOIGIANNHAN, notification.getThoiGianNhan());
-        values.put(Contract.PushNotification.KIND, notification.getKind());
         values.put(Contract.PushNotification.IDLOAITHONGBAO, notification.getIdLoaiThongBao());
         values.put(Contract.PushNotification.IDMUCHOTHONGBAO, notification.getIdMucDoThongBao());
         values.put(Contract.PushNotification.ISREAD, notification.getRead() ? 1 : 0);
@@ -67,6 +66,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         values.put(Contract.PushNotification.IDSENDER, notification.getIdSender());
         values.put(Contract.PushNotification.NAMESENDER, notification.getNameSender());
         values.put(Contract.PushNotification.CODEMUCDOTHONGBAO,notification.getCodeMucDoThongBao());
+        values.put(Contract.PushNotification.TYPENOTIFICATION,notification.getTypeNotification());
         return (int) db.insert(Contract.PushNotification.NAME_TABLE, null, values);
     }
 
