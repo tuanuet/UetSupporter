@@ -4,12 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
+import vnu.uet.tuan.uetsupporter.Model.interfaces.INotification;
 
 /**
  * Created by FRAMGIA\vu.minh.tuan on 08/02/2018.
  */
 
-public class NewNotification implements Serializable{
+public class NewNotification implements Serializable,INotification{
     public static final String _ID = "_id";
     public static final String TITLE = "title";
     public static final String CONTENT = "content";

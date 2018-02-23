@@ -57,9 +57,9 @@ public class NewMessageNotification {
                 context.getString(R.string.chitiet),
                 getPendingIntent(context, Config.ACTION_CHITIET, notification));
 
-        mBuilder.addAction(R.drawable.ic_history_black_24dp,
-                context.getString(R.string.xemsau),
-                getPendingIntent(context, Config.ACTION_XEMSAU, notification));
+//        mBuilder.addAction(R.drawable.ic_history_black_24dp,
+//                context.getString(R.string.xemsau),
+//                getPendingIntent(context, Config.ACTION_XEMSAU, notification));
 
 
         NotificationManager mNotificationManager =

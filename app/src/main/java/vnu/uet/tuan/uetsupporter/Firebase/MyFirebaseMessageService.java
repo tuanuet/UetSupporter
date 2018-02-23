@@ -42,7 +42,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
 //        export const KIND_ANNOUNCEMENT_NOTIFICATION = 1;
 //        export const KIND_NEW_NOTIFICATION = 2;
         Integer kindNotification = Integer.parseInt((String) data.get("typeNotification"));
-
+        Log.e(TAG,"RUN HERE");
         switch (kindNotification) {
             case 1 : {
                 AnnouncementNotification announcementNotification = getPushNotification(data);
@@ -64,7 +64,6 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private NewNotification getNewNotification(Map data) {
         NewNotification push = new NewNotification();
         push.setTitle((String) data.get(NewNotification.TITLE));

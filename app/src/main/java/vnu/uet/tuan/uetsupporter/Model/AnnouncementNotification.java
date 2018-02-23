@@ -3,11 +3,13 @@ package vnu.uet.tuan.uetsupporter.Model;
 import java.io.Serializable;
 import java.util.Date;
 
+import vnu.uet.tuan.uetsupporter.Model.interfaces.INotification;
+
 /**
  * Created by Vu Minh Tuan on 2/13/2017.
  */
 
-public class AnnouncementNotification implements Serializable {
+public class AnnouncementNotification implements Serializable,INotification {
     public static final String TIEUDE = "tieuDe";
     public static final String KIND = "kind";
     public static final String NOIDUNG = "noiDung";
