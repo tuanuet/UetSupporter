@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
+import vnu.uet.tuan.uetsupporter.Model.Course;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
@@ -18,11 +18,11 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
  */
 
 public class ProfileRecyclerLopMonHoc extends RecyclerView.Adapter {
-    private List<LopMonHoc> list;
+    private List<Course> list;
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
 
-    public ProfileRecyclerLopMonHoc(Context context, List<LopMonHoc> list) {
+    public ProfileRecyclerLopMonHoc(Context context, List<Course> list) {
         this.context = context;
         this.list = list;
     }
@@ -51,11 +51,11 @@ public class ProfileRecyclerLopMonHoc extends RecyclerView.Adapter {
         if (holder instanceof ItemViewHolder) {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
-            LopMonHoc lopMonHoc = list.get(position);
+            Course lopMonHoc = list.get(position);
 
-            itemViewHolder.txt_giangvien.setText(Utils.getTenGiangVien(lopMonHoc.getIdGiangVien()));
+            itemViewHolder.txt_giangvien.setText(Utils.getTenGiangVien(lopMonHoc.getLectures()));
             itemViewHolder.txt_lopmonhoc.setText(Utils.getTenLopMonHoc(lopMonHoc));
-            itemViewHolder.txt_thoigian.setText(Utils.getThoiGian(lopMonHoc.getThoiGian()));
+            itemViewHolder.txt_thoigian.setText(Utils.getThoiGian(lopMonHoc.getCreateAt()));
 
         }
     }

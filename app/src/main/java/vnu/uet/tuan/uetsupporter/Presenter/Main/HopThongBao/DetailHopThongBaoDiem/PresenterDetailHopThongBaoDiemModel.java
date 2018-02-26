@@ -22,10 +22,10 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  * Created by vmtuan on 3/24/2017.
  */
 
-public class PresenterDetailHopThongBaoDiemModel implements IPresenterDetailHopThongBaoDiemModel, Callback<List<DiemResponse>> {
+public class PresenterDetailHopThongBaoDiemModel implements IPresenterDetailHopThongBaoDiemModel, Callback<DiemResponse> {
 
     private Context context;
-    private Call<List<DiemResponse>> call;
+    private Call<DiemResponse> call;
     private OnGetThongBaoDiemFinish onGetThongBaoDiemFinish;
 
     private final String TAG = this.getClass().getSimpleName();
@@ -61,11 +61,12 @@ public class PresenterDetailHopThongBaoDiemModel implements IPresenterDetailHopT
 
 
     @Override
-    public void onResponse(Call<List<DiemResponse>> call, Response<List<DiemResponse>> response) {
+    public void onResponse(Call<DiemResponse> call, Response<DiemResponse> response) {
         if (response.isSuccessful() && response.body() != null) {
             try {
                 onGetThongBaoDiemFinish.OnSuccess(response.body());
             } catch (Exception e) {
+                Log.e(TAG,e.getMessage());
                 onGetThongBaoDiemFinish.OnFailure(e.getMessage());
             }
         } else {
@@ -74,7 +75,8 @@ public class PresenterDetailHopThongBaoDiemModel implements IPresenterDetailHopT
     }
 
     @Override
-    public void onFailure(Call<List<DiemResponse>> call, Throwable t) {
+    public void onFailure(Call<DiemResponse> call, Throwable t) {
+        Log.e(TAG,t.getMessage());
         onGetThongBaoDiemFinish.OnFailure(t.getMessage());
     }
 }

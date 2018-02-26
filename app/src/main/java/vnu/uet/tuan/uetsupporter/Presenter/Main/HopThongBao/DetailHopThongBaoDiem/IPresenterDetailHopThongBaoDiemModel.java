@@ -10,7 +10,7 @@ import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
 
 public interface IPresenterDetailHopThongBaoDiemModel {
     interface OnGetThongBaoDiemFinish {
-        void OnSuccess(List<DiemResponse> diemResponses);
+        void OnSuccess(DiemResponse diemResponse);
 
         void OnFailure(String fail);
     }

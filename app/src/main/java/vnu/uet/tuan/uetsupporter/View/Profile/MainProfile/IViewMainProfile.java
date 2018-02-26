@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.View.Profile.MainProfile;
 
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+
+import vnu.uet.tuan.uetsupporter.Model.Student;
 
 /**
  * Created by vmtuan on 3/25/2017.
@@ -9,7 +10,7 @@ import vnu.uet.tuan.uetsupporter.Model.SinhVien;
 public interface IViewMainProfile {
     void onPreExecute();
 
-    void onExecuteSuccess(SinhVien sinhVien);
+    void onExecuteSuccess(Student sinhVien);
 
     void onExecuteFailure(String fail);
 

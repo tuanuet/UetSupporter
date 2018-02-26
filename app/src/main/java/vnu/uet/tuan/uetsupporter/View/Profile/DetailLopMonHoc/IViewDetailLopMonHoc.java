@@ -1,6 +1,6 @@
 package vnu.uet.tuan.uetsupporter.View.Profile.DetailLopMonHoc;
 
-import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
+import vnu.uet.tuan.uetsupporter.Model.Course;
 
 /**
  * Created by vmtuan on 3/25/2017.
@@ -9,7 +9,7 @@ import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
 public interface IViewDetailLopMonHoc {
     void onPreExecute();
 
-    void onExecuteSuccess(LopMonHoc lopMonHoc);
+    void onExecuteSuccess(Course lopMonHoc);
 
     void onExecuteFailure(String fail);
 

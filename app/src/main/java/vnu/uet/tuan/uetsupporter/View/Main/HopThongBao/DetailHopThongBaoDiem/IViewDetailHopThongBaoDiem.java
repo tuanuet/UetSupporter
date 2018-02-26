@@ -11,7 +11,7 @@ import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
 public interface IViewDetailHopThongBaoDiem {
     void onPreExecute();
 
-    void onExecuteSuccess(List<DiemResponse> diemResponses);
+    void onExecuteSuccess(DiemResponse diemResponse);
 
     void onExecuteFailure(String fail);
 

@@ -12,7 +12,6 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
@@ -25,18 +24,13 @@ import android.support.v7.app.ActionBar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,8 +44,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Fragment.LinhTinh.DialogLogoutFragment;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
-import vnu.uet.tuan.uetsupporter.Model.Response.Message;
-import vnu.uet.tuan.uetsupporter.Model.Subcribe;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
@@ -439,15 +431,20 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             call.enqueue(new Callback<String[]>() {
                 @Override
                 public void onResponse(Call<String[]> call, Response<String[]> response) {
-                    if (isRegister){ //sub
-                        for (String cId : response.body()){
-                            Log.e(TAG,cId);
-                            FirebaseMessaging.getInstance().subscribeToTopic(cId);
+                    if(response.code() < 400) {
+                        if (isRegister){ //sub
+                            for (String cId : response.body()){
+                                Log.e(TAG,cId);
+                                FirebaseMessaging.getInstance().subscribeToTopic(cId);
+                            }
+                        } else { //un sub
+                            for (String cId : response.body()){
+                                FirebaseMessaging.getInstance().unsubscribeFromTopic(cId);
+                            }
                         }
-                    } else { //un sub
-                        for (String cId : response.body()){
-                            FirebaseMessaging.getInstance().unsubscribeFromTopic(cId);
-                        }
+                    } else {
+                        CheckBoxPreference mark = (CheckBoxPreference) findPreference(getString(R.string.pref_title_mark));
+                        mark.setChecked(!mark.isChecked());
                     }
                 }
 

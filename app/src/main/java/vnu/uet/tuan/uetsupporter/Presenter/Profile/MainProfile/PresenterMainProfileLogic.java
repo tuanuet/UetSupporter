@@ -3,7 +3,7 @@ package vnu.uet.tuan.uetsupporter.Presenter.Profile.MainProfile;
 import android.content.Context;
 
 import vnu.uet.tuan.uetsupporter.Listener.OnCancelRequest;
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+import vnu.uet.tuan.uetsupporter.Model.Student;
 import vnu.uet.tuan.uetsupporter.View.Profile.MainProfile.IViewMainProfile;
 
 /**
@@ -31,7 +31,7 @@ public class PresenterMainProfileLogic implements IPresenterMainProfileView, IPr
     }
 
     @Override
-    public void OnLoadingSuccess(SinhVien sinhVien) {
+    public void OnLoadingSuccess(Student sinhVien) {
         iView.onExecuteSuccess(sinhVien);
     }
 

@@ -78,7 +78,7 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
         }
     }
 
-    public Call<Message> postDeleteTokenFirebase() {
+    public Call<Message> postLogout() {
         Call<Message> call;
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(Config.API_HOSTNAME)
@@ -86,7 +86,7 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        call = apiTinTuc.postToDeleteTokenFirebase(Utils.getFirebaseToken(getActivity()), Utils.getUserToken(getActivity()));
+        call = apiTinTuc.postLogout(Utils.getUserToken(getActivity()));
         return call;
 
     }
@@ -108,7 +108,7 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
         protected Void doInBackground(Void... params) {
 
             //chay ve m.h login
-            Call<Message> call = postDeleteTokenFirebase();
+            Call<Message> call = postLogout();
 
             try {
                 Response<Message> response = call.execute();

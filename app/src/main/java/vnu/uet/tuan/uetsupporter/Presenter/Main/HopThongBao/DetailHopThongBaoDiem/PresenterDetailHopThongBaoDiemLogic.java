@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBaoDiem;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.List;
 
@@ -16,6 +17,7 @@ import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.DetailHopThongBaoDiem.IVi
 public class PresenterDetailHopThongBaoDiemLogic implements IPresenterDetailHopThongBaoDiemView,
         IPresenterDetailHopThongBaoDiemModel.OnCancelGetThongBaoDiemFinish, IPresenterDetailHopThongBaoDiemModel.OnGetThongBaoDiemFinish {
 
+    private final String TAG = this.getClass().getSimpleName();
     private IViewDetailHopThongBaoDiem iView;
     private PresenterDetailHopThongBaoDiemModel presenter;
 
@@ -35,8 +37,9 @@ public class PresenterDetailHopThongBaoDiemLogic implements IPresenterDetailHopT
     }
 
     @Override
-    public void OnSuccess(List<DiemResponse> diemResponses) {
-        iView.onExecuteSuccess(diemResponses);
+    public void OnSuccess(DiemResponse diemResponse) {
+        Log.e(TAG,diemResponse.getCourse().getName());
+        iView.onExecuteSuccess(diemResponse);
     }
 
     @Override

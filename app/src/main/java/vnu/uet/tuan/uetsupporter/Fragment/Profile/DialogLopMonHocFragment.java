@@ -14,7 +14,7 @@ import android.view.Window;
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
 import vnu.uet.tuan.uetsupporter.Adapter.ProfileRecyclerLopMonHoc;
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+import vnu.uet.tuan.uetsupporter.Model.Student;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -24,7 +24,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 
 public class DialogLopMonHocFragment extends DialogFragment implements ProfileRecyclerLopMonHoc.ClickListener {
     RecyclerView recycler;
-    SinhVien mSinhVien;
+    Student mSinhVien;
     ProfileRecyclerLopMonHoc adapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +59,7 @@ public class DialogLopMonHocFragment extends DialogFragment implements ProfileRe
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recycler.setLayoutManager(mLayoutManager);
 
-        adapter = new ProfileRecyclerLopMonHoc(getActivity(), mSinhVien.getIdLopMonHoc());
+        adapter = new ProfileRecyclerLopMonHoc(getActivity(), mSinhVien.getCourses());
         recycler.setAdapter(adapter);
     }
 
@@ -72,7 +72,7 @@ public class DialogLopMonHocFragment extends DialogFragment implements ProfileRe
     @Override
     public void onItemClick(int position, View v) {
         Intent intent = new Intent(getActivity(), Result2Activity.class);
-        intent.putExtra(Config.ID_LOPMONHOC, mSinhVien.getIdLopMonHoc().get(position).get_id());
+        intent.putExtra(Config.ID_LOPMONHOC, mSinhVien.getCourses().get(position).get_id());
         startActivity(intent);
     }
 

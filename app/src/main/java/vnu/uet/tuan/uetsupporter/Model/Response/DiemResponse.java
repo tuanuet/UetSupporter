@@ -1,9 +1,9 @@
 package vnu.uet.tuan.uetsupporter.Model.Response;
 
-import java.util.List;
+import org.apache.commons.lang3.ArrayUtils;
 
-import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+import vnu.uet.tuan.uetsupporter.Model.Course;
+import vnu.uet.tuan.uetsupporter.Model.Student;
 
 /**
  * Created by Vu Minh Tuan on 2/24/2017.
@@ -11,62 +11,97 @@ import vnu.uet.tuan.uetsupporter.Model.SinhVien;
 
 public class DiemResponse {
 
-    /**
-     * _id : 58b04dbd8b48950a64195ce6
-     * idSinhVien : {"_id":"14020234","tenSinhVien":"duc khanh","idLopChinh":{"_id":"1",
-     * "tenLopChinh":"K59CLC","idKhoa":{"_id":"cntt","tenKhoa":"cong nghe thong tin","__v":0},"__v":0}
-     * ,"nhanLoaiThongBao":[],"__v":0,
-     * "tokenFirebase":"*******","idLopMonHoc":["INT1001"]}
-     * idLopMonHoc : {"_id":"INT2204 1","tenLopMonHoc":"Lap Trinh","idGiangVien":[{"_id":"tokhanh",
-     * "tenGiangVien":"To Van Khanh","idKhoa":"cntt","__v":0,"idLopMonHoc":[]}],"thoiGian":null}
-     * diemThanhPhan : 1.8
-     * diemCuoiKy : 3
-     * __v : 0
-     */
-    private String _id;
-    private SinhVien idSinhVien;
-    private LopMonHoc idLopMonHoc;
-    private double diemThanhPhan;
-    private double diemCuoiKy;
 
-    public String get_id() {
-        return _id;
+    private Course course;
+    private Data[] data;
+
+
+    public DiemResponse() {
     }
 
-    public void set_id(String _id) {
-        this._id = _id;
+    public DiemResponse(Course course, Data[] data) {
+        this.course = course;
+        this.data = data;
     }
 
-    public SinhVien getIdSinhVien() {
-        return idSinhVien;
+    public Student getStudent(int pos) {
+        return this.data[pos].getStudent();
     }
 
-    public void setIdSinhVien(SinhVien idSinhVien) {
-        this.idSinhVien = idSinhVien;
+    public String getEmailStudent(int pos) {
+        return this.data[pos].getStudent().getCode()+"@vnu.edu.vn";
     }
 
-    public LopMonHoc getIdLopMonHoc() {
-        return idLopMonHoc;
+    public double getMarkMiddle(int pos) {
+        return this.data[pos].getMarkMiddle();
     }
 
-    public void setIdLopMonHoc(LopMonHoc idLopMonHoc) {
-        this.idLopMonHoc = idLopMonHoc;
+    public double getMarkFinal(int pos) {
+        return this.data[pos].getMarkFinal();
     }
 
-    public double getDiemThanhPhan() {
-        return diemThanhPhan;
+
+    public Data[] getData() {
+        return data;
     }
 
-    public void setDiemThanhPhan(double diemThanhPhan) {
-        this.diemThanhPhan = diemThanhPhan;
+    public int getLengthData() {
+        return this.getData().length;
     }
 
-    public double getDiemCuoiKy() {
-        return diemCuoiKy;
+    public void setData(Data[] data) {
+        this.data = data;
     }
 
-    public void setDiemCuoiKy(double diemCuoiKy) {
-        this.diemCuoiKy = diemCuoiKy;
+    public Course getCourse() {
+        return course;
     }
 
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
+    public void removeDataItem(int pos) {
+        this.data = ArrayUtils.removeElement(this.data, this.data[pos]);
+    }
+
+
+
+    private class Data {
+        private Student student;
+        private double markMiddle;
+        private double markFinal;
+
+        public Data(Student students, double markMiddle, double markFinal) {
+            this.student = students;
+            this.markMiddle = markMiddle;
+            this.markFinal = markFinal;
+        }
+
+        public Student getStudent() {
+            return student;
+        }
+
+        public void setStudent(Student students) {
+            this.student = students;
+        }
+
+        public double getMarkMiddle() {
+            return markMiddle;
+        }
+
+        public void setMarkMiddle(double markMiddle) {
+            this.markMiddle = markMiddle;
+        }
+
+        public double getMarkFinal() {
+            return markFinal;
+        }
+
+        public void setMarkFinal(double markFinal) {
+            this.markFinal = markFinal;
+        }
+    }
 }
+
+

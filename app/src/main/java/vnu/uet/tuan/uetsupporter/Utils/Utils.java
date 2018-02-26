@@ -29,11 +29,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import vnu.uet.tuan.uetsupporter.Model.Course;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
-import vnu.uet.tuan.uetsupporter.Model.GiangVien;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
-import vnu.uet.tuan.uetsupporter.Model.LopMonHoc;
+import vnu.uet.tuan.uetsupporter.Model.Lecture;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.R;
@@ -245,22 +245,22 @@ public class Utils {
         return s;
     }
 
-    public static String getTenGiangVien(List<GiangVien> list) {
+    public static String getTenGiangVien(List<Lecture> list) {
         String str = "Giảng viên: ";
         for (int i = 0; i < list.size(); i++) {
             if (i == list.size() - 1) {
-                str += list.get(i).getTenGiangVien();
+                str += list.get(i).getName();
             } else {
-                str += list.get(i).getTenGiangVien() + ", ";
+                str += list.get(i).getName() + ", ";
             }
         }
         return str;
     }
 
-    public static String getTenLopMonHoc(LopMonHoc lopMonHoc) {
+    public static String getTenLopMonHoc(Course lopMonHoc) {
         String str = "Lớp: ";
 
-        return str + "(" + lopMonHoc.get_id() + ") " + lopMonHoc.getTenLopMonHoc();
+        return str + "(" + lopMonHoc.get_id() + ") " + lopMonHoc.getName();
 
     }
 

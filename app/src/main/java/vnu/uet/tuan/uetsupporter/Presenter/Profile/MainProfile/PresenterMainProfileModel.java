@@ -8,7 +8,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Listener.OnCancelRequest;
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+import vnu.uet.tuan.uetsupporter.Model.Student;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
@@ -18,9 +18,9 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  * Created by vmtuan on 3/25/2017.
  */
 
-public class PresenterMainProfileModel implements IPresenterMainProfileModel, Callback<SinhVien> {
+public class PresenterMainProfileModel implements IPresenterMainProfileModel, Callback<Student> {
     private Context context;
-    private Call<SinhVien> call;
+    private Call<Student> call;
     private OnLoadStudentFinish listener;
 
     public PresenterMainProfileModel(Context context) {
@@ -52,7 +52,7 @@ public class PresenterMainProfileModel implements IPresenterMainProfileModel, Ca
     }
 
     @Override
-    public void onResponse(Call<SinhVien> call, Response<SinhVien> response) {
+    public void onResponse(Call<Student> call, Response<Student> response) {
         try {
             if (response.isSuccessful() && response.body() != null) {
                 listener.OnLoadingSuccess(response.body());
@@ -66,7 +66,7 @@ public class PresenterMainProfileModel implements IPresenterMainProfileModel, Ca
     }
 
     @Override
-    public void onFailure(Call<SinhVien> call, Throwable t) {
+    public void onFailure(Call<Student> call, Throwable t) {
         listener.OnLoadingFailure(t.getMessage());
     }
 }

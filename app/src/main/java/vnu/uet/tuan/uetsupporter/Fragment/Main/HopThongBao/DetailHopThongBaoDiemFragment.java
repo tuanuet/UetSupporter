@@ -39,6 +39,7 @@ import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
+import vnu.uet.tuan.uetsupporter.Model.Student;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBaoDiem.IPresenterDetailHopThongBaoDiemView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.DetailHopThongBaoDiem.PresenterDetailHopThongBaoDiemLogic;
 import vnu.uet.tuan.uetsupporter.R;
@@ -54,7 +55,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
     private final String TAG = this.getClass().getSimpleName();
     private Toolbar toolbar;
     private AnnouncementNotification notification;
-    private List<DiemResponse> listDiem;
+    private DiemResponse markResponse;
 
     private Button btn_xemthem;
     private LinearLayout table;
@@ -74,7 +75,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
     }
 
     private void initUI(View view) {
-        listDiem = new ArrayList<>();
+        markResponse = new DiemResponse();
 
         btn_xemthem = (Button) view.findViewById(R.id.btn_xemthem);
         table = (LinearLayout) view.findViewById(R.id.table);
@@ -96,13 +97,13 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         btn_xemthem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (listDiem != null) {
+                if (markResponse != null) {
 
                     if (!isShow) {
                         btn_xemthem.setText(getString(R.string.xemthem));
-                        for (int pos = 0; pos < listDiem.size(); pos++) {
-                            Log.e(TAG, listDiem.size() + "");
-                            createRow(listDiem.get(pos));
+                        for (int pos = 0; pos < markResponse.getLengthData(); pos++) {
+                            Log.e(TAG, markResponse.getLengthData() + "");
+                            createRow(markResponse.getStudent(pos),markResponse.getMarkMiddle(pos),markResponse.getMarkFinal(pos));
                         }
                     } else {
                         btn_xemthem.setText(getString(R.string.thugon));
@@ -232,9 +233,10 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         int sevenTo8 = 0;
         int eightTo10 = 0;
         ArrayList<Integer> values = new ArrayList<>();
-        for (int i = 0; i < listDiem.size(); i++) {
-            DiemResponse item = listDiem.get(i);
-            float diemTong = Utils.getDiemTong(item.getDiemThanhPhan(), item.getDiemCuoiKy());
+        for (int i = 0; i < markResponse.getLengthData(); i++) {
+            double myMiddle = markResponse.getMarkMiddle(i);
+            double myFinal = markResponse.getMarkFinal(i);
+            float diemTong = Utils.getDiemTong(myMiddle, myFinal);
             if (diemTong < 4) {
                 zeroTo4++;
             } else if (diemTong < 7) {
@@ -277,25 +279,29 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         setData(pieChart1, 4, 100);
 
         int postion = 0;
-        for (int i = 0; i < listDiem.size(); i++) {
-            if (listDiem.get(i).getIdSinhVien().get_id().equals(Utils.getEmailUser(getActivity()))) {
+        for (int i = 0; i < markResponse.getLengthData(); i++) {
+            if (markResponse.getEmailStudent(i).equals(Utils.getEmailUser(getActivity()))) {
                 postion = i;
                 break;
             }
         }
 
+        Student my = markResponse.getStudent(postion);
+        double myMiddle = markResponse.getMarkMiddle(postion);
+        double myFinal = markResponse.getMarkFinal(postion);
 
-        DiemResponse userDiem = listDiem.get(postion);
-        //xoa di item user trong list
-        listDiem.remove(postion);
 
-        txt_msv.setText(userDiem.getIdSinhVien().get_id());
-        txt_ten.setText(userDiem.getIdSinhVien().getTenSinhVien());
-        txt_giuaky.setText(String.valueOf(userDiem.getDiemThanhPhan()));
-        txt_cuoiky.setText(String.valueOf(userDiem.getDiemCuoiKy()));
-        txt_tong.setText(String.valueOf(Utils.getDiemTong(userDiem.getDiemThanhPhan(), userDiem.getDiemCuoiKy())));
-        toolbar.setTitle("Điểm thi: " + userDiem.getIdLopMonHoc().getTenLopMonHoc());
+        Log.e(TAG,myMiddle + "-----" + myFinal);
+        txt_msv.setText(my.getCode());
+        txt_ten.setText(my.getName());
+        txt_giuaky.setText(String.valueOf(myMiddle));
+        txt_cuoiky.setText(String.valueOf(myFinal));
+        txt_tong.setText(String.valueOf(Utils.getDiemTong(myMiddle,myFinal)));
+        toolbar.setTitle(markResponse.getCourse().getName());
         //==============================
+
+        //delete position
+        markResponse.removeDataItem(postion);
 
     }
 
@@ -330,8 +336,8 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
     }
 
     @Override
-    public void onExecuteSuccess(List<DiemResponse> diemResponses) {
-        listDiem = diemResponses;
+    public void onExecuteSuccess(DiemResponse diemResponse) {
+        markResponse = diemResponse;
         updateUI();
     }
 
@@ -358,7 +364,7 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         notification = (AnnouncementNotification) getArguments().getSerializable(Config.KEY_PUSHNOTIFICATION);
     }
 
-    private void createRow(DiemResponse item) {
+    private void createRow(Student student, double middleMark, double finalMark) {
         LinearLayout row = new LinearLayout(getActivity());
         row.setLayoutParams(
                 new LinearLayout.LayoutParams(
@@ -369,15 +375,15 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         row.setOrientation(LinearLayout.HORIZONTAL);
         //================================================================
         row.addView(createCol(R.drawable.border_linerlayout_left_bottom,
-                2, item.getIdSinhVien().get_id()));
+                2, student.getCode()));
         row.addView(createCol(R.drawable.border_linerlayout_left_bottom,
-                3.5f, item.getIdSinhVien().getTenSinhVien()));
+                3.5f, student.getName()));
         row.addView(createCol(R.drawable.border_linerlayout_left_bottom,
-                1.5f, String.valueOf(item.getDiemThanhPhan())));
+                1.5f, String.valueOf(middleMark)));
         row.addView(createCol(R.drawable.border_linerlayout_left_bottom,
-                1.5f, String.valueOf(item.getDiemCuoiKy())));
+                1.5f, String.valueOf(finalMark)));
         row.addView(createCol(R.drawable.border_linerlayout_left_right_bottom,
-                1.5f, String.valueOf(Utils.getDiemTong(item.getDiemThanhPhan(), item.getDiemCuoiKy()))));
+                1.5f, String.valueOf(Utils.getDiemTong(middleMark,finalMark))));
 
         //==================================================================
         table.addView(row);

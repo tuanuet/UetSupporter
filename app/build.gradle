@@ -59,6 +59,7 @@ dependencies {
     compile 'com.daimajia.easing:library:2.0@aar'
     compile 'com.daimajia.androidanimations:library:2.2@aar'
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'org.apache.commons:commons-lang3:3.6'
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

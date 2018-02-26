@@ -25,7 +25,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Activities.SettingsActivity;
-import vnu.uet.tuan.uetsupporter.Model.SinhVien;
+import vnu.uet.tuan.uetsupporter.Model.Student;
 import vnu.uet.tuan.uetsupporter.Presenter.Profile.MainProfile.IPresenterMainProfileView;
 import vnu.uet.tuan.uetsupporter.Presenter.Profile.MainProfile.PresenterMainProfileLogic;
 import vnu.uet.tuan.uetsupporter.R;
@@ -44,7 +44,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     private TextView txt_lopChinh;
     private TextView txt_khoa;
     private RelativeLayout profile_action_lopmonhoc;
-    private SinhVien mSinhVien;
+    private Student mSinhVien;
     private DialogLopMonHocFragment dialog;
     private IPresenterMainProfileView presenter;
 
@@ -90,11 +90,11 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
         profile_action_lopmonhoc.setOnClickListener(this);
     }
 
-    private void updateUI(SinhVien sinhVien) {
+    private void updateUI(Student sinhVien) {
 
-        txt_tenSinhVien.setText(sinhVien.getTenSinhVien());
-        txt_lopChinh.setText(sinhVien.getIdLopChinh().getTenLopChinh());
-        txt_khoa.setText(sinhVien.getIdLopChinh().getIdKhoa().getTenKhoa());
+        txt_tenSinhVien.setText(sinhVien.getName());
+        txt_lopChinh.setText(sinhVien.getMyClass().getName());
+        // txt_khoa.setText(sinhVien.get().getIdKhoa().getTenKhoa());
 
     }
 
@@ -105,7 +105,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     }
 
     @Override
-    public void onExecuteSuccess(SinhVien sinhVien) {
+    public void onExecuteSuccess(Student sinhVien) {
         mSinhVien = sinhVien;
         updateUI(sinhVien);
     }
