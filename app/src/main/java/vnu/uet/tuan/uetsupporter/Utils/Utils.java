@@ -246,15 +246,20 @@ public class Utils {
     }
 
     public static String getTenGiangVien(List<Lecture> list) {
-        String str = "Giảng viên: ";
-        for (int i = 0; i < list.size(); i++) {
-            if (i == list.size() - 1) {
-                str += list.get(i).getName();
-            } else {
-                str += list.get(i).getName() + ", ";
+        if(list.size() != 0) {
+            String str = "Giảng viên: ";
+            for (int i = 0; i < list.size(); i++) {
+                if (i == list.size() - 1) {
+                    str += list.get(i).getName();
+                } else {
+                    str += list.get(i).getName() + ", ";
+                }
             }
+            return str;
+        } else {
+            return "";
         }
-        return str;
+
     }
 
     public static String getTenLopMonHoc(Course lopMonHoc) {

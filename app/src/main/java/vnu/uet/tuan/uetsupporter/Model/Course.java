@@ -21,16 +21,27 @@ public class Course implements Parcelable {
     private String _id;
     private String name;
     private String createAt;
-    private List<Lecture> lectures;
+    private List<Lecture> lecturers;
+    private int sizeClass;
 
     protected Course(Parcel in) {
         _id = in.readString();
         name = in.readString();
         createAt = in.readString();
-        lectures = in.createTypedArrayList(Lecture.CREATOR);
+        lecturers = in.createTypedArrayList(Lecture.CREATOR);
+        sizeClass = in.readInt();
     }
 
     public Course() {
+    }
+
+
+    public int getSizeClass() {
+        return sizeClass;
+    }
+
+    public void setSizeClass(int sizeClass) {
+        this.sizeClass = sizeClass;
     }
 
     public static final Creator<Course> CREATOR = new Creator<Course>() {
@@ -70,11 +81,11 @@ public class Course implements Parcelable {
     }
 
     public List<Lecture> getLectures() {
-        return lectures;
+        return lecturers;
     }
 
     public void setLectures(List<Lecture> lectures) {
-        this.lectures = lectures;
+        this.lecturers = lectures;
     }
 
     @Override
@@ -87,6 +98,7 @@ public class Course implements Parcelable {
         dest.writeString(_id);
         dest.writeString(name);
         dest.writeString(createAt);
-        dest.writeTypedList(lectures);
+        dest.writeTypedList(lecturers);
+        dest.writeInt(sizeClass);
     }
 }

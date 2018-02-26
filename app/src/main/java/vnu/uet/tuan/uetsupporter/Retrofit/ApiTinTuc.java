@@ -40,7 +40,7 @@ public interface ApiTinTuc {
     @GET("/api/mucdothongbao")
     Call<List<MucDoThongBao>> getAllMucDoThongBao();
 
-    @GET("/sinhvien/profile")
+    @GET("/api/student/profile")
     Call<Student> getInformationSinhVien(@Header("Authorization") String authorization);
 
     @GET("/api/mark/{idCourse}")

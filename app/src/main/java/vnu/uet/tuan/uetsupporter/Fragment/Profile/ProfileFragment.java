@@ -40,6 +40,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 public class ProfileFragment extends Fragment implements View.OnClickListener, IViewMainProfile {
 
 
+    private final String TAG = this.getClass().getSimpleName();
     private TextView txt_tenSinhVien;
     private TextView txt_lopChinh;
     private TextView txt_khoa;
@@ -94,7 +95,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
 
         txt_tenSinhVien.setText(sinhVien.getName());
         txt_lopChinh.setText(sinhVien.getMyClass().getName());
-        // txt_khoa.setText(sinhVien.get().getIdKhoa().getTenKhoa());
 
     }
 
@@ -107,12 +107,13 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
     @Override
     public void onExecuteSuccess(Student sinhVien) {
         mSinhVien = sinhVien;
+        Log.e(TAG,sinhVien.getName());
         updateUI(sinhVien);
     }
 
     @Override
     public void onExecuteFailure(String fail) {
-        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_LONG).show();
     }
 
     @Override

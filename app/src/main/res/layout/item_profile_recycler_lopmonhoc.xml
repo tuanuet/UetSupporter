@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingBottom="12dp"
+            android:paddingBottom="6dp"
             android:paddingTop="12dp">
 
             <TextView
@@ -32,22 +32,12 @@
                 android:textColor="#090808"
                 android:textSize="15sp" />
 
-            <TextView
-                android:id="@+id/item_thoigian"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:textSize="15sp"
-                android:visibility="gone"
-                android:text="56/12/1005" />
-
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:orientation="vertical">
 
             <TextView
@@ -59,39 +49,87 @@
                 android:textSize="15sp"
                 android:text="Giảng viên: Tô Văn Khánh" />
 
+            <TextView
+                android:id="@+id/item_thoigian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:text="56/12/1005" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:paddingTop="4dp">
+
+                <ImageView
+                    android:id="@+id/image_siso"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="4dp"
+                    android:src="@drawable/feed_like_small" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="4dp"
+                    android:layout_toRightOf="@+id/image_siso"
+                    android:text="Sĩ số: "
+                    android:textColor="#2d5d82"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/item_siso"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignBaseline="@+id/textView"
+                    android:layout_alignBottom="@+id/textView"
+                    android:layout_toEndOf="@+id/textView"
+                    android:layout_toRightOf="@+id/textView"
+                    android:text="45"
+                    android:textColor="#2d5d82"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="12dp"
+                android:paddingTop="4dp"
+                android:layout_marginRight="12dp">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginEnd="10dp"
+                    android:id="@+id/image_term"
+                    android:src="@drawable/feed_like_small" />
+
+                <TextView
+                    android:id="@+id/item_kihoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/image_term"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="4dp"
+                    android:text="Kì học: II"
+                    android:textColor="#2d5d82"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:paddingTop="4dp"
-            android:layout_marginRight="12dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/item_siso"
-                android:text="Sĩ số : 58" />
-
-            <ImageView
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="4dp"
-                android:layout_toLeftOf="@+id/item_kihoc"
-                android:src="@drawable/feed_like_small" />
-
-            <TextView
-                android:id="@+id/item_kihoc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="4dp"
-                android:text="Kì học: III"
-                android:textColor="#2d5d82"
-                android:textSize="15sp" />
-        </RelativeLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>
