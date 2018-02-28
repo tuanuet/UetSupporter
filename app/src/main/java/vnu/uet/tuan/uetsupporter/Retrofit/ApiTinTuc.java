@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
+import vnu.uet.tuan.uetsupporter.Model.Response.CourseInformation;
 import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
 import vnu.uet.tuan.uetsupporter.Model.Response.Message;
 import vnu.uet.tuan.uetsupporter.Model.Student;
@@ -51,6 +52,9 @@ public interface ApiTinTuc {
 
     @POST("/api/logout")
     Call<Message> postLogout(@Header("Authorization") String authorization);
+
+    @GET("/api/info/course/{id}")
+    Call<CourseInformation> getInfoCourse(@Path("id") String id, @Header("Authorization") String authorization);
 
     @FormUrlEncoded
     @POST("/sinhvien/guifeedback/{id}")

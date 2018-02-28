@@ -5,4 +5,5 @@ package vnu.uet.tuan.uetsupporter.Presenter.Profile.DetailLopMonHoc;
  */
 
 public interface IPresenterDetailLopMonHocView {
+    void executeLoadInformationCourse(String courseId);
 }
