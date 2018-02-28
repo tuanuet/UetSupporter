@@ -38,6 +38,7 @@ public class Result2Activity extends AppCompatActivity {
             bundle.putString(Config.ID_LOPMONHOC, idLopMonHoc);
             fragment.setArguments(bundle);
             name = idLopMonHoc;
+            toolbar.setTitle("Lớp môn học");
         }
 
         //fragment DetailPushNotification
@@ -45,7 +46,6 @@ public class Result2Activity extends AppCompatActivity {
             AnnouncementNotification notification = (AnnouncementNotification) getIntent().getSerializableExtra(Config.KEY_PUSHNOTIFICATION);
             Bundle bundle = new Bundle();
             bundle.putSerializable(Config.KEY_PUSHNOTIFICATION, notification);
-            Log.e(TAG,notification.getTypeNotification()+notification.getNameSender());
             switch (notification.getTypeNotification()) {
                 case 1: {
                     toolbar.setTitle("Thông báo");
@@ -98,12 +98,12 @@ public class Result2Activity extends AppCompatActivity {
         Fragment fragmentInStack = getSupportFragmentManager().findFragmentByTag(name);
         if (fragmentInStack != null) {
             //Có fragment trong stack
-            ft.replace(R.id.activity_result2, fragmentInStack, name);
+            ft.replace(R.id.fragment_replace, fragmentInStack, name);
             ft.addToBackStack(null);
             ft.commit();
             Log.e("Result2", "Fragment in Stack");
         } else {
-            ft.replace(R.id.activity_result2, fragment, name);
+            ft.replace(R.id.fragment_replace, fragment, name);
             ft.addToBackStack(name);
             ft.commit();
             Log.e("Result2", "Fragment not in Stack");
