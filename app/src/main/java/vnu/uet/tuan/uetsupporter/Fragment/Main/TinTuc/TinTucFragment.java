@@ -157,7 +157,7 @@ public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChan
     private void setupFab(View view) {
 
         Fab fab = (Fab) view.findViewById(R.id.fab);
-        fab.setImageResource(R.drawable.ic_icon_filter);
+        fab.setImageResource(R.drawable.filter_white_36x36);
         fab.setRippleColor(getResources().getColor(R.color.theme_primary_dark));
         fab.setBackgroundColor(getResources().getColor(R.color.theme_primary_dark));
 
