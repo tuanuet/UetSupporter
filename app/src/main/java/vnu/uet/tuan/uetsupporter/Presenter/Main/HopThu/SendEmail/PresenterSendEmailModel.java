@@ -8,6 +8,7 @@ import android.util.Log;
 
 import javax.mail.MessagingException;
 
+import vnu.uet.tuan.uetsupporter.Model.Mail.MailSender;
 import vnu.uet.tuan.uetsupporter.Model.Mail.MailUet;
 
 /**
@@ -51,15 +52,8 @@ public class PresenterSendEmailModel implements IPresenterSendEmailModel {
 
         @Override
         protected Boolean doInBackground(String... strings) {
-            MailUet mailer = MailUet.getInstance("14020521","1391996");
-            try {
-                mailer.sendEmail(strings[0],strings[1],strings[2],strings[3],strings[4],strings[5]);
-                return true;
-            } catch (MessagingException e) {
-                e.printStackTrace();
-                Log.e(TAG,e.getMessage());
-                return false;
-            }
+            MailSender mailer = new MailSender("14020521","1391996");
+            return mailer.sendEmail(strings[0],strings[1],strings[2],strings[3],strings[4],strings[5]);
         }
 
         @Override
@@ -77,14 +71,8 @@ public class PresenterSendEmailModel implements IPresenterSendEmailModel {
 
         @Override
         protected Boolean doInBackground(String... strings) {
-            MailUet mailer = MailUet.getInstance("14020521","1391996");
-            try {
-                mailer.sendEmail(strings[0],strings[1],strings[2],strings[3],strings[4],strings[5],strings[6]);
-                return true;
-            } catch (MessagingException e) {
-                e.printStackTrace();
-                return false;
-            }
+            MailSender mailer = new MailSender("14020521","1391996");
+            return mailer.sendEmail(strings[0],strings[1],strings[2],strings[3],strings[4],strings[5],strings[6]);
         }
 
         @Override

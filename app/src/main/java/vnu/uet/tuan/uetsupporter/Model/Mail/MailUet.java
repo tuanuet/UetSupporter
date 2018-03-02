@@ -85,7 +85,7 @@ public class MailUet {
         // Create all the needed properties - empty!
         Properties connectionProperties = new Properties();
         // Create the session
-        Session session = Session.getDefaultInstance(connectionProperties, null);
+            Session session = Session.getDefaultInstance(connectionProperties, null);
 
         try {
             Log.e("MAIL", "Connecting to the IMAP server...");
@@ -103,7 +103,7 @@ public class MailUet {
             inbox = store.getFolder(mailBox);
 
             // Set the mode to the read-only mode
-            inbox.open(Folder.READ_ONLY);
+            inbox.open(Folder.READ_WRITE);
             this.typeFolder = mailBox;
             return this;
         } catch (Exception e) {
@@ -427,136 +427,6 @@ public class MailUet {
     public boolean cancelRequesEmail() throws Exception {
         inbox.close(true);
         return !inbox.isOpen();
-    }
-
-    public void sendEmail(String to, String from, String cc, String bcc, String subject,String bodyText) throws MessagingException {
-
-        InternetAddress[] myToList = InternetAddress.parse(to);
-        InternetAddress[] myBccList = InternetAddress.parse(bcc);
-        InternetAddress[] myCcList = InternetAddress.parse(cc);
-
-        // Get system properties
-        Properties properties = new Properties();
-
-        properties.put("mail.smtp.starttls.enable", true);
-        properties.put("mail.smtp.host", server);
-        properties.put("mail.smtp.port", 25);
-        properties.put("mail.smtp.auth", true);
-
-        Log.e(TAG,MailUet.user+"@vnu.edu.vn" + MailUet.pass);
-        Authenticator authenticator = new Authenticator() {
-            private PasswordAuthentication pa = new PasswordAuthentication(MailUet.user+"@vnu.edu.vn", MailUet.pass);
-
-            @Override
-            public PasswordAuthentication getPasswordAuthentication() {
-                return pa;
-            }
-        };
-        // Get the Session object.
-        Session session = Session.getInstance(properties,authenticator);
-        session.setDebug(true);
-
-        // Create a default MimeMessage object.
-        MimeMessage message = new MimeMessage(session);
-
-        // Set From: header field of the header.
-        message.setFrom(new InternetAddress(from));
-
-        // Set To: header field of the header.
-        message.setRecipients(Message.RecipientType.TO,myToList);
-        message.addRecipients(Message.RecipientType.BCC,myBccList);
-        message.addRecipients(Message.RecipientType.CC,myCcList);
-
-        // Set Subject: header field
-        message.setSubject(subject);
-
-        // Create the message part
-        BodyPart messageBodyPart = new MimeBodyPart();
-
-        // Fill the message
-        messageBodyPart.setText(bodyText);
-
-        // Create a multipar message
-        Multipart multipart = new MimeMultipart();
-
-        // Set text message part
-        multipart.addBodyPart(messageBodyPart);
-
-        // Send the complete message parts
-        message.setContent(multipart );
-
-        // Send message
-        Transport.send(message);
-    }
-
-    public void sendEmail(String to, String from, String cc, String bcc, String subject, String bodyText, String pathFile) throws MessagingException {
-
-        InternetAddress[] myToList = InternetAddress.parse(to);
-        InternetAddress[] myBccList = InternetAddress.parse(bcc);
-        InternetAddress[] myCcList = InternetAddress.parse(cc);
-
-        MailUet.Protocol protocol = MailUet.Protocol.SMTP;// default SMTP
-
-        // Get system properties
-        Properties properties = System.getProperties();
-
-        // Setup mail server
-        properties.setProperty("mail.user", MailUet.user);
-        properties.setProperty("mail.password", MailUet.pass);
-        properties.setProperty("mail.smtp.host", server);
-        switch (protocol) {
-            case SMTPS:
-                properties.put("mail.smtp.ssl.enable", true);
-                break;
-            case TLS:
-                properties.put("mail.smtp.starttls.enable", true);
-                break;
-        }
-        // Get the default Session object.
-        Session session = Session.getDefaultInstance(properties);
-
-        // Create a default MimeMessage object.
-        MimeMessage message = new MimeMessage(session);
-
-        // Set From: header field of the header.
-        message.setFrom(new InternetAddress(from));
-
-        // Set To: header field of the header.
-        message.setRecipients(Message.RecipientType.TO,myToList);
-        // changes,...
-        message.addRecipients(Message.RecipientType.BCC,myBccList);
-        message.addRecipients(Message.RecipientType.CC,myCcList);
-
-        // Set Subject: header field
-        message.setSubject(subject);
-
-        // Create the message part
-        BodyPart messageBodyPart = new MimeBodyPart();
-
-        // Fill the message
-        messageBodyPart.setText(bodyText);
-
-        // Create a multipar message
-        Multipart multipart = new MimeMultipart();
-
-        // Set text message part
-        multipart.addBodyPart(messageBodyPart);
-
-        // Part two is attachment
-        messageBodyPart = new MimeBodyPart();
-        String filename = pathFile;
-        DataSource source = new FileDataSource(filename);
-        messageBodyPart.setDataHandler(new DataHandler(source));
-        messageBodyPart.setFileName(filename);
-        multipart.addBodyPart(messageBodyPart);
-
-        // Send the complete message parts
-        message.setContent(multipart );
-
-        // Send message
-        Transport.send(message);
-
-
     }
 
 }
