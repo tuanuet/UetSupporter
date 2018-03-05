@@ -15,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
+import com.google.common.base.CaseFormat;
 
 import java.io.IOException;
 import java.text.Normalizer;
@@ -57,8 +58,15 @@ public class Utils {
     private static final String TAG = "Utils";
 
     public static String snakeCase(String str) {
-        String result = VNCharacterUtils.removeAccent(str).trim().toLowerCase().replaceAll(" ","_");
-        return result;
+        String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
+        Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+        return pattern.matcher(temp).replaceAll("")
+                .replaceAll("Đ", "D")
+                .replace("đ", "")
+                .replaceAll(" ","_")
+                .replaceAll(",","_")
+                .replaceAll("__","_")
+                .toLowerCase();
     }
 
     public static String tranformTags(String[] tags) {

@@ -18,22 +18,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.OkHttpClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapterTinTuc;
-import vnu.uet.tuan.uetsupporter.Cache.ConfigCache;
-import vnu.uet.tuan.uetsupporter.Listener.EndlessRecyclerOnScrollListener;
 
+import vnu.uet.tuan.uetsupporter.Adapter.PatternRecyclerAdapterTinTuc;
+import vnu.uet.tuan.uetsupporter.Listener.EndlessRecyclerOnScrollListener;
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.TinTuc.IPresenterTinTucView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.TinTuc.PresenterTinTucLogic;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Activities.ResultActivity;
-import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.View.Main.TinTuc.IViewTinTuc;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -90,9 +82,6 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        /**
-         * lam lai phan nay
-         */
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pattern_factory_notification, container, false);
