@@ -19,6 +19,7 @@ import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterInboxAndSentMessage;
+import vnu.uet.tuan.uetsupporter.Listener.EndlessRecyclerOnScrollListener;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.MainEmail.IPresenterMainEmailView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.MainEmail.PresenterMainEmailLogic;
@@ -72,6 +73,12 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
         refreshLayout.setOnRefreshListener(this);
         adapter.setOnItemClickListener(this);
         presenter = new PresenterMainEmailLogic(getActivity(), this);
+        recycler.setOnScrollListener(new EndlessRecyclerOnScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                presenter.excuteLoadEmail(Config.MailBox.Inbox.toString(), current_page);
+            }
+        });
     }
 
     @Override
@@ -122,12 +129,10 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
 
     @Override
     public void onCancelExecuteSuccess(String success) {
-        Toast.makeText(getActivity(), TAG + ": " + success, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCancelExecuteFailure(String fail) {
-        Log.e(TAG, "onCancelExecuteFailure: " + fail);
     }
 
     @Override
@@ -135,44 +140,4 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
         super.onDestroy();
         presenter.cancelLoadEmail();
     }
-
-    //    private class ExecueEmail extends AsyncTask<Integer, Void, ArrayList<Email>> {
-//
-//        @Override
-//        protected ArrayList<Email> doInBackground(Integer... params) {
-//            int first = params[0] * 10, last = first + 10;
-//
-//            MailUet sent = MailUet.getInstance(
-////                Utils.getEmailUser(getActivity()),
-////                Utils.getPassword(getActivity())
-//                    "14020521", "1391996"
-//            ).readEmails(Config.MailBox.Inbox.toString());
-//            try {
-//                return sent.getMessage(first, last);
-//            } catch (Exception e) {
-//
-//                e.printStackTrace();
-//                return new ArrayList<>();
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(ArrayList<Email> list) {
-//            super.onPostExecute(list);
-//            //update UI
-//            int postion = emails.size();
-//            if (list != null && list.size() != 0) {
-////                emailSQLHelper.insertBulk(list);
-//                emails.addAll(list);
-//                adapter.notifyItemInserted(postion);
-//
-//            } else
-//                Toast.makeText(getActivity(), getString(R.string.fail_download), Toast.LENGTH_SHORT).show();
-//
-//            if (refreshLayout.isRefreshing()) {
-//                refreshLayout.setRefreshing(false);
-//            }
-//        }
-//    }
-
 }

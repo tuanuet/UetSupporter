@@ -100,6 +100,9 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
                 .remove(Config.USER_TOKEN)
                 .remove(Config.CAN_BE_FIREBASE_TOKEN)
                 .apply();
+
+        Utils.clearNotification(getActivity());
+        Utils.clearEmail(getActivity());
     }
 
     class RunLogout extends AsyncTask<Void, Void, Void> {

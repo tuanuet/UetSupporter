@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Utils;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -38,6 +39,7 @@ import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.EmailSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiThongBaoSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.LoaiTinTucSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.MucDoThongBaoSQLHelper;
@@ -391,5 +393,27 @@ public class Utils {
         DisplayMetrics metrics = resources.getDisplayMetrics();
         int px = (int) (dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT));
         return px;
+    }
+
+    public static boolean clearNotification(Activity activity) {
+        PushNotificationSQLHelper helper = new PushNotificationSQLHelper(activity);
+        try {
+            helper.clearDb();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG,e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean clearEmail(Activity activity) {
+        EmailSQLHelper helper = new EmailSQLHelper(activity);
+        try {
+            helper.clearDb();
+            return true;
+        } catch (Exception e) {
+            Log.e(TAG,e.getMessage());
+            return false;
+        }
     }
 }

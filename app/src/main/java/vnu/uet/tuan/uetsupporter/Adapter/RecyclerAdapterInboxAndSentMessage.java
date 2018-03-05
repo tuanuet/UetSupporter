@@ -86,8 +86,6 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
             itemViewHolder.hasFile.setVisibility(
                     email.isHasFile() ? View.VISIBLE : View.INVISIBLE);
 
-            Log.e(TAG, email.getImportance());
-
             if (email.getImportance().toLowerCase().contains("high") || email.getImportance().toLowerCase().equals("high")) {
                 itemViewHolder.importance.setImageResource(R.drawable.red_dot);
             }

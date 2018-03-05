@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 
 import android.support.v7.widget.RecyclerView;
@@ -41,7 +42,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  * Use the {@link PatternFactoryFragmentTinTuc#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTuc {
+public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTuc,SwipeRefreshLayout.OnRefreshListener {
     private static final String ARG_PARAM1 = "param1";
 
     private final String TAG = this.getClass().getSimpleName();
@@ -51,6 +52,7 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
     private LinearLayoutManager mLayoutManager;
     private PatternRecyclerAdapterTinTuc adapter;
     private IPresenterTinTucView presenterTinTucLogic;
+    private SwipeRefreshLayout refreshLayout;
 
     public PatternFactoryFragmentTinTuc() {
         // Required empty public constructor
@@ -110,6 +112,8 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
         recyclerView.setLayoutManager(mLayoutManager);
         adapter = new PatternRecyclerAdapterTinTuc(getActivity(), listTinTuc);
         recyclerView.setAdapter(adapter);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swiperefresh);
+        refreshLayout.setOnRefreshListener(this);
 
         adapter.setOnItemClickListener(new PatternRecyclerAdapterTinTuc.ClickListener() {
             @Override
@@ -144,6 +148,9 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
         int lastPosition = listTinTuc.size();
         listTinTuc.addAll(tinTucs);
         adapter.notifyItemInserted(lastPosition);
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -153,7 +160,6 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
 
     @Override
     public void onCancelSuccess(String success) {
-        Toast.makeText(getActivity(), success, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -168,4 +174,11 @@ public class PatternFactoryFragmentTinTuc extends Fragment implements IViewTinTu
     }
 
 
+    @Override
+    public void onRefresh() {
+        listTinTuc.clear();
+        adapter.notifyDataSetChanged();
+        presenterTinTucLogic.cancelExcute();
+        presenterTinTucLogic.executeTinTuc(loaiTinTuc, 0);
+    }
 }

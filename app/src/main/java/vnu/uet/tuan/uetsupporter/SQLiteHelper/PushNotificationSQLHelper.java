@@ -70,12 +70,17 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         return (int) db.insert(Contract.PushNotification.NAME_TABLE, null, values);
     }
 
+    public void clearDb() throws Exception{
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Delete All Rows
+        db.delete(Contract.PushNotification.NAME_TABLE, null, null);
+        db.close();
+
+    }
     public int getCountNotificationNotRead() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select * from " + Contract.PushNotification.NAME_TABLE + " where "
                 + Contract.PushNotification.ISREAD + " = 0";
-        Log.e("sql", query);
-
         Cursor cursor = db.rawQuery(query, null);
         return cursor.getCount();
     }

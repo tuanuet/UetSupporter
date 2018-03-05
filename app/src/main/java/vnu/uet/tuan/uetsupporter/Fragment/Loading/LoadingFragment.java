@@ -134,6 +134,8 @@ public class LoadingFragment extends Fragment {
                 }
                 //.......
 
+
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -157,7 +159,11 @@ public class LoadingFragment extends Fragment {
                 if (currentTask == maxTask) {
                     setIsRunFirstTime(false);
                     getPercen();
-                    Toast.makeText(getActivity(), getString(R.string.please_exit), Toast.LENGTH_LONG).show();
+                    Intent i = getContext().getPackageManager()
+                            .getLaunchIntentForPackage( getContext().getPackageName() );
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);
+//                    Toast.makeText(getActivity(), getString(R.string.please_exit), Toast.LENGTH_LONG).show();
                 }
             } else {
                 Toast.makeText(getActivity(), getString(R.string.fail_download), Toast.LENGTH_LONG).show();
@@ -203,7 +209,7 @@ public class LoadingFragment extends Fragment {
     }
 
     private String getPercen() {
-        float doubl = (float) currentTask / maxTask;
+        float doubl = (float) currentTask / maxTask * 100;
         return doubl + " %";
     }
     private void setIsRunFirstTime(Boolean value) {

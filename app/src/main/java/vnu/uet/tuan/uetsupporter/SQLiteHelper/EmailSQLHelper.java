@@ -76,10 +76,16 @@ public class EmailSQLHelper extends SQLFather {
         }
         return ids;
     }
+    public void clearDb() throws Exception{
+        SQLiteDatabase db = this.getWritableDatabase();
+        // Delete All Rows
+        db.delete(Contract.Email.NAME_TABLE, null, null);
+        db.close();
+
+    }
     @Override
     public int insertBulk(List list) {
         List<Email> arr = list;
-        Log.e(TAG, "size email: " + list.size());
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
         int countNumber = 0;

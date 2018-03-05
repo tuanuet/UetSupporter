@@ -82,6 +82,7 @@ public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
     private void initUI(View view) {
         hasOptionsMenu();
         setHasOptionsMenu(true);
+
         title = (TextView) view.findViewById(R.id.title);
         from = (TextView) view.findViewById(R.id.from);
         content = (TextView) view.findViewById(R.id.noidung);
@@ -113,35 +114,6 @@ public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    private class RetrigerEmail extends AsyncTask<Integer, Void, Email> {
-//
-//        @Override
-//        protected Email doInBackground(Integer... params) {
-//            try {
-//                return MailUet.getInstance(
-//    //                    Utils.getEmailUser(getActivity()),
-//    //                    Utils.getPassword(getActivity())
-//                        "14020521", "1391996")
-//                        .readEmails(folder)
-//                        .getMessage(params[0]);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Email email) {
-//            super.onPostExecute(email);
-//            if (email!=null){
-//                updateUI(email);
-//            }else{
-//                Toast.makeText(getActivity(), getString(R.string.fail_download), Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
-
 
     private void updateUI(Email email) {
         title.setText(email.getTitle());
@@ -210,12 +182,10 @@ public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
 
     @Override
     public void onCancelExecuteSuccess(String success) {
-        Toast.makeText(getActivity(), success, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCancelExecuteFailure(String fail) {
-        Log.e(TAG, "onCancelExecuteFailure: " + fail);
     }
 
     @Override

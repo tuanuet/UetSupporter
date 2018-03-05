@@ -118,7 +118,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener, I
 
     @Override
     public void onCancelExecuteSuccess(String success) {
-        Toast.makeText(getActivity(), success, Toast.LENGTH_SHORT).show();
     }
 
     @Override

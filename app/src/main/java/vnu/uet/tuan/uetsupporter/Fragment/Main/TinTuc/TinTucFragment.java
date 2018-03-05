@@ -206,7 +206,6 @@ public class TinTucFragment extends Fragment implements RadioGroup.OnCheckedChan
                     }
 
                 } else {
-                    Toast.makeText(getActivity(), "Nhấn 1 lần nữa để thoát ", Toast.LENGTH_SHORT).show();
                     onFinish.finish(true);
                 }
 

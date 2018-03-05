@@ -348,12 +348,11 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
 
     @Override
     public void onCancelExecuteSuccess() {
-        Toast.makeText(getActivity(), "Lỗi mạng!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCancelExecuteFailure() {
-        Toast.makeText(getActivity(), "Lỗi mạng! ", Toast.LENGTH_SHORT).show();
+
     }
 
     /** ===================================================================
@@ -425,7 +424,6 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
     public void onValueSelected(Entry e, Highlight h) {
         PieEntry entry = (PieEntry) e;
         String label = entry.getLabel();
-        Toast.makeText(getActivity(), label, Toast.LENGTH_LONG).show();
     }
 
     @Override

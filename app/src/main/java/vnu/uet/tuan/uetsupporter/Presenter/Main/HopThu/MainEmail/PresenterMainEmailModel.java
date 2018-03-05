@@ -75,15 +75,13 @@ public class PresenterMainEmailModel implements IPresenterMainEmailModel {
         @Override
         protected ArrayList<Email> doInBackground(Void... params) {
             try {
-
-                Log.e(TAG, String.valueOf(pager+ " bai viet"));
-                return MailUet.getInstance(
+                ArrayList<Email> emails = MailUet.getInstance(
 //                Utils.getEmailUser(getActivity()),
 //                Utils.getPassword(getActivity())
                         "14020521", "1391996"
                 ).readEmails(folder)
                         .getMessage(pager * epr, pager * epr + epr);
-
+                return  (emails != null) ? emails : new ArrayList<Email>();
             } catch (Exception e) {
                 Log.e(TAG,e.getMessage());
                 e.printStackTrace();

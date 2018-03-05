@@ -63,7 +63,7 @@ public class HopThuFragment extends Fragment implements TabLayout.OnTabSelectedL
         tabLayout.setupWithViewPager(pager);
         tabLayout.addOnTabSelectedListener(this);
         pager.setAdapter(adapter);
-        pager.setOffscreenPageLimit(4);
+        pager.setOffscreenPageLimit(2);
         //setcustomview cho tap
     }
 

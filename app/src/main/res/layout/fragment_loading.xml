@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:background="@drawable/back_ground"
     tools:context="vnu.uet.tuan.uetsupporter.Fragment.Loading.LoadingFragment">
 
     <ProgressBar
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:id="@+id/progressBar" />
 
@@ -16,5 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/txt_percent"
+        android:textColor="@color/background_card"
         android:text="30 %" />
 </LinearLayout>

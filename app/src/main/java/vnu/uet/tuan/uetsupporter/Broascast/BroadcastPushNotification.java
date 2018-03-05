@@ -98,6 +98,7 @@ public class BroadcastPushNotification extends BroadcastReceiver {
 
     private void initShortcutBadger(Context context) {
         int badgeCount = Utils.getNumberOnNav(context);
+        Log.e(TAG,"Is support badge: "+ShortcutBadger.isBadgeCounterSupported(context));
         ShortcutBadger.applyCount(context, badgeCount); //for 1.1.4+
 
     }

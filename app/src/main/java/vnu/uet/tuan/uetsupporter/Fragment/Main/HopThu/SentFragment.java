@@ -19,6 +19,7 @@ import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterInboxAndSentMessage;
+import vnu.uet.tuan.uetsupporter.Listener.EndlessRecyclerOnScrollListener;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.MainEmail.IPresenterMainEmailView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.MainEmail.PresenterMainEmailLogic;
@@ -72,6 +73,12 @@ public class SentFragment extends Fragment implements RecyclerAdapterInboxAndSen
         refreshLayout.setOnRefreshListener(this);
         adapter.setOnItemClickListener(this);
         presenter = new PresenterMainEmailLogic(getActivity(), this);
+        recycler.setOnScrollListener(new EndlessRecyclerOnScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int current_page) {
+                presenter.excuteLoadEmail(Config.MailBox.Sent.toString(), current_page);
+            }
+        });
     }
 
     @Override
@@ -102,13 +109,10 @@ public class SentFragment extends Fragment implements RecyclerAdapterInboxAndSen
 
     @Override
     public void onPreExecute() {
-        Toast.makeText(getActivity(), "onPreExecute", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onExecuteSuccess(List<Email> emails) {
-        Log.e(TAG, "Size email :" + emails.size());
-
         this.emails.addAll(emails);
         adapter.notifyItemInserted(this.emails.size() - emails.size());
         if (refreshLayout.isRefreshing()) {
@@ -124,12 +128,10 @@ public class SentFragment extends Fragment implements RecyclerAdapterInboxAndSen
 
     @Override
     public void onCancelExecuteSuccess(String success) {
-        Toast.makeText(getActivity(), TAG + ": " + success, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCancelExecuteFailure(String fail) {
-        Log.e(TAG, "onCanceonCancelExecuteFailure: " + fail);
     }
 
     @Override

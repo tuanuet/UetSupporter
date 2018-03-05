@@ -90,7 +90,6 @@ public class SendEmailFragment extends Fragment implements IViewSendEmail{
 
     @Override
     public void onPreExecute() {
-        Toast.makeText(getActivity(), "please waiting!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
