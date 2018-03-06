@@ -64,18 +64,6 @@ public class Result2Activity extends AppCompatActivity {
 
         }
 
-        if (getIntent().hasExtra(Config.POSITION_EMAIL)) {
-            int position = getIntent().getIntExtra(Config.POSITION_EMAIL, 0);
-            String folder = getIntent().getStringExtra(Config.FOLDER_EMAIL);
-            fragment = new DetailEmailFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt(Config.POSITION_EMAIL, position);
-            bundle.putString(Config.FOLDER_EMAIL, folder);
-            fragment.setArguments(bundle);
-            toolbar.setTitle("Email");
-        }
-
-
         name = fragment.getClass().getSimpleName();
         showChangeFragment(fragment, name);
 

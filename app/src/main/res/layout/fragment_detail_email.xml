@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     tools:context="vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.DetailEmailFragment">
 
     <ScrollView
@@ -13,6 +15,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/app_bar_layout"
+                android:theme="@style/AppTheme.AppBarOverlay">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    app:navigationIcon="?homeAsUpIndicator"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="?attr/colorPrimary"
+                    app:popupTheme="@style/AppTheme.PopupOverlay" />
+            </android.support.design.widget.AppBarLayout>
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
@@ -47,16 +63,7 @@
                                 android:layout_height="60dp" />
                         </LinearLayout>
 
-                        <!--<LinearLayout-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="horizontal">-->
-                        <!--<ImageView-->
-                        <!--android:layout_width="24dp"-->
-                        <!--android:layout_height="24dp"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:src="@drawable/dot_black"/>-->
-                        <!--</LinearLayout>-->
+
 
                     </LinearLayout>
 
@@ -74,40 +81,37 @@
                             android:textColor="@color/black"
                             android:maxLines="1"
                             android:id="@+id/title"
-                            android:textSize="20sp"
+                            android:textSize="14sp"
                             android:textAllCaps="true" />
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="14020521@gmail.com"
+                            android:text="@string/email_from"
                             android:textColor="@color/grey"
                             android:maxLines="1"
                             android:id="@+id/from"
-                            android:textSize="15sp" />
+                            android:textSize="13sp" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/time"
+                            android:layout_width="wrap_content"
+
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:paddingTop="5dp"
-                            android:weightSum="10">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-
-                                android:layout_weight="4"
-                                android:id="@+id/time"
-                                android:text="10/10/2017" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1.5"
-                                android:id="@+id/mucdo"
-                                android:text="Khẩn cấp" />
-                        </LinearLayout>
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:textSize="13sp"
+                            android:text="@string/email_date_receive" />
+                        <TextView
+                            android:id="@+id/receiver"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:textSize="13sp"
+                            android:text="@string/email_receiver" />
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -127,7 +131,7 @@
                     android:padding="5dp"
                     android:text="@string/testtext"
                     android:textAlignment="gravity"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/dark_grey"
                     tools:ignore="MissingPrefix" />
             </android.support.v7.widget.CardView>
 
@@ -200,47 +204,35 @@
                             android:textAllCaps="true" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingLeft="10dp">
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="horizontal"-->
+                        <!--android:paddingLeft="10dp">-->
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:id="@+id/iconfile"
-                            android:src="@drawable/icon_word" />
+                        <!--<ImageView-->
+                            <!--android:layout_width="30dp"-->
+                            <!--android:layout_height="30dp"-->
+                            <!--android:src="@drawable/icon_word" />-->
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/tenfile"
-                            android:layout_gravity="center" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingLeft="10dp">
-
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:id="@+id/iconfile2"
-                            android:src="@drawable/icon_word" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/danhsach"
-                            android:layout_gravity="center" />
-                    </LinearLayout>
+                        <!--<TextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:text="@string/tenfile"-->
+                            <!--android:layout_gravity="center" />-->
+                    <!--</LinearLayout>-->
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
     </ScrollView>
-
+    <vnu.uet.tuan.uetsupporter.Animation.Fab
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/fab"
+        app:backgroundTint="@color/colorPrimary"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp"
+        android:background="@drawable/back_ground"
+        fab:fabSize="normal" />
 </FrameLayout>

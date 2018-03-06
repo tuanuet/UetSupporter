@@ -60,7 +60,7 @@ public class EmailSQLHelper extends SQLFather {
                 values.put(Contract.Email.HASFILE, (email.isHasFile()) ? 1 : 0);
                 values.put(Contract.Email.IMPORTANCE, email.getImportance().trim().toLowerCase());
                 values.put(Contract.Email.ISREAD, (email.isRead()) ? 1 : 0);
-                values.put(Contract.Email.RECEIVEDDATE, email.getReceiveDate());
+                values.put(Contract.Email.RECEIVEDDATE, email.getReceiveDate().toString());
                 values.put(Contract.Email.TITLE, email.getTitle());
                 values.put(Contract.Email.SEND_DATE, email.getSendDate());
                 values.put(Contract.Email.FOLDER, email.getFolder());
@@ -101,7 +101,7 @@ public class EmailSQLHelper extends SQLFather {
                 values.put(Contract.Email.HASFILE, (email.isHasFile()) ? 1 : 0);
                 values.put(Contract.Email.IMPORTANCE, email.getImportance().trim().toLowerCase());
                 values.put(Contract.Email.ISREAD, (email.isRead()) ? 1 : 0);
-                values.put(Contract.Email.RECEIVEDDATE, email.getReceiveDate());
+                values.put(Contract.Email.RECEIVEDDATE, email.getReceiveDate().toString());
                 values.put(Contract.Email.TITLE, email.getTitle());
                 values.put(Contract.Email.SEND_DATE, email.getSendDate());
                 values.put(Contract.Email.FOLDER, email.getFolder());

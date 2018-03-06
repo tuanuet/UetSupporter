@@ -64,9 +64,9 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
             Email email = list.get(position);
 
             itemViewHolder.from.setText(email.getFrom());
-            itemViewHolder.timeReceived.setText(email.getReceiveDate());
+            itemViewHolder.timeReceived.setText(Utils.getTimeEmail(context,email.getReceiveDate()));
             if (!email.isRead()) {
-                itemViewHolder.title.setTypeface(null, Typeface.BOLD);
+                itemViewHolder.from.setTypeface(null, Typeface.BOLD);
             }
             itemViewHolder.title.setText(email.getTitle());
             String content = email.getContent().trim().toLowerCase();
@@ -87,7 +87,7 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
                     email.isHasFile() ? View.VISIBLE : View.INVISIBLE);
 
             if (email.getImportance().toLowerCase().contains("high") || email.getImportance().toLowerCase().equals("high")) {
-                itemViewHolder.importance.setImageResource(R.drawable.red_dot);
+                itemViewHolder.importance.setImageResource(R.drawable.ic_star_yellow);
             }
 
             itemViewHolder.reply_now.setOnClickListener(new View.OnClickListener() {

@@ -7,6 +7,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
+import vnu.uet.tuan.uetsupporter.R;
+
 /**
  * Created by vmtuan on 3/19/2017.
  */
@@ -29,6 +31,6 @@ public class CustomizePreferenceCatology extends PreferenceCategory {
     protected void onBindView(View view) {
         super.onBindView(view);
         TextView titleView = (TextView) view.findViewById(android.R.id.title);
-        titleView.setTextColor(Color.RED);
+        titleView.setTextColor(getContext().getResources().getColor(R.color.colorPrimaryDark));
     }
 }

@@ -132,5 +132,9 @@
     <string name="title_size_class">Sĩ số: %1$d</string>
     <string name="title_term">Kỳ học: %1$s</string>
     <string name="title_class">Khóa lớp</string>
+    <string name="email_from">Từ: %1$s</string>
+    <string name="email_date_receive">Ngày nhận: %1$s</string>
+    <string name="email_receiver">Người nhận: %1$s</string>
+    <string name="string_yesterday">Hôm qua</string>
 
 </resources>

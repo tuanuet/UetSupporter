@@ -47,7 +47,6 @@
                     android:singleLine="true"
                     android:hint="User Name"
                     android:inputType="text"
-                    android:backgroundTint="@color/colorPrimary"
                     android:id="@+id/email" />
             </android.support.design.widget.TextInputLayout>
 
@@ -61,13 +60,12 @@
                     android:layout_marginTop="16dp"
                     android:singleLine="true"
                     android:drawableTint="#FF4081"
-                    android:backgroundTint="@color/colorPrimary"
                     android:id="@+id/password"
                     android:hint="Password"
                     android:inputType="textPassword" />
             </android.support.design.widget.TextInputLayout>
 
-
+        
 
             <Button
                 android:layout_width="fill_parent"

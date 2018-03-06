@@ -15,7 +15,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.google.common.base.CaseFormat;
 
 import java.io.IOException;
 import java.text.Normalizer;
@@ -286,9 +285,22 @@ public class Utils {
     }
 
     //Wed Mar 08 16:02:47 GMT+07:00 2017
-    public static String getTimeEmail(String s) {
-        String str = s.split("GMT")[0];
-        return str;
+    public static String getTimeEmail(Context context, Date date) {
+
+        int diffInDays = (int)( (new Date().getTime() - date.getTime())
+                / (1000 * 60 * 60 * 24) );
+        if(diffInDays == 1){
+            return context.getString(R.string.string_yesterday);
+        } else if(diffInDays == 0) {
+            SimpleDateFormat ft =
+                    new SimpleDateFormat ("hh:mm a");
+            return ft.format(date);
+        } else {
+            SimpleDateFormat ft =
+                    new SimpleDateFormat ("dd 'Thg' M");
+            return ft.format(date);
+        }
+
     }
 
     public static String getThoiGian(long i) {
@@ -387,7 +399,7 @@ public class Utils {
             email.setTitle(cs.getString(Contract.Email.title));
             email.setRead(cs.getInt(Contract.Email.isread) == 1);
             email.setSendDate(cs.getString(Contract.Email.sendDate));
-            email.setReceiveDate(cs.getString(Contract.Email.receivedDate));
+            email.setReceiveDate(new Date(cs.getString(Contract.Email.receivedDate)));
             email.setFolder(cs.getString(Contract.Email.folder));
             email.setImportance(cs.getString(Contract.Email.importance));
             list.add(email);

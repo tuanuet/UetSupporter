@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import vnu.uet.tuan.uetsupporter.Activities.EmailDetailActivity;
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterInboxAndSentMessage;
 import vnu.uet.tuan.uetsupporter.Listener.EndlessRecyclerOnScrollListener;
@@ -89,7 +90,7 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
 
     @Override
     public void onItemClick(int position, View v) {
-        Intent intent = new Intent(getActivity(), Result2Activity.class);
+        Intent intent = new Intent(getActivity(), EmailDetailActivity.class);
         intent.putExtra(Config.POSITION_EMAIL, emails.get(position).getPosition());
         intent.putExtra(Config.FOLDER_EMAIL, Config.MailBox.Inbox.toString());
         startActivity(intent);
@@ -102,6 +103,7 @@ public class InboxFragment extends Fragment implements RecyclerAdapterInboxAndSe
 
     @Override
     public void onRefresh() {
+        presenter.cancelLoadEmail();
         emails.clear();
         adapter.notifyDataSetChanged();
         presenter.excuteLoadEmail(Config.MailBox.Inbox.toString(), 0);
