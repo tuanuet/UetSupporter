@@ -77,7 +77,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
             final ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
             itemViewHolder.txt_title.setText(list.get(position).getTitle());
-            itemViewHolder.txt_postat.setText(Utils.getThoiGian(list.get(position).getPostAt()));
+            itemViewHolder.txt_postat.setText(Utils.getThoiGian(context,list.get(position).getPostAt()));
             itemViewHolder.txt_loaitintuc.setText(Utils.tranformTags(list.get(position).getTags()));
 
             if (list.get(position).getImageLink() != null) {
@@ -111,7 +111,7 @@ public class PatternRecyclerAdapterTinTuc extends RecyclerView.Adapter {
             final ItemSpecialViewHolder itemViewHolder = (ItemSpecialViewHolder) holder;
 
             itemViewHolder.txt_title.setText(list.get(position).getTitle());
-            itemViewHolder.txt_postat.setText(Utils.getThoiGian(list.get(position).getPostAt()));
+            itemViewHolder.txt_postat.setText(Utils.getThoiGian(context,list.get(position).getPostAt()));
             itemViewHolder.txt_loaitintuc.setText(Utils.tranformTags(list.get(position).getTags()));
 
             Glide.with(context)

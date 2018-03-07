@@ -16,6 +16,10 @@ import android.util.Log;
 
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.io.IOException;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -214,7 +218,6 @@ public class Utils {
 
         ArrayList<AnnouncementNotification> list = new ArrayList<AnnouncementNotification>();
         cursor.moveToFirst();
-        Log.e(TAG, "Notification has " + cursor.getCount());
         while (!cursor.isAfterLast()) {
             AnnouncementNotification announcementNotification = new AnnouncementNotification();
             announcementNotification.setTieuDe(cursor.getString(Contract.PushNotification.tieu_de));
@@ -277,14 +280,24 @@ public class Utils {
         return str + "(" + lopMonHoc.get_id() + ") " + lopMonHoc.getName();
 
     }
+    public static String getThoiGian(Context context, String strDate) {
+        DateTime date = new DateTime();
+        if (strDate != null) {
+            date = new DateTime(strDate);
+        }
 
-    public static String getThoiGian(String s) {
-        if (s == null) return new Date(System.currentTimeMillis()).toString();
-        String str = s.split("T")[0]; //6-6-2015Tabc
-        return str;
+        int diffInDays = (int)( (new Date().getTime() - date.getMillis())
+                / (1000 * 60 * 60 * 24) );
+        if(diffInDays == 1){
+            return context.getString(R.string.string_yesterday);
+        } else if(diffInDays == 0) {
+            return date.toString("hh:mm a");
+        } else {
+            return date.toString("dd 'Thg' M YYYY");
+        }
+
     }
 
-    //Wed Mar 08 16:02:47 GMT+07:00 2017
     public static String getTimeEmail(Context context, Date date) {
 
         int diffInDays = (int)( (new Date().getTime() - date.getTime())

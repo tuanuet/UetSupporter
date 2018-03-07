@@ -46,7 +46,6 @@ public class DetailThongBao implements Serializable {
         this.idSender = root.getString("sender");
         this.idReceiver = root.getString("receiver");
         this.time = root.getString("createdAt");
-        Log.e(TAG, time);
         //==================================================================//
         JSONObject idMucDoThongBao = root.getJSONObject("priorityNotify");
         String _id = idMucDoThongBao.getString("_id");

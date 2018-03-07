@@ -6,20 +6,28 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import java.io.IOException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vnu.uet.tuan.uetsupporter.Activities.LoginActivity;
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
+import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.Response.Message;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
@@ -97,8 +105,11 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
         sharedPreferences.edit()
                 .remove(Config.EMAIL)
                 .remove(Config.PASSWORD)
+                .remove(getString(R.string.pref_title_mark))
                 .remove(Config.USER_TOKEN)
                 .remove(Config.CAN_BE_FIREBASE_TOKEN)
+                .remove(Config.REGISTER_NEWS)
+                .remove(Config.REGISTER_ANNOUNCES)
                 .apply();
 
         Utils.clearNotification(getActivity());
@@ -122,6 +133,18 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
                         isLogout = true;
                         //delete prefernce
                         deleteUserFromPrefer();
+                        //unregister course
+                        unRegisterCourses();
+                        //unregister
+                        ArrayList<LoaiTinTuc> loaiTinTucArrayList = Utils.getAllLoaiTinTuc(getActivity());
+                        for (LoaiTinTuc loaiTinTuc: loaiTinTucArrayList ) {
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(loaiTinTuc.get_id());
+                        }
+
+                        ArrayList<LoaiThongBao> kindOfNotitifications = Utils.getAllLoaiThongBao(getActivity());
+                        for (LoaiThongBao kindOfNotification : kindOfNotitifications ) {
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(kindOfNotification.get_id());
+                        }
 
 
                         Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -139,6 +162,31 @@ public class DialogLogoutFragment extends DialogFragment implements View.OnClick
                 e.printStackTrace();
             }
             return null;
+        }
+
+        private void unRegisterCourses() {
+            Call<String[]> call;
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Config.API_HOSTNAME)
+                    // Sử dụng GSON cho việc parse và maps JSON data tới Object
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
+            call = apiTinTuc.getCourseIds(Utils.getUserToken(getActivity()));
+            call.enqueue(new Callback<String[]>() {
+                @Override
+                public void onResponse(Call<String[]> call, Response<String[]> response) {
+                    if(response.code() < 400) {
+                        for (String cId : response.body()){
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(cId);
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String[]> call, Throwable t) {
+                }
+            });
         }
     }
 }

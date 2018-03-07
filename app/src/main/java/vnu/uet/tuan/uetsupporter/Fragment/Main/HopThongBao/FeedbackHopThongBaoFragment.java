@@ -68,7 +68,7 @@ public class FeedbackHopThongBaoFragment extends Fragment {
         loaithongbao.setText(thongBao.getIdLoaiThongBao().getTenLoaiThongBao());
         mucdo.setText(thongBao.getIdMucDoThongBao().getTenMucDoThongBao());
         sender.setText(thongBao.getIdSender());
-        time.setText(Utils.getThoiGian(thongBao.getTime()));
+        time.setText(Utils.getThoiGian(getContext(),thongBao.getTime()));
         adapter = new RecyclerAdapterFeedBack(getActivity(), thongBao.getFeedback());
         mRecycler.setAdapter(adapter);
 

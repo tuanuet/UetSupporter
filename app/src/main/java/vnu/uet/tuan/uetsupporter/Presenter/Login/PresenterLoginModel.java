@@ -121,7 +121,11 @@ public class PresenterLoginModel implements IPresenterLoginModel {
             //start activity
             // progressDialog.dismiss();
             while (!Utils.canGetFirebaseToken(context)) {
-                Log.e("Login", Utils.canGetFirebaseToken(context) + "");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
 
             listener.OnAutherticateSuccess();

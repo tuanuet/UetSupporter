@@ -53,6 +53,7 @@ dependencies {
     compile 'me.leolin:ShortcutBadger:1.1.21@aar'
     compile 'com.gordonwong:material-sheet-fab:1.2.1'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'joda-time:joda-time:2.9.9'
     compile 'com.daimajia.easing:library:2.0@aar'
     compile 'com.daimajia.androidanimations:library:2.2@aar'
     compile 'org.greenrobot:eventbus:3.0.0'

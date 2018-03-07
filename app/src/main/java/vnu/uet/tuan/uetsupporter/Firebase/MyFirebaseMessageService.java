@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -75,7 +76,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setNoiDung((String) data.get(AnnouncementNotification.NOIDUNG));
         push.setRead(false);
         push.setCodeMucDoThongBao("canh_bao");
-        push.setThoiGianNhan(Utils.getThoiGian(System.currentTimeMillis()));
+        push.setThoiGianNhan(new DateTime().toString());
         push.setTieuDe((String) data.get(AnnouncementNotification.TIEUDE));
         push.setHasFile(false); //fix lai
         push.setIdLoaiThongBao("");
@@ -120,7 +121,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setNoiDung((String) data.get(AnnouncementNotification.NOIDUNG));
         push.setRead(false);
         push.setCodeMucDoThongBao((String) data.get(AnnouncementNotification.CODEKINDANNOUNCE));
-        push.setThoiGianNhan(Utils.getThoiGian(System.currentTimeMillis()));
+        push.setThoiGianNhan(new DateTime().toString());
         push.setTieuDe((String) data.get(AnnouncementNotification.TIEUDE));
         push.setHasFile((getIntFromString(String.valueOf(data.get(AnnouncementNotification.HASFILE))) == 1)); //fix lai
         push.setIdLoaiThongBao(String.valueOf(data.get(AnnouncementNotification.IDLOAITHONGBAO)));

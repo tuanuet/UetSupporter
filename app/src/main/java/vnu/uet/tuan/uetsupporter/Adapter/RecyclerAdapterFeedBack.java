@@ -58,7 +58,7 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
             itemViewHolder.avatar.setImageResource(R.drawable.filter_black_36x36);
             itemViewHolder.noiDung.setText(comment.getNoiDung());
             itemViewHolder.nameUser.setText(comment.getUserComment().getName());
-            itemViewHolder.time.setText(Utils.getThoiGian(comment.getTime()));
+            itemViewHolder.time.setText(Utils.getThoiGian(context,comment.getTime()));
 
             Log.e(TAG, comment.getUserComment().getName());
         }

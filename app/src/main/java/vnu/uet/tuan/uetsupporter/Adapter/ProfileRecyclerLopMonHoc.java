@@ -53,10 +53,14 @@ public class ProfileRecyclerLopMonHoc extends RecyclerView.Adapter {
 
             Course lopMonHoc = list.get(position);
 
-            itemViewHolder.txt_giangvien.setText(Utils.getTenGiangVien(lopMonHoc.getLectures()));
+            if(lopMonHoc.getLectures().size() == 0 ){
+                itemViewHolder.txt_giangvien.setText("Khoa công nghệ thông tin");
+            } else {
+                itemViewHolder.txt_giangvien.setText(Utils.getTenGiangVien(lopMonHoc.getLectures()));
+            }
+
             itemViewHolder.txt_lopmonhoc.setText(Utils.getTenLopMonHoc(lopMonHoc));
 //            itemViewHolder.txt_siso.setText(String.valueOf(lopMonHoc.getSizeClass()));
-            itemViewHolder.txt_thoigian.setText(Utils.getThoiGian(lopMonHoc.getCreateAt()));
         }
     }
 
@@ -70,7 +74,6 @@ public class ProfileRecyclerLopMonHoc extends RecyclerView.Adapter {
         TextView txt_lopmonhoc;
         TextView txt_giangvien;
         TextView txt_kihoc;
-        TextView txt_thoigian;
         TextView txt_siso;
 
         public ItemViewHolder(final View itemView) {
@@ -79,7 +82,6 @@ public class ProfileRecyclerLopMonHoc extends RecyclerView.Adapter {
             txt_giangvien = (TextView) itemView.findViewById(R.id.item_tengiangvien);
             txt_kihoc = (TextView) itemView.findViewById(R.id.item_kihoc);
             txt_lopmonhoc = (TextView) itemView.findViewById(R.id.item_lopmonhoc);
-            txt_thoigian = (TextView) itemView.findViewById(R.id.item_thoigian);
             txt_siso = (TextView) itemView.findViewById(R.id.item_siso);
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

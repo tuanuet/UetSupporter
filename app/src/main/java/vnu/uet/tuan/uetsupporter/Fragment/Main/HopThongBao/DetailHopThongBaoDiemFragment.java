@@ -192,15 +192,8 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         dataSet.setSelectionShift(8f);
 
         // add a lot of colors
-
         ArrayList<Integer> colors = new ArrayList<Integer>();
 
-//        for (int c : ColorTemplate.VORDIPLOM_COLORS)
-//            colors.add(c);
-//
-//        for (int c : ColorTemplate.JOYFUL_COLORS)
-//            colors.add(c);
-//
         for (int c : ColorTemplate.COLORFUL_COLORS)
             colors.add(c);
 

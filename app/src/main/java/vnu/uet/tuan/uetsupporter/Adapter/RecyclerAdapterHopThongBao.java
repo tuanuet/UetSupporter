@@ -84,7 +84,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
             itemViewHolder.txt_tieuDe.setText(notification.getTieuDe());
             itemViewHolder.txt_noiDung.setText(notification.getNoiDung());
-            itemViewHolder.txt_thoiGian.setText(Utils.getThoiGian(notification.getThoiGianNhan()));
+            itemViewHolder.txt_thoiGian.setText(Utils.getThoiGian(context,notification.getThoiGianNhan()));
             itemViewHolder.img_hasFile.setVisibility(notification.getHasFile() ? View.VISIBLE : View.INVISIBLE);
 
             setupAvatarWithAuthor(itemViewHolder, notification);

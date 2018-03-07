@@ -1,10 +1,18 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 
+import android.app.DownloadManager;
+import android.app.NotificationManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -37,7 +45,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHopThongBao {
 
     private AnnouncementNotification notification;
-    private TextView title, noidung, time, sender, loaithongbao;
+    private TextView title, noidung, time, sender, loaithongbao, receiver;
     private ImageView avatar;
     private LinearLayout layout_attachfile;
 
@@ -46,7 +54,9 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
     private FloatingActionButton fab;
     private DetailThongBao mThongBao;
     private IPresenterDetailHopThongBaoView presenter;
+    private BroadcastReceiver onComplete;
 
+    private DownloadManager downloadManager;
     private final String TAG = this.getClass().getSimpleName();
     public DetailHopThongBaoFragment() {
         // Required empty public constructor
@@ -69,7 +79,6 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 
     private void interactPresent() {
         presenter = new PresenterDetailHopThongBaoLogic(getActivity(), this);
-        Log.e(TAG,notification.getLink());
         presenter.executeDetailHopThongBao(notification.getLink());
     }
 
@@ -89,6 +98,7 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         time = (TextView) view.findViewById(R.id.time);
         loaithongbao = (TextView) view.findViewById(R.id.loaithongbao);
         sender = (TextView) view.findViewById(R.id.sender);
+        receiver = (TextView) view.findViewById(R.id.receiver);
         avatar = (ImageView) view.findViewById(R.id.image_avatar);
         fab = (FloatingActionButton) view.findViewById(R.id.comment_now);
         layout_attachfile = (LinearLayout) view.findViewById(R.id.layout_attach);
@@ -97,16 +107,40 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         layout_scrollview.setVisibility(View.INVISIBLE);
         layout_wait = (LinearLayout) view.findViewById(R.id.layout_wait);
 
+        downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+
+        onComplete = new BroadcastReceiver() {
+
+            public void onReceive(Context ctxt, Intent intent) {
+
+                // get the refid from the download manager
+                long referenceId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+
+                // show a notification
+                Log.e("INSIDE", "" + referenceId);
+                NotificationCompat.Builder mBuilder =
+                        new NotificationCompat.Builder(getActivity())
+                                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                                .setContentTitle("Download")
+                                .setContentText("All Download completed");
+
+                NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(455, mBuilder.build());
+
+
+            }
+        };
+
+        getActivity().registerReceiver(onComplete,
+                new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+
     }
 
-    /**
-     * thêm tên laoij thông báo
-     * * lấy tên thông báo trong csdl
-     *
-     * @param detailThongBao
-     */
-    private void setupLoaiThongBao(DetailThongBao detailThongBao) {
-        loaithongbao.setText(detailThongBao.getIdLoaiThongBao().getTenLoaiThongBao());
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(onComplete);
     }
 
 //    private void setupMucDo(DetailThongBao detailThongBao) {
@@ -127,55 +161,17 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 //    }
 
     private void setupAvatarWithAuthor() {
-        String urlAvatar = Config.API_HOSTNAME + "/avatar/" + notification.getIdSender();
+        String urlAvatar = Config.API_HOSTNAME + "/api/avatar/" + notification.getIdSender();
         Log.e(TAG, urlAvatar);
         Glide.with(getActivity()).load(urlAvatar)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
                 .into(avatar);
 
-        sender.setText(notification.getNameSender());
-    }
+        sender.setText(getString(R.string.email_from,notification.getNameSender()));
+        time.setText(getString(R.string.email_date_receive,Utils.getThoiGian(getContext(),notification.getThoiGianNhan())));
 
-//    protected class AsynDetailThongBao extends AsyncTask<Void, Void, String> {
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            call = getDiem();
-//        }
-//
-//        @Override
-//        protected String doInBackground(Void... params) {
-//
-//            try {
-//                Response<ResponseBody> responseBody = call.execute();
-//                return responseBody.body().string();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String json) {
-//            super.onPostExecute(json);
-//            if (json != null) {
-//                DetailThongBao detailThongBao = null;
-//                try {
-//                    detailThongBao = new DetailThongBao(json);
-//                    updateUI(detailThongBao);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                    Log.e(TAG, e.getMessage());
-//                    Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
-//                }
-//
-//            } else {
-//                Toast.makeText(getActivity(), "Lỗi", Toast.LENGTH_SHORT).show();
-//            }
-//
-//        }
-//    }
+    }
 
     private void updateUI(final DetailThongBao detailThongBao) {
 
@@ -183,16 +179,14 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         layout_scrollview.setVisibility(View.VISIBLE);
 
         title.setText(detailThongBao.getTieuDe());
-        loaithongbao.setText(detailThongBao.getIdLoaiThongBao().getTenLoaiThongBao());
-        sender.setText(detailThongBao.getIdSender());
-        time.setText(Utils.getThoiGian(detailThongBao.getTime()));
+        loaithongbao.setText(getString(R.string.notification_type,detailThongBao.getIdLoaiThongBao().getTenLoaiThongBao()));
         noidung.setText(detailThongBao.getNoiDung());
+//        receiver.setText(getString(R.string.email_receiver,notification.get));
+
 
         setupAvatarWithAuthor();
 
 //        setupMucDo(detailThongBao);
-
-        setupLoaiThongBao(detailThongBao);
 
         if (detailThongBao.getIdFile().size() == 0) {
             layout_attachfile.setVisibility(View.GONE);
@@ -243,6 +237,20 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /**
+                 * download
+                 */
+
+                Uri uri = Uri.parse(Config.API_HOSTNAME+ file.getLink());
+
+                DownloadManager.Request request = new DownloadManager.Request(uri);
+                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+                request.setAllowedOverRoaming(false);
+                request.setTitle(file.getTenFile());
+                request.setDescription(file.getTenFile());
+                request.setVisibleInDownloadsUi(true);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, file.getTenFile());
+                downloadManager.enqueue(request);
                 Toast.makeText(getActivity(), file.getLink(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -281,3 +289,5 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 
     }
 }
+
+
