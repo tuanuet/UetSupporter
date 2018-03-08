@@ -117,6 +117,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
     private AnnouncementNotification getPushNotification(Map data) {
 
         AnnouncementNotification push = new AnnouncementNotification();
+        push.set_id((String) data.get(AnnouncementNotification._ID));
         push.setLink((String) data.get(AnnouncementNotification.LINK));
         push.setNoiDung((String) data.get(AnnouncementNotification.NOIDUNG));
         push.setRead(false);

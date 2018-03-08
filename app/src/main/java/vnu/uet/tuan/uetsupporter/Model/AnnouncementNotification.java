@@ -10,6 +10,7 @@ import vnu.uet.tuan.uetsupporter.Model.interfaces.INotification;
  */
 
 public class AnnouncementNotification implements Serializable,INotification {
+    public static final String _ID = "_id";
     public static final String TIEUDE = "tieuDe";
     public static final String TYPENOTIFICATION = "typeNotification";
     public static final String NOIDUNG = "noiDung";
@@ -22,6 +23,7 @@ public class AnnouncementNotification implements Serializable,INotification {
     public static final String CODEKINDANNOUNCE = "codeMucDoThongBao";
     public static final String DESCRIPTION = "description";
 
+    private String _id;
     private String tieuDe;
     private String noiDung;
     private String link;
@@ -35,6 +37,14 @@ public class AnnouncementNotification implements Serializable,INotification {
     private String nameSender;
     private String codeMucDoThongBao;
     private String description;
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
 
     public String getDescription() {
         return description;

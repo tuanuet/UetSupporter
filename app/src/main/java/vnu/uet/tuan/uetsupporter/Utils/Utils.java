@@ -233,6 +233,7 @@ public class Utils {
             announcementNotification.setRead(cursor.getInt(Contract.PushNotification.is_read) == 1);
             announcementNotification.setTypeNotification(cursor.getInt(Contract.PushNotification.type_notification));
             announcementNotification.setDescription(cursor.getString(Contract.PushNotification.description));
+            announcementNotification.set_id(cursor.getString(Contract.PushNotification.server_id));
             list.add(announcementNotification);
             cursor.moveToNext();
         }

@@ -39,6 +39,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
                 Contract.PushNotification.CODEMUCDOTHONGBAO + " text not null, " +
                 Contract.PushNotification.TYPENOTIFICATION + " integer not null, " +
                 Contract.PushNotification.DESCRIPTION + " text not null, " +
+                Contract.PushNotification.SERVER_ID + " text not null, " +
                 " UNIQUE (" + Contract.PushNotification._ID + ") ON CONFLICT REPLACE);";
 
         db.execSQL(sql);
@@ -69,6 +70,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         values.put(Contract.PushNotification.CODEMUCDOTHONGBAO,notification.getCodeMucDoThongBao());
         values.put(Contract.PushNotification.TYPENOTIFICATION,notification.getTypeNotification());
         values.put(Contract.PushNotification.DESCRIPTION,notification.getDescription());
+        values.put(Contract.PushNotification.SERVER_ID,notification.get_id());
         return (int) db.insert(Contract.PushNotification.NAME_TABLE, null, values);
     }
 
