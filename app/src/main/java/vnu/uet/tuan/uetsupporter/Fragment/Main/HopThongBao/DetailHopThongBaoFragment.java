@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -18,6 +19,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.DownloadListener;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -28,7 +34,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.clans.fab.FloatingActionButton;
 
+import java.net.URL;
+
 import vnu.uet.tuan.uetsupporter.Activities.FeedBackActivity;
+import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterHopThongBao;
 import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
 import vnu.uet.tuan.uetsupporter.Model.File;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
@@ -45,7 +54,8 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHopThongBao {
 
     private AnnouncementNotification notification;
-    private TextView title, noidung, time, sender, loaithongbao, receiver;
+    private TextView title, time, sender, loaithongbao, receiver;
+    private WebView noidung;
     private ImageView avatar;
     private LinearLayout layout_attachfile;
 
@@ -72,6 +82,7 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         getData();
 
         initUI(view);
+        initListener();
 
 
         return view;
@@ -92,9 +103,31 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         notification = (AnnouncementNotification) getArguments().getSerializable(Config.KEY_PUSHNOTIFICATION);
     }
 
+    private void initListener(){
+        noidung.setDownloadListener(new DownloadListener() {
+
+            @Override
+            public void onDownloadStart(String url, String userAgent,
+                                        String contentDisposition, String mimetype,
+                                        long contentLength) {
+                DownloadManager.Request request = new DownloadManager.Request(
+                        Uri.parse(url));
+
+                request.allowScanningByMediaScanner();
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, Uri.parse(url).getLastPathSegment());
+                DownloadManager dm = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+                dm.enqueue(request);
+                Toast.makeText(getContext(), "Downloading File", //To notify the Client that the file is being downloaded
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
     private void initUI(View view) {
         title = (TextView) view.findViewById(R.id.title);
-        noidung = (TextView) view.findViewById(R.id.noidung);
+        noidung = (WebView) view.findViewById(R.id.noidung);
         time = (TextView) view.findViewById(R.id.time);
         loaithongbao = (TextView) view.findViewById(R.id.loaithongbao);
         sender = (TextView) view.findViewById(R.id.sender);
@@ -143,22 +176,23 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         getActivity().unregisterReceiver(onComplete);
     }
 
-//    private void setupMucDo(DetailThongBao detailThongBao) {
-//        switch (detailThongBao.getIdMucDoThongBao().get_id()) {
-//            case 1:
-//                title.setTextColor(getActivity().getResources().getColor(R.color.dark_red));
-//                break;
-//            case 2:
-//                title.setTextColor(getActivity().getResources().getColor(R.color.dark_yellow));
-//                break;
-//            case 3:
-//                title.setTextColor(getActivity().getResources().getColor(R.color.black));
-//                break;
-//            default:
-//
-//                break;
-//        }
-//    }
+    private void setupMucDo(DetailThongBao detailThongBao) {
+        Log.e(TAG,detailThongBao.getIdMucDoThongBao().getCode());
+        switch (detailThongBao.getIdMucDoThongBao().getCode()) {
+            case "khan_cap":
+                title.setTextColor(getActivity().getResources().getColor(R.color.dark_red));
+                break;
+            case "canh_bao":
+                title.setTextColor(getActivity().getResources().getColor(R.color.dark_yellow));
+                break;
+            case "binh_thuong":
+                title.setTextColor(getActivity().getResources().getColor(R.color.black));
+                break;
+            default:
+
+                break;
+        }
+    }
 
     private void setupAvatarWithAuthor() {
         String urlAvatar = Config.API_HOSTNAME + "/api/avatar/" + notification.getIdSender();
@@ -180,13 +214,12 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 
         title.setText(detailThongBao.getTieuDe());
         loaithongbao.setText(getString(R.string.notification_type,detailThongBao.getIdLoaiThongBao().getTenLoaiThongBao()));
-        noidung.setText(detailThongBao.getNoiDung());
+
 //        receiver.setText(getString(R.string.email_receiver,notification.get));
-
-
+        setupWebView(detailThongBao.getNoiDung());
         setupAvatarWithAuthor();
 
-//        setupMucDo(detailThongBao);
+        setupMucDo(detailThongBao);
 
         if (detailThongBao.getIdFile().size() == 0) {
             layout_attachfile.setVisibility(View.GONE);
@@ -207,6 +240,39 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
                 startActivity(intent);
             }
         });
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    private void setupWebView(String html) {
+        noidung.setFocusable(true);
+        noidung.setFocusableInTouchMode(true);
+        noidung.getSettings().setJavaScriptEnabled(true);
+        noidung.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        noidung.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+        noidung.getSettings().setDomStorageEnabled(true);
+        noidung.getSettings().setDatabaseEnabled(true);
+        noidung.getSettings().setAppCacheEnabled(true);
+        noidung.getSettings().setSupportZoom(false);
+        noidung.getSettings().setDefaultTextEncodingName("utf-8");
+        noidung.getSettings().setAllowFileAccess(true);
+        noidung.getSettings().setPluginState(WebSettings.PluginState.ON);
+        noidung.getSettings().setAllowContentAccess(true);
+        noidung.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+
+        noidung.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+        noidung.getSettings().setMediaPlaybackRequiresUserGesture(true);
+//        noidung.getSettings().setSupportMultipleWindows(true);
+        noidung.getSettings().setBuiltInZoomControls(true);
+
+        noidung.loadData(html, "text/html; charset=utf-8","UTF-8");
+        noidung.setWebChromeClient(new WebChromeClient());
+//        noidung.setWebViewClient(new WebViewClient(){
+//            @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                File file = new File(null,Uri.parse(url).getLastPathSegment(),url);
+//                downloadFile(file.getLink(),file);
+//                return true;
+//            }
+//        });
     }
 
     private void createUIAttachfile(final File file) {
@@ -237,26 +303,27 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         txt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
-                 * download
-                 */
-
-                Uri uri = Uri.parse(Config.API_HOSTNAME+ file.getLink());
-
-                DownloadManager.Request request = new DownloadManager.Request(uri);
-                request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
-                request.setAllowedOverRoaming(false);
-                request.setTitle(file.getTenFile());
-                request.setDescription(file.getTenFile());
-                request.setVisibleInDownloadsUi(true);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, file.getTenFile());
-                downloadManager.enqueue(request);
-                Toast.makeText(getActivity(), file.getLink(), Toast.LENGTH_SHORT).show();
+                downloadFile(Config.API_HOSTNAME+ file.getLink(),file);
             }
         });
         layout_attachfile.addView(row);
     }
 
+    public void downloadFile(String url,File file){
+        /**
+         * download
+         */
+        Uri uri = Uri.parse(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE);
+        request.setAllowedOverRoaming(false);
+        request.setTitle(file.getTenFile());
+        request.setDescription(file.getTenFile());
+        request.setVisibleInDownloadsUi(true);
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, file.getTenFile());
+        downloadManager.enqueue(request);
+        Toast.makeText(getActivity(), file.getLink(), Toast.LENGTH_SHORT).show();
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

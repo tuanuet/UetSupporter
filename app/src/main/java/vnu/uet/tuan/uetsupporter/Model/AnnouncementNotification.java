@@ -19,7 +19,8 @@ public class AnnouncementNotification implements Serializable,INotification {
     public static final String HASFILE = "hasfile";
     public static final String IDSENDER = "idSender";
     public static final String NAMESENDER = "nameSender";
-    public static final String  CODEKINDANNOUNCE = "codeMucDoThongBao";
+    public static final String CODEKINDANNOUNCE = "codeMucDoThongBao";
+    public static final String DESCRIPTION = "description";
 
     private String tieuDe;
     private String noiDung;
@@ -33,6 +34,15 @@ public class AnnouncementNotification implements Serializable,INotification {
     private String idSender;
     private String nameSender;
     private String codeMucDoThongBao;
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getIdSender() {
         return idSender;

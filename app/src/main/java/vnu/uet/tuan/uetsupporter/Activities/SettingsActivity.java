@@ -325,10 +325,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(String.valueOf(thongbao.getEntryValues()[i]));
                     }
 
+                    Log.e(TAG,"LENGTH REGISTER: "+ registers[0]);
                     // register
                     for (String rg : registers){
                         Log.e("SUB",rg.trim());
-                        FirebaseMessaging.getInstance().subscribeToTopic(rg.trim());
+                        try{
+                            FirebaseMessaging.getInstance().subscribeToTopic(rg.trim());
+                        } catch (Exception ex){
+                            Log.e(TAG,ex.getMessage());
+                        }
+
                     }
 
                     return true;

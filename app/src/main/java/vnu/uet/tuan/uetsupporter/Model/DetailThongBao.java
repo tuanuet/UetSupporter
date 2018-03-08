@@ -31,6 +31,7 @@ public class DetailThongBao implements Serializable {
     private MucDoThongBao idMucDoThongBao;
     private String idSender;
     private String idReceiver;
+    private String description;
     private String time;
     private List<File> idFile;
     private List<Comment> feedback;
@@ -45,12 +46,14 @@ public class DetailThongBao implements Serializable {
         this.noiDung = root.getString("content");
         this.idSender = root.getString("sender");
         this.idReceiver = root.getString("receiver");
+        this.description =  root.getString("description");
         this.time = root.getString("createdAt");
         //==================================================================//
         JSONObject idMucDoThongBao = root.getJSONObject("priorityNotify");
         String _id = idMucDoThongBao.getString("_id");
         String tenMucDoThongBao = idMucDoThongBao.getString("name");
-        this.idMucDoThongBao = new MucDoThongBao(_id, tenMucDoThongBao);
+        String code = idMucDoThongBao.getString("code");
+        this.idMucDoThongBao = new MucDoThongBao(_id, tenMucDoThongBao,code);
         Log.e(TAG, tenMucDoThongBao);
         //==================================================================//
 
@@ -219,7 +222,11 @@ public class DetailThongBao implements Serializable {
         this.idFile = idFile;
     }
 
+    public String getDescription() {
+        return description;
+    }
 
-
-
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

@@ -232,7 +232,7 @@ public class Utils {
             announcementNotification.setNameSender(cursor.getString(Contract.PushNotification.name_sender));
             announcementNotification.setRead(cursor.getInt(Contract.PushNotification.is_read) == 1);
             announcementNotification.setTypeNotification(cursor.getInt(Contract.PushNotification.type_notification));
-
+            announcementNotification.setDescription(cursor.getString(Contract.PushNotification.description));
             list.add(announcementNotification);
             cursor.moveToNext();
         }

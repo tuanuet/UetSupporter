@@ -38,6 +38,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
                 Contract.PushNotification.NAMESENDER + " text not null, " +
                 Contract.PushNotification.CODEMUCDOTHONGBAO + " text not null, " +
                 Contract.PushNotification.TYPENOTIFICATION + " integer not null, " +
+                Contract.PushNotification.DESCRIPTION + " text not null, " +
                 " UNIQUE (" + Contract.PushNotification._ID + ") ON CONFLICT REPLACE);";
 
         db.execSQL(sql);
@@ -67,6 +68,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         values.put(Contract.PushNotification.NAMESENDER, notification.getNameSender());
         values.put(Contract.PushNotification.CODEMUCDOTHONGBAO,notification.getCodeMucDoThongBao());
         values.put(Contract.PushNotification.TYPENOTIFICATION,notification.getTypeNotification());
+        values.put(Contract.PushNotification.DESCRIPTION,notification.getDescription());
         return (int) db.insert(Contract.PushNotification.NAME_TABLE, null, values);
     }
 
@@ -90,10 +92,9 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select * from " + Contract.PushNotification.NAME_TABLE
                 + " order by " + Contract.PushNotification._ID + " DESC";
-        Log.e("sql", query);
 
         Cursor cursor = db.rawQuery(query, null);
-        Log.e("sql",cursor.getCount()+"");
+
         return cursor;
     }
 

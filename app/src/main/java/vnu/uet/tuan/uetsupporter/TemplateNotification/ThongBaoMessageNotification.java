@@ -32,7 +32,7 @@ public class ThongBaoMessageNotification {
                         .setWhen(when)
                         .setAutoCancel(true)
                         .setOngoing(true)
-                        .setContentText(notification.getNoiDung());
+                        .setContentText(notification.getDescription());
 
 //        // Creates an explicit intent for an Activity in your app
 //        Intent resultIntent = new Intent(this, ResultActivity.class);

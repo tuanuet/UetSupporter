@@ -120,6 +120,7 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setLink((String) data.get(AnnouncementNotification.LINK));
         push.setNoiDung((String) data.get(AnnouncementNotification.NOIDUNG));
         push.setRead(false);
+        push.setDescription((String) data.get(AnnouncementNotification.DESCRIPTION));
         push.setCodeMucDoThongBao((String) data.get(AnnouncementNotification.CODEKINDANNOUNCE));
         push.setThoiGianNhan(new DateTime().toString());
         push.setTieuDe((String) data.get(AnnouncementNotification.TIEUDE));

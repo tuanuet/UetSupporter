@@ -19,10 +19,33 @@ public class MucDoThongBao implements Parcelable, Serializable {
 
     private String _id;
     private String name;
+    private String code;
 
     public MucDoThongBao(String _id, String tenMucDoThongBao) {
         this._id = _id;
         this.name = tenMucDoThongBao;
+    }
+
+    public MucDoThongBao(String _id, String name, String code) {
+        this._id = _id;
+        this.name = name;
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public MucDoThongBao() {
@@ -31,6 +54,7 @@ public class MucDoThongBao implements Parcelable, Serializable {
     protected MucDoThongBao(Parcel in) {
         _id = in.readString();
         name = in.readString();
+        code = in.readString();
     }
 
     public static final Creator<MucDoThongBao> CREATOR = new Creator<MucDoThongBao>() {
@@ -70,5 +94,6 @@ public class MucDoThongBao implements Parcelable, Serializable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(_id);
         dest.writeString(name);
+        dest.writeString(code);
     }
 }
