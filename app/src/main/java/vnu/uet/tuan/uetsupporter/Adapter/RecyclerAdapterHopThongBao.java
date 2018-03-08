@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.PopupMenu;
@@ -53,7 +54,6 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
     public RecyclerAdapterHopThongBao(Context context, ArrayList<AnnouncementNotification> list) {
         this.context = context;
         this.list = list;
-//        this.mucDoThongBaoList = Utils.getAllMucDoThongBao(context);
         this.loaiThongBaoList = Utils.getAllLoaiThongBao(context);
     }
 
@@ -84,7 +84,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
             itemViewHolder.txt_tieuDe.setText(notification.getTieuDe());
             itemViewHolder.txt_noiDung.setText(notification.getDescription());
-            itemViewHolder.txt_thoiGian.setText(Utils.getThoiGian(context,notification.getThoiGianNhan()));
+            itemViewHolder.txt_thoiGian.setText(Utils.getThoiGian(context, notification.getThoiGianNhan()));
             itemViewHolder.img_hasFile.setVisibility(notification.getHasFile() ? View.VISIBLE : View.INVISIBLE);
 
             setupAvatarWithAuthor(itemViewHolder, notification);
@@ -97,15 +97,24 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
             setupListenerIcon(itemViewHolder, position);
 
+            //setupHeader(itemViewHolder,notification);
         }
 
 
     }
 
+    private void setupHeader(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
+        Glide.with(context)
+                .load("https://archive.org/download/nav-menu-header-bg/nav-menu-header-bg.jpg")
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .centerCrop()
+                .into(itemViewHolder.image_header);
+    }
+
     private void setupRead(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
-        itemViewHolder.img_read.setBackgroundColor(notification.getRead() ?
-                context.getResources().getColor(R.color.card_read) :
-                context.getResources().getColor(R.color.card_unread));
+        itemViewHolder.txt_tieuDe.setTypeface(null, notification.getRead() ?
+                Typeface.NORMAL :
+                Typeface.BOLD);
     }
 
     /**
@@ -224,8 +233,8 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         ImageView avatar;
         TextView txt_loaithongbao;
         TextView txt_sender;
+        ImageView image_header;
 
-        @SuppressLint("WrongViewCast")
         public ItemViewHolder(final View itemView) {
             super(itemView);
 
@@ -238,6 +247,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             txt_loaithongbao = (TextView) itemView.findViewById(R.id.recycle_item_loaithongbao);
             txt_sender = (TextView) itemView.findViewById(R.id.recycle_item_sender);
             img_read = (LinearLayout) itemView.findViewById(R.id.recycle_item_isread);
+            //image_header = (ImageView) itemView.findViewById(R.id.image_header);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

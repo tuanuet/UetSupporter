@@ -328,6 +328,7 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
     public void onDestroyView() {
         super.onDestroyView();
         presenter.cancelExecuteDetailHopThongBao();
+        System.gc();
     }
 
     @Override
@@ -342,7 +343,10 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 
     @Override
     public void onExecuteFailure(String fail) {
-        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
+        if(getActivity() != null){
+            Toast.makeText(getContext(), fail, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
