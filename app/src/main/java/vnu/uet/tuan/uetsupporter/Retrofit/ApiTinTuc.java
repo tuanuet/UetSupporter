@@ -3,8 +3,10 @@ package vnu.uet.tuan.uetsupporter.Retrofit;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -16,6 +18,7 @@ import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Response.CourseInformation;
+import vnu.uet.tuan.uetsupporter.Model.Response.DataSync;
 import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
 import vnu.uet.tuan.uetsupporter.Model.Response.Message;
 import vnu.uet.tuan.uetsupporter.Model.Student;
@@ -61,4 +64,6 @@ public interface ApiTinTuc {
     Call<Message> postComment(@Field("noiDung") String noiDung,
                               @Path("id") String thongbaoid, @Header("Authorization") String authorization);
 
+    @POST("/api/fetching/news-announcements")
+    Call<DataSync> syncServer(@Body RequestBody params);
 }

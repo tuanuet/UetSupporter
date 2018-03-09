@@ -12,20 +12,20 @@ import android.util.Log;
 
 public class EmailSyncService extends Service {
     private static final Object sSyncAdapterLock = new Object();
-    private static EmailSyncAdapter sEmailSyncAdapter = null;
+    private static SyncAdapter sSyncAdapter = null;
 
     @Override
     public void onCreate() {
         Log.d("SunshineSyncService", "onCreate - SunshineSyncService");
         synchronized (sSyncAdapterLock) {
-            if (sEmailSyncAdapter == null) {
-                sEmailSyncAdapter = new EmailSyncAdapter(getApplicationContext(), true);
+            if (sSyncAdapter == null) {
+                sSyncAdapter = new SyncAdapter(getApplicationContext(), true);
             }
         }
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        return sEmailSyncAdapter.getSyncAdapterBinder();
+        return sSyncAdapter.getSyncAdapterBinder();
     }
 }

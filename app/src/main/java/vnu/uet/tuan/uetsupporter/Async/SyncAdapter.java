@@ -12,24 +12,31 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Retrofit;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Model.Mail.MailUet;
+import vnu.uet.tuan.uetsupporter.Model.Response.DataSync;
+import vnu.uet.tuan.uetsupporter.Presenter.Fetching.IPresenterFetchingModel;
+import vnu.uet.tuan.uetsupporter.Presenter.Fetching.PresenterFetchingModel;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.Retrofit.ApiTinTuc;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.EmailSQLHelper;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
 import vnu.uet.tuan.uetsupporter.TemplateNotification.InboxMessageNotification;
+import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * Created by vmtuan on 3/2/2017.
  */
 
-public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
+public class SyncAdapter extends AbstractThreadedSyncAdapter {
 
-    private final static String TAG = "EmailSyncAdapter";
+    private final static String TAG = "SyncAdapter";
     // Interval at which to sync with the weather, in milliseconds.
     // 60 seconds (1 minute)  180 = 3 minutes
     public static final long SYNC_INTERVAL = 60 * 2;
@@ -37,8 +44,9 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
 
     private boolean isFirstTime = true;
     private EmailSQLHelper emailSQLHelper;
+    private PushNotificationSQLHelper pushNotificationSQLHelper;
 
-    public EmailSyncAdapter(Context context, boolean autoInitialize) {
+    public SyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
     }
 
@@ -47,6 +55,7 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
                               ContentProviderClient provider, SyncResult syncResult) {
         Log.e(TAG, "onPerformSync Called.");
         emailSQLHelper = new EmailSQLHelper(getContext());
+        pushNotificationSQLHelper = new PushNotificationSQLHelper(getContext());
         //run to get 10 email/
         MailUet sent = MailUet.getInstance(
 //                Utils.getEmailUser(getActivity()),
@@ -54,8 +63,35 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
                 "14020521", "1391996"
         ).readEmails(Config.MailBox.Inbox.toString());
 
+        //sync email
         int countNew = sent.getNewMessageCount();
         new ExecueEmail().execute(countNew);
+
+        //sync notification and new
+        syncNotification();
+    }
+
+    private void syncNotification() {
+        IPresenterFetchingModel present = new PresenterFetchingModel(getContext());
+        String[] kindAnnouncements = Utils.getKindAnnouncements(getContext());
+        String lastTimeAnnoun = Utils.getLastTimeAnnouncement(getContext());
+        String[] kindNews = Utils.getKindNews(getContext());
+        String lastTimeNew = Utils.getLastTimeNew(getContext());
+        present.fetching(lastTimeAnnoun, kindAnnouncements, lastTimeNew, kindNews, new IPresenterFetchingModel.OnFinishedListener() {
+            @Override
+            public void OnSuccess(DataSync dataSync) {
+                String[] clientAnnouncements = pushNotificationSQLHelper.getServerId();
+                for (String str :
+                        clientAnnouncements) {
+                    Log.e(TAG,str);
+                }
+            }
+
+            @Override
+            public void OnFailure(String failure) {
+                Log.e(TAG,failure);
+            }
+        });
     }
 
     /**
@@ -144,7 +180,7 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Since we've created an account
          */
-        EmailSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        SyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         /*
          * Without calling setSyncAutomatically, our periodic sync will not be enabled.
@@ -212,4 +248,5 @@ public class EmailSyncAdapter extends AbstractThreadedSyncAdapter {
             }
         }
     }
+
 }

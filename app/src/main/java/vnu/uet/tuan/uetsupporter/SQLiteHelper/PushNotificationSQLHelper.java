@@ -7,14 +7,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
+import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 
 /**
  * Created by Vu Minh Tuan on 2/16/2017.
@@ -22,6 +25,7 @@ import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 
 public class PushNotificationSQLHelper extends SQLiteOpenHelper {
 
+    private final String TAG = this.getClass().getSimpleName();
     Context context;
 
     public PushNotificationSQLHelper(Context context) {
@@ -59,6 +63,20 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         cv.put(Contract.PushNotification.ISREAD, value ? 1 : 0);
         int id = db.update(Contract.PushNotification.NAME_TABLE, cv, Contract.PushNotification._ID + "=" + position, null);
         return id == position;
+    }
+
+    public String[] getServerId(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select "+ Contract.PushNotification.SERVER_ID +" from " + Contract.PushNotification.NAME_TABLE + " order by id limit 30";
+        Cursor cs = db.rawQuery(query,null);
+
+        ArrayList<String> list = new ArrayList<String>();
+        cs.moveToFirst();
+        while (!cs.isAfterLast()) {
+            list.add(cs.getString(0));
+            cs.moveToNext();
+        }
+        return list.toArray(new String[0]);
     }
 
     public int insertOne(AnnouncementNotification notification) {
@@ -113,5 +131,19 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + Contract.PushNotification.NAME_TABLE);
+    }
+
+    public String lastestNotification() {
+        String result = new DateTime().toString();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "select "+ Contract.PushNotification.THOIGIANNHAN +" from " + Contract.PushNotification.NAME_TABLE + " order by id desc limit 1";
+        Cursor cs = db.rawQuery(query,null);
+
+        cs.moveToFirst();
+        while (!cs.isAfterLast()) {
+            result = cs.getString(0);
+            cs.moveToNext();
+        }
+        return result;
     }
 }

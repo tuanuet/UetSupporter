@@ -3,7 +3,6 @@ package vnu.uet.tuan.uetsupporter.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.design.widget.NavigationView;
@@ -18,10 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-
 import me.leolin.shortcutbadger.ShortcutBadger;
-import vnu.uet.tuan.uetsupporter.Async.EmailSyncAdapter;
+import vnu.uet.tuan.uetsupporter.Async.SyncAdapter;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao.HopThongBaoFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.HopThuFragment;
 import vnu.uet.tuan.uetsupporter.Fragment.Main.TinTuc.TinTucFragment;
@@ -58,7 +55,7 @@ public class MainActivity extends AppCompatActivity
 
     private void init() {
         //setINTERVAL
-        EmailSyncAdapter.initializeSyncAdapter(this);
+        SyncAdapter.initializeSyncAdapter(this);
 
 
         //================

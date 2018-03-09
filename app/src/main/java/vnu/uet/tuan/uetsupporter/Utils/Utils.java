@@ -60,6 +60,11 @@ import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
 public class Utils {
     private static final String TAG = "Utils";
 
+
+    public static String getLastTimeAnnouncement(Context context){
+        PushNotificationSQLHelper db = new PushNotificationSQLHelper(context);
+        return db.lastestNotification();
+    }
     public static String snakeCase(String str) {
         String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
         Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
@@ -475,5 +480,21 @@ public class Utils {
             Log.e(TAG,e.getMessage());
             return false;
         }
+    }
+
+    public static String[] getKindAnnouncements(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String registerAnnouncementString = sharedPreferences.getString(Config.REGISTER_ANNOUNCES,"[]");
+        return convertStringToArray(registerAnnouncementString);
+    }
+
+    public static String[] getKindNews(Context context) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String registerNewString = sharedPreferences.getString(Config.REGISTER_NEWS,"[]");
+        return convertStringToArray(registerNewString);
+    }
+
+    public static String getLastTimeNew(Context context) {
+        return new DateTime().toString();
     }
 }
