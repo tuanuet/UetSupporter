@@ -7,6 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 
 /**
@@ -40,6 +47,7 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
                 Contract.PushNotification.TYPENOTIFICATION + " integer not null, " +
                 Contract.PushNotification.DESCRIPTION + " text not null, " +
                 Contract.PushNotification.SERVER_ID + " text not null, " +
+                Contract.PushNotification.DESCRIPTION_IMAGES + " text not null, " +
                 " UNIQUE (" + Contract.PushNotification._ID + ") ON CONFLICT REPLACE);";
 
         db.execSQL(sql);
@@ -71,6 +79,8 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         values.put(Contract.PushNotification.TYPENOTIFICATION,notification.getTypeNotification());
         values.put(Contract.PushNotification.DESCRIPTION,notification.getDescription());
         values.put(Contract.PushNotification.SERVER_ID,notification.get_id());
+        values.put(Contract.PushNotification.DESCRIPTION_IMAGES, Arrays.toString(notification.getDescriptionImages()));
+
         return (int) db.insert(Contract.PushNotification.NAME_TABLE, null, values);
     }
 

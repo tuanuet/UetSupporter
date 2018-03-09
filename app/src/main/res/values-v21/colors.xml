@@ -29,6 +29,8 @@
 
     <color name="card_view_header">#348ddb</color>
     <color name="dark_grey">#1e1e1e</color>
+    <color name="super_light_grey">#dfdfdf</color>
+    <color name="card_view_read">#faf2ea</color>
     <array name="note_neutral_colors">
         <item>#9E9E9E</item>
         <item>#455A64</item>

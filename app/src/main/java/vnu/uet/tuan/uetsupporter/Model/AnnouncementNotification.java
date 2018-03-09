@@ -22,6 +22,8 @@ public class AnnouncementNotification implements Serializable,INotification {
     public static final String NAMESENDER = "nameSender";
     public static final String CODEKINDANNOUNCE = "codeMucDoThongBao";
     public static final String DESCRIPTION = "description";
+    public static final String DESCRIPTION_IMAGES = "descriptionImages";
+
 
     private String _id;
     private String tieuDe;
@@ -37,6 +39,15 @@ public class AnnouncementNotification implements Serializable,INotification {
     private String nameSender;
     private String codeMucDoThongBao;
     private String description;
+    private String[] descriptionImages;
+
+    public String[] getDescriptionImages() {
+        return descriptionImages;
+    }
+
+    public void setDescriptionImages(String[] descriptionImages) {
+        this.descriptionImages = descriptionImages;
+    }
 
     public String get_id() {
         return _id;

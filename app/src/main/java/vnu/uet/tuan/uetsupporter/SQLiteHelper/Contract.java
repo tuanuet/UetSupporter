@@ -76,6 +76,8 @@ public class Contract {
         public static final int type_notification = 12;
         public static final int description = 13;
         public static final int server_id = 14;
+        public static final int description_images = 15;
+
 
         public static final int VERSION = 1;
 
@@ -95,5 +97,6 @@ public class Contract {
         public static final String TYPENOTIFICATION = "typenotification";
         public static final String DESCRIPTION = "description";
         public static final String SERVER_ID = "_id";
+        public static final String DESCRIPTION_IMAGES = "descriptionimages";
     }
 }

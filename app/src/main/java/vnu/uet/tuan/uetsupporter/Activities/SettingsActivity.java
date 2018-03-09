@@ -288,9 +288,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     editor.putString(REGISTER_NEWS,newValue.toString());
                     editor.apply();
                     //todo : register with firebase
-                    String[] registers = newValue.toString()
-                            .replace("[","").replace("]","")
-                            .trim().split(",");
+                    String[] registers = Utils.convertStringToArray(newValue.toString());
 
                     //unregister
                     for (int i=0;i<tintuc.getEntryValues().length;i++){
@@ -316,10 +314,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     editor.putString(REGISTER_ANNOUNCES,newValue.toString());
                     editor.apply();
                     //todo : register with firebase
-                    String[] registers = newValue.toString()
-                            .replace("[","").replace("]","")
-                            .trim().split(",");
-
+                    String[] registers = Utils.convertStringToArray(newValue.toString());
                     //unregister
                     for (int i=0;i<thongbao.getEntryValues().length;i++){
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(String.valueOf(thongbao.getEntryValues()[i]));

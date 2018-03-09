@@ -234,12 +234,38 @@ public class Utils {
             announcementNotification.setTypeNotification(cursor.getInt(Contract.PushNotification.type_notification));
             announcementNotification.setDescription(cursor.getString(Contract.PushNotification.description));
             announcementNotification.set_id(cursor.getString(Contract.PushNotification.server_id));
+            announcementNotification.setDescriptionImages(convertStringToArray(cursor.getString(Contract.PushNotification.description_images)));
             list.add(announcementNotification);
             cursor.moveToNext();
         }
         return list;
     }
 
+    public static String[] convertStringToArray(String stringArray){
+        if(stringArray.substring(1,stringArray.length()-1).equals("")){
+            return new String[0];
+        }else {
+            String[] newS = stringArray.substring(1,stringArray.length()-1).split(",");
+            String[] result = new String[newS.length];
+            for (int i = 0; i < newS.length; i++) {
+                result[i] = newS[i].trim();
+            }
+            return result;
+        }
+    }
+
+    public static String[] convertStringToArrayFromServer(String stringArray){
+        if(stringArray.equals("")){
+            return new String[0];
+        }else {
+            String[] newS = stringArray.split(",");
+            String[] result = new String[newS.length];
+            for (int i = 0; i < newS.length; i++) {
+                result[i] = newS[i].trim();
+            }
+            return result;
+        }
+    }
     public static ArrayList<Integer> getArrayFromString(String s){
         ArrayList<Integer> arr = new ArrayList<Integer>();
         s = s.trim().substring(1,s.length()-1); //bo di dau []

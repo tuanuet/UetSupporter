@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.media.Image;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,6 +26,8 @@ import com.amulyakhare.textdrawable.TextDrawable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.synnapps.carouselview.CarouselView;
+import com.synnapps.carouselview.ImageListener;
 
 import java.util.ArrayList;
 
@@ -97,24 +100,34 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
             setupListenerIcon(itemViewHolder, position);
 
-            //setupHeader(itemViewHolder,notification);
+            setUpSampleImages(itemViewHolder,notification);
         }
-
-
     }
 
-    private void setupHeader(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
-        Glide.with(context)
-                .load("https://archive.org/download/nav-menu-header-bg/nav-menu-header-bg.jpg")
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .centerCrop()
-                .into(itemViewHolder.image_header);
+    private void setUpSampleImages(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
+        final String[] sampleImages = notification.getDescriptionImages();
+        if(sampleImages.length != 0) {
+            itemViewHolder.carouselView.setPageCount(sampleImages.length);
+            itemViewHolder.carouselView.setImageListener(new ImageListener() {
+                @Override
+                public void setImageForPosition(int position, ImageView imageView) {
+                    Glide.with(context).load(Config.hostname+sampleImages[position])
+                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                            .centerCrop()
+                            .into(imageView);
+                }
+            });
+        } else {
+            itemViewHolder.carouselView.setVisibility(View.GONE);
+        }
+
     }
 
     private void setupRead(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
-        itemViewHolder.txt_tieuDe.setTypeface(null, notification.getRead() ?
-                Typeface.NORMAL :
-                Typeface.BOLD);
+        itemViewHolder.cardView.setBackgroundColor(notification.getRead() ?
+                context.getResources().getColor(R.color.card_view_read) :
+                context.getResources().getColor(R.color.background_card)
+        );
     }
 
     /**
@@ -224,6 +237,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
     public class ItemViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener, View.OnLongClickListener {
+        CardView cardView;
         TextView txt_tieuDe;
         TextView txt_noiDung;
         TextView txt_thoiGian;
@@ -234,10 +248,11 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         TextView txt_loaithongbao;
         TextView txt_sender;
         ImageView image_header;
+        CarouselView carouselView;
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
-
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
             txt_tieuDe = (TextView) itemView.findViewById(R.id.recycle_item_tieude);
             txt_noiDung = (TextView) itemView.findViewById(R.id.recycle_item_noidung);
             txt_thoiGian = (TextView) itemView.findViewById(R.id.recycle_item_postat);
@@ -248,10 +263,12 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             txt_sender = (TextView) itemView.findViewById(R.id.recycle_item_sender);
             img_read = (LinearLayout) itemView.findViewById(R.id.recycle_item_isread);
             //image_header = (ImageView) itemView.findViewById(R.id.image_header);
+            carouselView = (CarouselView) itemView.findViewById(R.id.carouselView);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
+
 
         @Override
         public void onClick(View v) {

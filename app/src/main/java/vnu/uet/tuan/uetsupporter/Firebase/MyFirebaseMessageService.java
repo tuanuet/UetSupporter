@@ -131,6 +131,8 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setIdSender(String.valueOf(data.get(AnnouncementNotification.IDSENDER)));
         push.setTypeNotification(getIntFromString(String.valueOf(data.get(AnnouncementNotification.TYPENOTIFICATION))));
         push.setNameSender(String.valueOf(data.get(AnnouncementNotification.NAMESENDER)));
+        Log.e(TAG,(String) data.get(AnnouncementNotification.DESCRIPTION_IMAGES));
+        push.setDescriptionImages(Utils.convertStringToArrayFromServer((String) data.get(AnnouncementNotification.DESCRIPTION_IMAGES)));
         return push;
     }
 
