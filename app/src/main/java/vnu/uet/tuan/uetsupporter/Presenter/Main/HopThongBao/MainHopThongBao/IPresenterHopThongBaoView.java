@@ -6,4 +6,5 @@ package vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.MainHopThongBao;
 
 public interface IPresenterHopThongBaoView {
     void executeRetrigerPushNotification();
+    void react(String id, int code);
 }

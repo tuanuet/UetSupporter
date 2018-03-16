@@ -16,6 +16,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -137,12 +139,36 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      * @param itemViewHolder
      */
     private void setupListenerIcon(ItemViewHolder itemViewHolder, final int position) {
-        itemViewHolder.img_tool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showPopup(v, position);
-            }
-        });
+        itemViewHolder.img_tool.setOnClickListener(v -> showPopup(v, position));
+        itemViewHolder.angry.setOnClickListener(v -> reactionClick(v,position));
+        itemViewHolder.cry.setOnClickListener(v -> reactionClick(v,position));
+        itemViewHolder.love.setOnClickListener(v -> reactionClick(v,position));
+        itemViewHolder.wow.setOnClickListener(v -> reactionClick(v,position));
+        itemViewHolder.surprise.setOnClickListener(v -> reactionClick(v,position));
+
+    }
+
+    public void reactionClick(View v,int position) {
+        String _id = list.get(position).get_id();
+        int code = 0;
+        switch (v.getId()){
+            case R.id.ic_angry:
+                code = Config.ReactionCode.ANGRY.ordinal();
+                break;
+            case R.id.ic_cry:
+                code = Config.ReactionCode.CRY.ordinal();
+                break;
+            case R.id.ic_love:
+                code = Config.ReactionCode.LOVE.ordinal();
+                break;
+            case R.id.ic_wow:
+                code = Config.ReactionCode.WOW.ordinal();
+                break;
+            case R.id.ic_surprised:
+                code = Config.ReactionCode.SURPRISE.ordinal();
+                break;
+        }
+        clickListener.onReactionClick(_id,code);
 
     }
 
@@ -215,18 +241,15 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         PopupMenu popupMenu = new PopupMenu(context, v);
         popupMenu.inflate(R.menu.hopthongbao_popup_menu);
         popupMenu.show();
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_delete:
-                        deleteitem(position);
-                        break;
-                    case R.id.action_share:
-                        break;
-                }
-                return true;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    deleteitem(position);
+                    break;
+                case R.id.action_share:
+                    break;
             }
+            return true;
         });
     }
 
@@ -235,8 +258,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         this.notifyItemRemoved(position);
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder
-            implements View.OnClickListener, View.OnLongClickListener {
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
         CardView cardView;
         TextView txt_tieuDe;
         TextView txt_noiDung;
@@ -247,8 +269,9 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         ImageView avatar;
         TextView txt_loaithongbao;
         TextView txt_sender;
-        ImageView image_header;
         CarouselView carouselView;
+        ImageButton angry,cry,love,wow,surprise;
+
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
@@ -265,20 +288,20 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             //image_header = (ImageView) itemView.findViewById(R.id.image_header);
             carouselView = (CarouselView) itemView.findViewById(R.id.carouselView);
 
-            itemView.setOnClickListener(this);
-            itemView.setOnLongClickListener(this);
-        }
+            angry = (ImageButton) itemView.findViewById(R.id.ic_angry);
+            cry = (ImageButton) itemView.findViewById(R.id.ic_cry);
+            love = (ImageButton) itemView.findViewById(R.id.ic_love);
+            wow = (ImageButton) itemView.findViewById(R.id.ic_wow);
+            surprise = (ImageButton) itemView.findViewById(R.id.ic_surprised);
 
+            itemView.setOnClickListener(v -> {
+                clickListener.onItemClick(getAdapterPosition(), v);
+            });
+            itemView.setOnLongClickListener(v -> {
+                clickListener.onItemLongClick(getAdapterPosition(), v);
+                return false;
+            });
 
-        @Override
-        public void onClick(View v) {
-            clickListener.onItemClick(getAdapterPosition(), v);
-        }
-
-        @Override
-        public boolean onLongClick(View v) {
-            clickListener.onItemLongClick(getAdapterPosition(), v);
-            return false;
         }
     }
 
@@ -287,6 +310,8 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         void onItemClick(int position, View v);
 
         void onItemLongClick(int position, View v);
+
+        void onReactionClick(String id,int code);
     }
 
     public ClickListener clickListener;

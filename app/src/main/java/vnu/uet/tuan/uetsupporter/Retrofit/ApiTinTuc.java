@@ -21,6 +21,7 @@ import vnu.uet.tuan.uetsupporter.Model.Response.CourseInformation;
 import vnu.uet.tuan.uetsupporter.Model.Response.DataSync;
 import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
 import vnu.uet.tuan.uetsupporter.Model.Response.Message;
+import vnu.uet.tuan.uetsupporter.Model.Response.ReactionResponse;
 import vnu.uet.tuan.uetsupporter.Model.Student;
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
 
@@ -66,4 +67,10 @@ public interface ApiTinTuc {
 
     @POST("/api/fetching/news-announcements")
     Call<DataSync> syncServer(@Body RequestBody params);
+
+    @POST("/api/reaction")
+    Call<Message> postReaction(@Body RequestBody params,@Header("Authorization") String authorization);
+
+    @POST("/api/fetch/reaction")
+    Call<ArrayList<ReactionResponse>> fetchReaction(@Body RequestBody params, @Header("Authorization") String authorization);
 }

@@ -84,6 +84,12 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
 
     }
 
+    @Override
+    public void onReactionClick(String id, int code) {
+        Toast.makeText(getActivity(),id+"-----"+code,Toast.LENGTH_SHORT).show();
+        presenterHopThongBaoLogic.react(id,code);
+    }
+
 
     @Override
     public void OnPreExcute() {
@@ -100,4 +106,15 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     public void OnGetHopThongBaoFailure(String fail) {
         Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void OnReactionSuccess() {
+
+    }
+
+    @Override
+    public void OnReactionFailure(String fail) {
+        Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
+    }
+
 }

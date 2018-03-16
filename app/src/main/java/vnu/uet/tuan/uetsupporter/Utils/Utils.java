@@ -497,4 +497,12 @@ public class Utils {
     public static String getLastTimeNew(Context context) {
         return new DateTime().toString();
     }
+
+    public static String[] getIdAnnouncements(ArrayList<AnnouncementNotification> list) {
+        String[] ids = new String[list.size()];
+        for (int i= 0; i< list.size();i++){
+            ids[i]= list.get(i).get_id();
+        }
+        return  ids;
+    }
 }

@@ -22,6 +22,9 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;

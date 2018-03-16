@@ -11,14 +11,14 @@ import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.MainHopThongBao.IViewHopT
  * Created by vmtuan on 3/24/2017.
  */
 
-public class PresenterHopThongBaoLogic implements IPresenterHopThongBaoView, IPresenterHopThongBaoModel.OnGetPushNotificationFinish {
+public class PresenterHopThongBaoLogic implements IPresenterHopThongBaoView,
+        IPresenterHopThongBaoModel.OnGetPushNotificationFinish,
+        IPresenterHopThongBaoModel.OnReactFinish {
     private IViewHopThongBao iViewHopThongBao;
     private PresenterHopThongBaoModel presenterHopThongBaoModel;
-    private Context context;
 
     public PresenterHopThongBaoLogic(Context context, IViewHopThongBao iViewHopThongBao) {
         this.iViewHopThongBao = iViewHopThongBao;
-        this.context = context;
         this.presenterHopThongBaoModel = new PresenterHopThongBaoModel(context);
     }
 
@@ -29,6 +29,11 @@ public class PresenterHopThongBaoLogic implements IPresenterHopThongBaoView, IPr
     }
 
     @Override
+    public void react(String id, int code) {
+        presenterHopThongBaoModel.pushReact(id,code,this);
+    }
+
+    @Override
     public void OnSuccess(List<AnnouncementNotification> notifications) {
         iViewHopThongBao.OnGetHopThongBaoSuccess(notifications);
     }
@@ -36,5 +41,15 @@ public class PresenterHopThongBaoLogic implements IPresenterHopThongBaoView, IPr
     @Override
     public void OnFailure(String fail) {
         iViewHopThongBao.OnGetHopThongBaoFailure(fail);
+    }
+
+    @Override
+    public void OnReactSuccess() {
+        iViewHopThongBao.OnReactionSuccess();
+    }
+
+    @Override
+    public void OnReactFailure(String fail) {
+        iViewHopThongBao.OnReactionFailure(fail);
     }
 }

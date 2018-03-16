@@ -3,6 +3,7 @@ package vnu.uet.tuan.uetsupporter.Model;
 import java.io.Serializable;
 import java.util.Date;
 
+import vnu.uet.tuan.uetsupporter.Model.Base.IReactable;
 import vnu.uet.tuan.uetsupporter.Model.interfaces.INotification;
 
 /**
@@ -40,6 +41,51 @@ public class AnnouncementNotification implements Serializable,INotification {
     private String codeMucDoThongBao;
     private String description;
     private String[] descriptionImages;
+    private IReactable angry;
+    private IReactable cry;
+    private IReactable love;
+    private IReactable wow;
+    private IReactable surprise;
+
+    public IReactable getAngry() {
+        return angry;
+    }
+
+    public void setAngry(IReactable angry) {
+        this.angry = angry;
+    }
+
+    public IReactable getCry() {
+        return cry;
+    }
+
+    public void setCry(IReactable cry) {
+        this.cry = cry;
+    }
+
+    public IReactable getLove() {
+        return love;
+    }
+
+    public void setLove(IReactable love) {
+        this.love = love;
+    }
+
+    public IReactable getWow() {
+        return wow;
+    }
+
+    public void setWow(IReactable wow) {
+        this.wow = wow;
+    }
+
+    public IReactable getSurprise() {
+        return surprise;
+    }
+
+    public void setSurprise(IReactable surprise) {
+        this.surprise = surprise;
+    }
 
     public String[] getDescriptionImages() {
         return descriptionImages;

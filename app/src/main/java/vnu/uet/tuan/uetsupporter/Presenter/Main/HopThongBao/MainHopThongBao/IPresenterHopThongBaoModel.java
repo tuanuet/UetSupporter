@@ -15,5 +15,12 @@ public interface IPresenterHopThongBaoModel {
         void OnFailure(String fail);
     }
 
+    interface OnReactFinish {
+        void OnReactSuccess();
+
+        void OnReactFailure(String fail);
+    }
+
     void getPushNotification(OnGetPushNotificationFinish listener);
+    void pushReact(String _id,int code, OnReactFinish listener);
 }

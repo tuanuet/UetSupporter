@@ -14,4 +14,8 @@ public interface IViewHopThongBao {
     void OnGetHopThongBaoSuccess(List<AnnouncementNotification> notifications);
 
     void OnGetHopThongBaoFailure(String fail);
+
+    void OnReactionSuccess();
+
+    void OnReactionFailure(String fail);
 }

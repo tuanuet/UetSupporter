@@ -67,8 +67,8 @@ public class SyncAdapter extends AbstractThreadedSyncAdapter {
         int countNew = sent.getNewMessageCount();
         new ExecueEmail().execute(countNew);
 
-        //sync notification and new
-        syncNotification();
+        //todo: sync notification and new
+//        syncNotification();
     }
 
     private void syncNotification() {
