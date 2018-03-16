@@ -16,7 +16,7 @@ public interface IPresenterHopThongBaoModel {
     }
 
     interface OnReactFinish {
-        void OnReactSuccess();
+        void OnReactSuccess(int code);
 
         void OnReactFailure(String fail);
     }

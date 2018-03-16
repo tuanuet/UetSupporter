@@ -44,8 +44,8 @@ public class PresenterHopThongBaoLogic implements IPresenterHopThongBaoView,
     }
 
     @Override
-    public void OnReactSuccess() {
-        iViewHopThongBao.OnReactionSuccess();
+    public void OnReactSuccess(int code) {
+        iViewHopThongBao.OnReactionSuccess(code);
     }
 
     @Override

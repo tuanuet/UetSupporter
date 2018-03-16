@@ -2,12 +2,6 @@ package vnu.uet.tuan.uetsupporter.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.media.Image;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
-import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -32,7 +26,11 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+import vnu.uet.tuan.uetsupporter.Model.Base.IReactable;
+import vnu.uet.tuan.uetsupporter.Model.Base.Reaction;
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
@@ -79,6 +77,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         return null;
     }
 
+
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof ItemViewHolder) {
@@ -91,6 +90,11 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             itemViewHolder.txt_noiDung.setText(notification.getDescription());
             itemViewHolder.txt_thoiGian.setText(Utils.getThoiGian(context, notification.getThoiGianNhan()));
             itemViewHolder.img_hasFile.setVisibility(notification.getHasFile() ? View.VISIBLE : View.INVISIBLE);
+            itemViewHolder.totalReaction.setText(
+                    String.format(
+                            context.getResources().getString(R.string.total_reaction),
+                            String.valueOf(Utils.getTotalReaction(notification)))
+            );
 
             setupAvatarWithAuthor(itemViewHolder, notification);
 
@@ -102,18 +106,60 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
             setupListenerIcon(itemViewHolder, position);
 
-            setUpSampleImages(itemViewHolder,notification);
+            setUpSampleImages(itemViewHolder, notification);
+
+            setUpReaction(itemViewHolder, notification);
+        }
+    }
+
+    private void setUpReaction(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
+
+        ((CircleImageView)((ViewGroup)itemViewHolder.angry.getParent()).getChildAt(0))
+                .setImageResource(R.color.plank);
+        ((CircleImageView)((ViewGroup)itemViewHolder.cry.getParent()).getChildAt(0))
+                .setImageResource(R.color.plank);
+        ((CircleImageView)((ViewGroup)itemViewHolder.love.getParent()).getChildAt(0))
+                .setImageResource(R.color.plank);
+        ((CircleImageView)((ViewGroup)itemViewHolder.wow.getParent()).getChildAt(0))
+                .setImageResource(R.color.plank);
+        ((CircleImageView)((ViewGroup)itemViewHolder.surprise.getParent()).getChildAt(0))
+                .setImageResource(R.color.plank);
+
+        if (notification.getAngry() != null && notification.getAngry().getIsReact()) {
+            ((CircleImageView)((ViewGroup)itemViewHolder.angry.getParent()).getChildAt(0))
+                    .setImageResource(R.color.cardview_light_blue);
+            Log.e(TAG,"angry");
+        }
+        else if (notification.getCry() != null && notification.getCry().getIsReact()) {
+            ((CircleImageView)((ViewGroup)itemViewHolder.cry.getParent()).getChildAt(0))
+                    .setImageResource(R.color.cardview_light_blue);
+            Log.e(TAG,"cry");
+        }
+        else if (notification.getLove() != null && notification.getLove().getIsReact()) {
+            ((CircleImageView)((ViewGroup)itemViewHolder.love.getParent()).getChildAt(0))
+                    .setImageResource(R.color.cardview_light_blue);
+            Log.e(TAG,"love");
+        }
+        else if (notification.getWow() != null && notification.getWow().getIsReact()) {
+            ((CircleImageView)((ViewGroup)itemViewHolder.wow.getParent()).getChildAt(0))
+                    .setImageResource(R.color.cardview_light_blue);
+            Log.e(TAG,"wow");
+        }
+        else if (notification.getSurprise() != null && notification.getSurprise().getIsReact()) {
+            ((CircleImageView)((ViewGroup)itemViewHolder.surprise.getParent()).getChildAt(0))
+                    .setImageResource(R.color.cardview_light_blue);
+            Log.e(TAG,"surprise");
         }
     }
 
     private void setUpSampleImages(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
         final String[] sampleImages = notification.getDescriptionImages();
-        if(sampleImages.length != 0) {
+        if (sampleImages.length != 0) {
             itemViewHolder.carouselView.setPageCount(sampleImages.length);
             itemViewHolder.carouselView.setImageListener(new ImageListener() {
                 @Override
                 public void setImageForPosition(int position, ImageView imageView) {
-                    Glide.with(context).load(Config.hostname+sampleImages[position])
+                    Glide.with(context).load(Config.hostname + sampleImages[position])
                             .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                             .centerCrop()
                             .into(imageView);
@@ -140,18 +186,18 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      */
     private void setupListenerIcon(ItemViewHolder itemViewHolder, final int position) {
         itemViewHolder.img_tool.setOnClickListener(v -> showPopup(v, position));
-        itemViewHolder.angry.setOnClickListener(v -> reactionClick(v,position));
-        itemViewHolder.cry.setOnClickListener(v -> reactionClick(v,position));
-        itemViewHolder.love.setOnClickListener(v -> reactionClick(v,position));
-        itemViewHolder.wow.setOnClickListener(v -> reactionClick(v,position));
-        itemViewHolder.surprise.setOnClickListener(v -> reactionClick(v,position));
-
+        itemViewHolder.angry.setOnClickListener(v -> reactionClick(v, position));
+        itemViewHolder.cry.setOnClickListener(v -> reactionClick(v, position));
+        itemViewHolder.love.setOnClickListener(v -> reactionClick(v, position));
+        itemViewHolder.wow.setOnClickListener(v -> reactionClick(v, position));
+        itemViewHolder.surprise.setOnClickListener(v -> reactionClick(v, position));
     }
 
-    public void reactionClick(View v,int position) {
-        String _id = list.get(position).get_id();
+    public void reactionClick(View v, int position) {
+        AnnouncementNotification notification = list.get(position);
+        String _id = notification.get_id();
         int code = 0;
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ic_angry:
                 code = Config.ReactionCode.ANGRY.ordinal();
                 break;
@@ -168,7 +214,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
                 code = Config.ReactionCode.SURPRISE.ordinal();
                 break;
         }
-        clickListener.onReactionClick(_id,code);
+        clickListener.onReactionClick(position,_id, code);
 
     }
 
@@ -183,7 +229,6 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
     private void setupAvatarWithAuthor(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
 
         String urlAvatar = Config.API_HOSTNAME + "/api/avatar/" + notification.getIdSender();
-        Log.e(TAG, urlAvatar);
         Glide.with(context).load(urlAvatar)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
@@ -215,7 +260,6 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
      * @param notification
      */
     private void setupMucDo(ItemViewHolder itemViewHolder, AnnouncementNotification notification) {
-//        itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.dark_red));
         switch (notification.getCodeMucDoThongBao()) {
             case "khan_cap":
                 itemViewHolder.txt_tieuDe.setTextColor(context.getResources().getColor(R.color.dark_red));
@@ -270,8 +314,8 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         TextView txt_loaithongbao;
         TextView txt_sender;
         CarouselView carouselView;
-        ImageButton angry,cry,love,wow,surprise;
-
+        ImageButton angry, cry, love, wow, surprise;
+        TextView totalReaction;
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
@@ -293,6 +337,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             love = (ImageButton) itemView.findViewById(R.id.ic_love);
             wow = (ImageButton) itemView.findViewById(R.id.ic_wow);
             surprise = (ImageButton) itemView.findViewById(R.id.ic_surprised);
+            totalReaction = (TextView) itemView.findViewById(R.id.total_reaction);
 
             itemView.setOnClickListener(v -> {
                 clickListener.onItemClick(getAdapterPosition(), v);
@@ -311,7 +356,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
         void onItemLongClick(int position, View v);
 
-        void onReactionClick(String id,int code);
+        void onReactionClick(int position, String id, int code);
     }
 
     public ClickListener clickListener;

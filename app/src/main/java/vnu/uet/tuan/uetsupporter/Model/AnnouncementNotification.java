@@ -255,6 +255,6 @@ public class AnnouncementNotification implements Serializable,INotification {
 
     @Override
     public String toString() {
-        return this.link + "--" +this.tieuDe;
+        return this.angry.getIsReact() + "--" +this.cry.getIsReact() +"--"+ this.love.getIsReact() + "--" +this.wow.getIsReact()+ "--" +this.surprise.getIsReact();
     }
 }

@@ -1,14 +1,21 @@
 package vnu.uet.tuan.uetsupporter.Model.Base;
 
+import java.io.Serializable;
+
 /**
  * Created by FRAMGIA\vu.minh.tuan on 16/03/2018.
  */
 
 
 
-public class Reaction implements IReactable{
+public class Reaction implements IReactable,Serializable{
     private int length;
     private boolean isReact;
+
+    {
+        length =0;
+        isReact=false;
+    }
 
     public Reaction(int length, boolean isReact) {
         this.length = length;
@@ -16,6 +23,7 @@ public class Reaction implements IReactable{
     }
 
     public Reaction() {
+
     }
 
 

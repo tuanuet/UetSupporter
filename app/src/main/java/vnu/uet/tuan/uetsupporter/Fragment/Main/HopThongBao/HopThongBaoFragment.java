@@ -19,11 +19,15 @@ import java.util.List;
 import vnu.uet.tuan.uetsupporter.Activities.Result2Activity;
 import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterHopThongBao;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
+import vnu.uet.tuan.uetsupporter.Model.Base.IReactable;
+import vnu.uet.tuan.uetsupporter.Model.Base.Reaction;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.MainHopThongBao.IPresenterHopThongBaoView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.MainHopThongBao.PresenterHopThongBaoLogic;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.MainHopThongBao.IViewHopThongBao;
 import vnu.uet.tuan.uetsupporter.config.Config;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,7 +41,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     private RecyclerAdapterHopThongBao adapter;
     private ArrayList<AnnouncementNotification> list;
     private IPresenterHopThongBaoView presenterHopThongBaoLogic;
-
+    private int reactionPostion = 0;
 
     public HopThongBaoFragment() {
         // Required empty public constructor
@@ -66,7 +70,6 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e(TAG,"onViewCreated");
         presenterHopThongBaoLogic = new PresenterHopThongBaoLogic(getActivity(), this);
         presenterHopThongBaoLogic.executeRetrigerPushNotification();
     }
@@ -85,9 +88,10 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     }
 
     @Override
-    public void onReactionClick(String id, int code) {
-        Toast.makeText(getActivity(),id+"-----"+code,Toast.LENGTH_SHORT).show();
-        presenterHopThongBaoLogic.react(id,code);
+    public void onReactionClick(int position, String id, int code) {
+        Log.e(TAG,"POSITION: "+position);
+        presenterHopThongBaoLogic.react(id, code);
+        this.reactionPostion = position;
     }
 
 
@@ -108,7 +112,51 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     }
 
     @Override
-    public void OnReactionSuccess() {
+    public void OnReactionSuccess(int code) {
+        AnnouncementNotification notification = list.get(reactionPostion);
+        updateNotification(code, notification);
+        adapter.notifyItemChanged(reactionPostion,notification);
+    }
+
+    private void updateNotification(int code, AnnouncementNotification notification) {
+
+        list.get(reactionPostion).setSurprise(new Reaction());
+        list.get(reactionPostion).setAngry(new Reaction());
+        list.get(reactionPostion).setCry(new Reaction());
+        list.get(reactionPostion).setLove(new Reaction());
+        list.get(reactionPostion).setWow(new Reaction());
+
+        if (code == Config.ReactionCode.ANGRY.ordinal()) {
+            IReactable angry = new Reaction(
+                    notification.getAngry().getLength() + 1,
+                    true
+            );
+            list.get(reactionPostion).setAngry(angry);
+        } else if (code == Config.ReactionCode.CRY.ordinal()) {
+            IReactable cry = new Reaction(
+                    notification.getCry().getLength() + 1,
+                    true
+            );
+            list.get(reactionPostion).setCry(cry);
+        } else if (code == Config.ReactionCode.LOVE.ordinal()) {
+            IReactable love = new Reaction(
+                    notification.getLove().getLength() + 1,
+                    true
+            );
+            list.get(reactionPostion).setLove(love);
+        } else if (code == Config.ReactionCode.WOW.ordinal()) {
+            IReactable wow = new Reaction(
+                    notification.getWow().getLength() + 1,
+                    true
+            );
+            list.get(reactionPostion).setWow(wow);
+        } else if (code == Config.ReactionCode.SURPRISE.ordinal()) {
+            IReactable surprise = new Reaction(
+                    notification.getSurprise().getLength() + 1,
+                    true
+            );
+            list.get(reactionPostion).setSurprise(surprise);
+        }
 
     }
 

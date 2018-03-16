@@ -137,5 +137,6 @@
     <string name="email_receiver">Người nhận: %1$s</string>
     <string name="string_yesterday">Hôm qua</string>
     <string name="notification_type">Chủ đề: %1$s</string>
+    <string name="total_reaction">%1$s</string>
 
 </resources>

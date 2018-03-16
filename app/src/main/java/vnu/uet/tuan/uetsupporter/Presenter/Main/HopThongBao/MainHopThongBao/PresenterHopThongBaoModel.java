@@ -111,7 +111,7 @@ public class PresenterHopThongBaoModel implements IPresenterHopThongBaoModel {
                 if (response.code() < 400 && response.isSuccessful()){
                     Message message = response.body();
                     if(message.getSuccess()){
-                        listenerPush.OnReactSuccess();
+                        listenerPush.OnReactSuccess(code);
                     }else{
                         listenerPush.OnReactFailure(message.getMessage());
                     }

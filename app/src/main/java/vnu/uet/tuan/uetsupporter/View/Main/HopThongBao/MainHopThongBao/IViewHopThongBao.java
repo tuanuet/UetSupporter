@@ -15,7 +15,7 @@ public interface IViewHopThongBao {
 
     void OnGetHopThongBaoFailure(String fail);
 
-    void OnReactionSuccess();
+    void OnReactionSuccess(int code);
 
     void OnReactionFailure(String fail);
 }

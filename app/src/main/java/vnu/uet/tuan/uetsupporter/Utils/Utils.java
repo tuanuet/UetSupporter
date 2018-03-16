@@ -505,4 +505,12 @@ public class Utils {
         }
         return  ids;
     }
+
+    public static int getTotalReaction(AnnouncementNotification notification) {
+        return (notification.getAngry() != null ? notification.getAngry().getLength() : 0)
+                + (notification.getCry() != null ? notification.getCry().getLength() : 0)
+                + (notification.getLove() != null ? notification.getLove().getLength() : 0)
+                + (notification.getWow() != null ? notification.getWow().getLength() : 0)
+                + (notification.getSurprise() != null ? notification.getSurprise().getLength() : 0);
+    }
 }
