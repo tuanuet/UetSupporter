@@ -20,6 +20,7 @@ import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Response.CourseInformation;
 import vnu.uet.tuan.uetsupporter.Model.Response.DataSync;
 import vnu.uet.tuan.uetsupporter.Model.Response.DiemResponse;
+import vnu.uet.tuan.uetsupporter.Model.Response.Feedback;
 import vnu.uet.tuan.uetsupporter.Model.Response.Message;
 import vnu.uet.tuan.uetsupporter.Model.Response.ReactionResponse;
 import vnu.uet.tuan.uetsupporter.Model.Student;
@@ -60,10 +61,8 @@ public interface ApiTinTuc {
     @GET("/api/info/course/{id}")
     Call<CourseInformation> getInfoCourse(@Path("id") String id, @Header("Authorization") String authorization);
 
-    @FormUrlEncoded
-    @POST("/sinhvien/guifeedback/{id}")
-    Call<Message> postComment(@Field("noiDung") String noiDung,
-                              @Path("id") String thongbaoid, @Header("Authorization") String authorization);
+    @GET("/test/feedback")
+    Call<List<Feedback>> getFeedBackByAnnouncementId(@Query("announcementId") String announcementId, @Header("Authorization") String authorization);
 
     @POST("/api/fetching/news-announcements")
     Call<DataSync> syncServer(@Body RequestBody params);

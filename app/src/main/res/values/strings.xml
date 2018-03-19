@@ -102,7 +102,7 @@
     <string name="mucdoc_khancap">Khẩn cấp</string>
     <string name="title_html">Html</string>
     <string name="action_important">Đánh đấu quan trọng</string>
-    <string name="add_a_comment_here">Add a comment here</string>
+    <string name="add_a_comment_here">Phản hồi tại đây</string>
     <string name="recording">test 1</string>
     <string name="newthongbao">Tiêu Điểm</string>
     <string name="date_test">13/2/2016</string>
@@ -138,5 +138,7 @@
     <string name="string_yesterday">Hôm qua</string>
     <string name="notification_type">Chủ đề: %1$s</string>
     <string name="total_reaction">%1$s</string>
+    <string name="reply">Trả lời</string>
+    <string name="more">Khác</string>
 
 </resources>

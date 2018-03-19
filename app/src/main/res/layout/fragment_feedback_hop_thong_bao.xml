@@ -2,119 +2,68 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/activity_main"
-        card_view:cardElevation="5dp">
-
+        android:id="@+id/header"
+        android:layout_height="wrap_content">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="10">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:id="@+id/image_avatar"
-                        android:layout_width="60dp"
-                        android:layout_gravity="center"
-                        android:layout_height="60dp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="8dp"
+            android:layout_marginLeft="5dp">
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_angry"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_cry"/>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="@null"
+                app:srcCompat="@drawable/ic_surprised"/>
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="8"
-                android:padding="5dp">
+                android:layout_marginLeft="4dp"
+                android:id="@+id/total_reaction"
+                android:text="@string/total_reaction"
+                android:textSize="12sp"
+                android:maxLines="1"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Hôm nay được nghỉ"
-                    android:textColor="@color/black"
-                    android:maxLines="1"
-                    android:id="@+id/title"
-                    android:textSize="20sp"
-                    android:textAllCaps="true" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Loai Thông báo"
-                    android:textColor="@color/light_black"
-                    android:textSize="15sp"
-                    android:id="@+id/loaithongbao"
-                    android:paddingTop="5dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="5dp"
-                    android:weightSum="10">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:id="@+id/sender"
-                        android:text="Author" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:layout_weight="4"
-                        android:id="@+id/time"
-                        android:text="10/10/2017" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.5"
-                        android:id="@+id/mucdo"
-                        android:text="Khẩn cấp" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+            <Button
+                android:layout_width="45dp"
+                android:layout_height="30dp"
+                android:background="@drawable/border_button"
+                android:text="Xong"
+                android:id="@+id/finish"
+                android:layout_marginRight="5dp"
+                android:textAllCaps="false"
+                android:layout_gravity="right"/>
         </LinearLayout>
-
     </android.support.v7.widget.CardView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
-        android:layout_below="@+id/activity_main"
+        android:layout_below="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/commenttext" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.2dp"
-        android:id="@+id/divider2"
-        android:layout_below="@+id/my_recycler_view"
-        android:background="@color/half_black" />
-
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -122,6 +71,7 @@
         android:layout_toLeftOf="@+id/send"
         android:background="@null"
         android:paddingLeft="16dp"
+        android:layout_marginBottom="5dp"
         android:textSize="16sp"
         android:singleLine="false"
         android:hint="@string/add_a_comment_here"
@@ -133,6 +83,10 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:padding="2dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:id="@+id/send"
         android:src="@drawable/ic_action_send_now"
         android:layout_alignParentBottom="true"

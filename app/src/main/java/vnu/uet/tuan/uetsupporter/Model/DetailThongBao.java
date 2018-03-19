@@ -17,6 +17,7 @@ import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
+import vnu.uet.tuan.uetsupporter.Model.Response.Sender;
 
 /**
  * Created by vmtuan on 3/8/2017.
@@ -29,12 +30,11 @@ public class DetailThongBao implements Serializable {
     private String noiDung;
     private LoaiThongBao idLoaiThongBao;
     private MucDoThongBao idMucDoThongBao;
-    private String idSender;
+    private Sender sender;
     private String idReceiver;
     private String description;
     private String time;
     private List<File> idFile;
-    private List<Comment> feedback;
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -44,7 +44,10 @@ public class DetailThongBao implements Serializable {
         this._id = root.getString("_id");
         this.tieuDe = root.getString("title");
         this.noiDung = root.getString("content");
-        this.idSender = root.getString("sender");
+        this.sender = new Sender();
+        sender.set_id(root.getJSONObject("sender").getString("_id"));
+        sender.setName(root.getJSONObject("sender").getString("name"));
+
         this.idReceiver = root.getString("receiver");
         this.description =  root.getString("description");
         this.time = root.getString("createdAt");
@@ -93,48 +96,6 @@ public class DetailThongBao implements Serializable {
             this.idFile = new ArrayList<>();
         }
 
-        //==================================================================//
-        try {
-            JSONArray feedback = root.getJSONArray("feedback");
-            ArrayList<Comment> listFeedback = new ArrayList<>();
-            for (int i = 0; i < feedback.length(); i++) {
-                JSONObject jsonComment = feedback.getJSONObject(i);
-                listFeedback.add(new Comment(jsonComment));
-            }
-            this.feedback = listFeedback;
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            this.feedback = new ArrayList<>();
-        }
-    }
-
-    public DetailThongBao(String _id, String tieuDe, String noiDung, LoaiThongBao idLoaiThongBao,
-                          MucDoThongBao idMucDoThongBao, String idSender, String idReceiver,
-                          String time, List<File> idFile, List<Comment> feedback) {
-        this._id = _id;
-        this.tieuDe = tieuDe;
-        this.noiDung = noiDung;
-        this.idLoaiThongBao = idLoaiThongBao;
-        this.idMucDoThongBao = idMucDoThongBao;
-        this.idSender = idSender;
-        this.idReceiver = idReceiver;
-        this.time = time;
-        this.idFile = idFile;
-        this.feedback = feedback;
-    }
-
-    public DetailThongBao(String _id, String tieuDe, String noiDung, LoaiThongBao idLoaiThongBao,
-                          MucDoThongBao idMucDoThongBao, String idSender, String idReceiver,
-                          String time, List<File> idFile) {
-        this._id = _id;
-        this.tieuDe = tieuDe;
-        this.noiDung = noiDung;
-        this.idLoaiThongBao = idLoaiThongBao;
-        this.idMucDoThongBao = idMucDoThongBao;
-        this.idSender = idSender;
-        this.idReceiver = idReceiver;
-        this.time = time;
-        this.idFile = idFile;
     }
 
     public DetailThongBao() {
@@ -166,13 +127,6 @@ public class DetailThongBao implements Serializable {
         this.noiDung = noiDung;
     }
 
-    public List<Comment> getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(List<Comment> feedback) {
-        this.feedback = feedback;
-    }
 
     public String getIdReceiver() {
         return idReceiver;
@@ -206,12 +160,12 @@ public class DetailThongBao implements Serializable {
         this.idMucDoThongBao = idMucDoThongBao;
     }
 
-    public String getIdSender() {
-        return idSender;
+    public Sender getSender() {
+        return sender;
     }
 
-    public void setIdSender(String idSender) {
-        this.idSender = idSender;
+    public void setIdSender(Sender idSender) {
+        this.sender = idSender;
     }
 
     public List<File> getIdFile() {

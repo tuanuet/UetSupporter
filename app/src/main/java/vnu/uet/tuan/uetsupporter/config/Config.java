@@ -77,4 +77,9 @@ public class Config {
         ANGRY, CRY, LOVE, WOW, SURPRISE
     }
 
+    /**
+     * Data send to fragemnt feddback
+     */
+
+    public static final String REACTION = "reaction-announcement";
 }

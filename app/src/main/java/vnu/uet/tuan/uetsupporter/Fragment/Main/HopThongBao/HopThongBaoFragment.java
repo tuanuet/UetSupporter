@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -42,7 +43,6 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     private ArrayList<AnnouncementNotification> list;
     private IPresenterHopThongBaoView presenterHopThongBaoLogic;
     private int reactionPostion = 0;
-
     public HopThongBaoFragment() {
         // Required empty public constructor
     }

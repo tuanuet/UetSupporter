@@ -9,11 +9,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 import vnu.uet.tuan.uetsupporter.Model.Comment;
+import vnu.uet.tuan.uetsupporter.Model.Response.Feedback;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
+import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * Created by vmtuan on 3/12/2017.
@@ -22,11 +26,11 @@ import vnu.uet.tuan.uetsupporter.Utils.Utils;
 public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
     private final String TAG = this.getClass().getSimpleName();
 
-    List<Comment> list;
+    List<Feedback> list;
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
 
-    public RecyclerAdapterFeedBack(Context context, List<Comment> list) {
+    public RecyclerAdapterFeedBack(Context context, List<Feedback> list) {
         this.context = context;
         this.list = list;
     }
@@ -54,13 +58,15 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
         if (holder instanceof RecyclerAdapterFeedBack.ItemViewHolder) {
             final RecyclerAdapterFeedBack.ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
-            Comment comment = list.get(position);
-            itemViewHolder.avatar.setImageResource(R.drawable.filter_black_36x36);
-            itemViewHolder.noiDung.setText(comment.getNoiDung());
-            itemViewHolder.nameUser.setText(comment.getUserComment().getName());
-            itemViewHolder.time.setText(Utils.getThoiGian(context,comment.getTime()));
-
-            Log.e(TAG, comment.getUserComment().getName());
+            Feedback comment = list.get(position);
+            String avatar = Config.API_HOSTNAME + "/api/avatar/" + list.get(position).getSender().get_id();
+            Glide.with(context)
+                    .load(avatar)
+                    .centerCrop()
+                    .into(itemViewHolder.avatar);
+            itemViewHolder.noiDung.setText(comment.getContent());
+            itemViewHolder.nameUser.setText(comment.getSender().getName());
+            itemViewHolder.time.setText(Utils.getThoiGian(context,comment.getCreatedAt()));
         }
     }
 

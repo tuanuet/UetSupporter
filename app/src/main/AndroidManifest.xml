@@ -135,7 +135,9 @@
             android:exported="false"
             android:syncable="true" />
 
-        <activity android:name=".Activities.FeedBackActivity" />
+        <activity android:name=".Activities.FeedBackActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialThemeNoActionBar"/>
         <activity android:name=".Activities.SendMailActivity" />
         <activity
             android:name=".Activities.HopThongBaoDiemActivity"

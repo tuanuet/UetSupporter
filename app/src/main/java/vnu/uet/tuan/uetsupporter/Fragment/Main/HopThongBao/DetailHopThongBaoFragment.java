@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -232,13 +233,10 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 
         //ONCLICK fab => activity feedback
         mThongBao = detailThongBao;
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FeedBackActivity.class);
-                intent.putExtra(Config.DETAILTHONGBAO, detailThongBao);
-                startActivity(intent);
-            }
+        fab.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), FeedBackActivity.class);
+            intent.putExtra(Config.KEY_PUSHNOTIFICATION, notification);
+            startActivity(intent);
         });
     }
 
@@ -260,8 +258,9 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         noidung.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 
         noidung.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        noidung.getSettings().setMediaPlaybackRequiresUserGesture(true);
-//        noidung.getSettings().setSupportMultipleWindows(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            noidung.getSettings().setMediaPlaybackRequiresUserGesture(true);
+        }
         noidung.getSettings().setBuiltInZoomControls(true);
 
         noidung.loadData(html, "text/html; charset=utf-8","UTF-8");

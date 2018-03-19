@@ -19,9 +19,9 @@ public class FeedBackActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed_back);
 
-        if (getIntent().hasExtra(Config.DETAILTHONGBAO)) {
+        if (getIntent().hasExtra(Config.KEY_PUSHNOTIFICATION)) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable(Config.DETAILTHONGBAO, getIntent().getSerializableExtra(Config.DETAILTHONGBAO));
+            bundle.putSerializable(Config.KEY_PUSHNOTIFICATION, getIntent().getSerializableExtra(Config.KEY_PUSHNOTIFICATION));
             FeedbackHopThongBaoFragment fragment = new FeedbackHopThongBaoFragment();
             fragment.setArguments(bundle);
             showChangeFragment(fragment, "FeedBack");
@@ -44,6 +44,12 @@ public class FeedBackActivity extends AppCompatActivity {
             ft.commit();
             Log.e(TAG, "Fragment not in Stack");
         }
-        getSupportActionBar().setTitle(name);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        System.gc();
+
     }
 }
