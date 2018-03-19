@@ -50,7 +50,7 @@
                         android:id="@+id/recycle_item_title"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="9.5"
+                        android:layout_weight="9.3"
                         android:text="Title"
                         android:textAllCaps="true"
                         android:textAppearance="?android:attr/textAppearanceLarge"
@@ -62,8 +62,8 @@
                         android:layout_width="0dp"
                         android:layout_height="20dp"
                         android:layout_gravity="top"
-                        android:layout_weight="0.5"
-                        android:src="@drawable/ic_more_vert_black_24dp" />
+                        android:layout_weight="0.7"
+                        android:src="@drawable/ic_more_horiz_black_24dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -95,9 +95,10 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="3"
                         android:text="20h30"
+                        android:paddingLeft="10dp"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/white"
-                        android:textSize="10sp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

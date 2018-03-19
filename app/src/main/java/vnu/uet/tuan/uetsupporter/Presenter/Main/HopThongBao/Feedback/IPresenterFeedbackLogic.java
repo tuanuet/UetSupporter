@@ -6,4 +6,6 @@ package vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.Feedback;
 
 public interface IPresenterFeedbackLogic {
     void execute(String announcementId);
+    void postFeedback(String announcementId,String feedback, String subFeedBack);
+    void postFeedback(String announcementId,String feedback);
 }

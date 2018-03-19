@@ -314,6 +314,7 @@ public class Utils {
     }
     public static String getThoiGian(Context context, String strDate) {
         DateTime date = new DateTime();
+
         if (strDate != null) {
             date = new DateTime(strDate);
         }
@@ -323,6 +324,7 @@ public class Utils {
         if(diffInDays == 1){
             return context.getString(R.string.string_yesterday);
         } else if(diffInDays == 0) {
+            Log.e(TAG,strDate);
             return date.toString("hh:mm a");
         } else {
             return date.toString("dd 'Thg' M YYYY");

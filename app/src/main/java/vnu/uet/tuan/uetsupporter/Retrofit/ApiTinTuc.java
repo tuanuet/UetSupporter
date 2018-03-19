@@ -64,6 +64,9 @@ public interface ApiTinTuc {
     @GET("/test/feedback")
     Call<List<Feedback>> getFeedBackByAnnouncementId(@Query("announcementId") String announcementId, @Header("Authorization") String authorization);
 
+    @POST("/test/feedback")
+    Call<Feedback> postFeedBack(@Body RequestBody params, @Header("Authorization") String authorization);
+
     @POST("/api/fetching/news-announcements")
     Call<DataSync> syncServer(@Body RequestBody params);
 
