@@ -140,5 +140,6 @@
     <string name="total_reaction">%1$s</string>
     <string name="reply">Trả lời</string>
     <string name="more">Khác</string>
+    <string name="fail_authentication">Token của bạn đã hết hạn hãy đăng nhập lại!</string>
 
 </resources>

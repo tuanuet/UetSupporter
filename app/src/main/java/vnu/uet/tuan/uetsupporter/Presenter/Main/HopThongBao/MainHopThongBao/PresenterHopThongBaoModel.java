@@ -63,20 +63,26 @@ public class PresenterHopThongBaoModel implements IPresenterHopThongBaoModel {
         call.enqueue(new Callback<ArrayList<ReactionResponse>>() {
             @Override
             public void onResponse(Call<ArrayList<ReactionResponse>> call, Response<ArrayList<ReactionResponse>> response) {
-                ArrayList<ReactionResponse> reactions = response.body();
-                for (int i = 0; i < reactions.size(); i++) {
-                    if(reactions.get(i) != null ){
-                        finalList.get(i).setAngry(reactions.get(i).getAngry());
-                        finalList.get(i).setCry(reactions.get(i).getCry());
-                        finalList.get(i).setLove(reactions.get(i).getLove());
-                        finalList.get(i).setWow(reactions.get(i).getWow());
-                        finalList.get(i).setSurprise(reactions.get(i).getSurprise());
-                    }else{
-                        finalList.get(i).setAngry(null);
-                        finalList.get(i).setCry(null);
-                        finalList.get(i).setLove(null);
-                        finalList.get(i).setWow(null);
-                        finalList.get(i).setSurprise(null);
+
+                if(response.isSuccessful() && response.code() == 401){
+                    listener.OnFailure(context.getResources().getString(R.string.fail_authentication));
+
+                } else if(response.isSuccessful() && response.code() < 400){
+                    ArrayList<ReactionResponse> reactions = response.body();
+                    for (int i = 0; i < reactions.size(); i++) {
+                        if (reactions.get(i) != null) {
+                            finalList.get(i).setAngry(reactions.get(i).getAngry());
+                            finalList.get(i).setCry(reactions.get(i).getCry());
+                            finalList.get(i).setLove(reactions.get(i).getLove());
+                            finalList.get(i).setWow(reactions.get(i).getWow());
+                            finalList.get(i).setSurprise(reactions.get(i).getSurprise());
+                        } else {
+                            finalList.get(i).setAngry(null);
+                            finalList.get(i).setCry(null);
+                            finalList.get(i).setLove(null);
+                            finalList.get(i).setWow(null);
+                            finalList.get(i).setSurprise(null);
+                        }
                     }
                 }
 

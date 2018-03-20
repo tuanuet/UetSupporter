@@ -71,6 +71,8 @@ public class EmailSQLHelper extends SQLFather {
                 }
             }
             db.setTransactionSuccessful();
+        } catch (Exception ex){
+            Log.e(TAG,ex.getMessage());
         } finally {
             db.endTransaction();
         }

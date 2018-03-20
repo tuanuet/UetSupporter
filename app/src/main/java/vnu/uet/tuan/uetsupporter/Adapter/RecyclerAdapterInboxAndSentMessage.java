@@ -30,7 +30,6 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
     private ArrayList<Email> list;
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
-    private int previousposition = -1;
     private final String TAG = this.getClass().getName();
 
     public RecyclerAdapterInboxAndSentMessage(Context context, ArrayList<Email> list) {
@@ -90,26 +89,9 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
                 itemViewHolder.importance.setImageResource(R.drawable.ic_star_yellow);
             }
 
-            itemViewHolder.reply_now.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Reply", Toast.LENGTH_SHORT).show();
-                }
-            });
+            itemViewHolder.reply_now.setOnClickListener(v -> Toast.makeText(context, "Reply", Toast.LENGTH_SHORT).show());
 
-            itemViewHolder.tool.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showPopup(v);
-                }
-            });
-
-            //====================ANIMATION=========================
-            if (position >= previousposition) {
-                RecyclerAnim.animate(itemViewHolder, true);
-            } else RecyclerAnim.animate(itemViewHolder, false);
-
-            previousposition = position;
+            itemViewHolder.tool.setOnClickListener(v -> showPopup(v));
 
         }
 

@@ -22,7 +22,7 @@ public class PresenterMainEmailModel implements IPresenterMainEmailModel {
     private final String TAG = this.getClass().getName();
     private Context context;
     private OnLoadEmailFinish loadEmailFinish;
-    private int epr = 10;
+    private int epr = 15;
     private String folder;
     private int pager;
     private ExecuteEmail mTask;
@@ -41,12 +41,7 @@ public class PresenterMainEmailModel implements IPresenterMainEmailModel {
         // load email
         this.mTask = new ExecuteEmail();
         Handler handler = new Handler();
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                mTask.execute();
-            }
-        });
+        handler.post(() -> mTask.execute());
     }
 
     @Override
