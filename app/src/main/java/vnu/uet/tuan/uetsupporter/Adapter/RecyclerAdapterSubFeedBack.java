@@ -1,7 +1,11 @@
 package vnu.uet.tuan.uetsupporter.Adapter;
 
+/**
+ * Created by FRAMGIA\vu.minh.tuan on 20/03/2018.
+ */
+
+
 import android.content.Context;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +18,8 @@ import com.annimon.stream.Stream;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
+
+import vnu.uet.tuan.uetsupporter.Model.Comment;
 import vnu.uet.tuan.uetsupporter.Model.Response.Feedback;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
@@ -23,37 +29,19 @@ import vnu.uet.tuan.uetsupporter.config.Config;
  * Created by vmtuan on 3/12/2017.
  */
 
-public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
+public class RecyclerAdapterSubFeedBack extends RecyclerView.Adapter {
     private final String TAG = this.getClass().getSimpleName();
 
-    private List<Feedback> parentList;
     private List<Feedback> list;
-
+    private List<Feedback> subList;
     private Context context;
     private final int VIEW_TYPE_ITEM = 0;
 
-    public RecyclerAdapterFeedBack(Context context, List<Feedback> list) {
+    public RecyclerAdapterSubFeedBack(Context context, List<Feedback> list) {
         this.context = context;
-        this.parentList = Stream.of(list)
-                .filter(i->i.getSubFeedback()==null)
-                .toList();
         this.list = list;
     }
 
-    public void addAll(List<Feedback> list){
-        this.list.addAll(list);
-        this.parentList.addAll(Stream.of(list)
-                .filter(i->i.getSubFeedback()==null)
-                .toList());
-        notifyItemRangeInserted(this.list.size() - list.size(),list.size());
-    }
-    public void addOne(Feedback feedback){
-        this.list.add(feedback);
-        if(feedback.getSubFeedback() == null){
-            this.parentList.add(feedback);
-        }
-        notifyItemInserted(this.list.size() - 1);
-    }
 
     @Override
     public int getItemViewType(int position) {
@@ -64,8 +52,8 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (viewType == VIEW_TYPE_ITEM) {
-            View view = inflater.inflate(R.layout.item_comment_recycler, parent, false);
-            RecyclerAdapterFeedBack.ItemViewHolder holder = new RecyclerAdapterFeedBack.ItemViewHolder(view);
+            View view = inflater.inflate(R.layout.item_sub_comment_recycler, parent, false);
+            RecyclerAdapterSubFeedBack.ItemViewHolder holder = new RecyclerAdapterSubFeedBack.ItemViewHolder(view);
             return holder;
         }
         return null;
@@ -74,44 +62,30 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof RecyclerAdapterFeedBack.ItemViewHolder) {
-            final RecyclerAdapterFeedBack.ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
+        if (holder instanceof RecyclerAdapterSubFeedBack.ItemViewHolder) {
+            final RecyclerAdapterSubFeedBack.ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
 
-            Feedback fb = parentList.get(position);
-            String avatar = Config.API_HOSTNAME + "/api/avatar/" + parentList.get(position).getSender().get_id();
+            Feedback comment = list.get(position);
+            String avatar = Config.API_HOSTNAME + "/api/avatar/" + list.get(position).getSender().get_id();
             Glide.with(context)
                     .load(avatar)
                     .centerCrop()
                     .into(itemViewHolder.avatar);
-            itemViewHolder.noiDung.setText(fb.getContent());
-            itemViewHolder.nameUser.setText(fb.getSender().getName());
-            itemViewHolder.time.setText(Utils.getThoiGian(context,fb.getCreatedAt()));
-
-            //sub recyclerview
-            LinearLayoutManager manager = new LinearLayoutManager(context);
-            itemViewHolder.subView.setLayoutManager(manager);
-
-            List<Feedback> subList = Stream.of(list)
-                    .filter(i -> i.getSubFeedback()!= null)
-                    .filter(i -> fb.get_id().equals(i.getSubFeedback()))
-                    .toList();
-
-            RecyclerAdapterSubFeedBack adapter = new RecyclerAdapterSubFeedBack(context,subList);
-            itemViewHolder.subView.setNestedScrollingEnabled(false);
-            itemViewHolder.subView.setAdapter(adapter);
+            itemViewHolder.noiDung.setText(comment.getContent());
+            itemViewHolder.nameUser.setText(comment.getSender().getName());
+            itemViewHolder.time.setText(Utils.getThoiGian(context, comment.getCreatedAt()));
         }
     }
 
     @Override
     public int getItemCount() {
-        return parentList == null ? 0 : parentList.size();
+        return list == null ? 0 : list.size();
     }
 
 
     public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         TextView nameUser, noiDung, time;
         ImageView avatar;
-        RecyclerView subView;
 
         public ItemViewHolder(final View itemView) {
             super(itemView);
@@ -120,7 +94,6 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
             noiDung = (TextView) itemView.findViewById(R.id.noidung);
             time = (TextView) itemView.findViewById(R.id.time);
             avatar = (ImageView) itemView.findViewById(R.id.avatar);
-            subView = (RecyclerView) itemView.findViewById(R.id.recycle_sub);
 
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);

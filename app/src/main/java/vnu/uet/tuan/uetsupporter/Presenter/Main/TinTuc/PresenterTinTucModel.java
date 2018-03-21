@@ -1,7 +1,6 @@
 package vnu.uet.tuan.uetsupporter.Presenter.Main.TinTuc;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vnu.uet.tuan.uetsupporter.Cache.ConfigCache;
+import vnu.uet.tuan.uetsupporter.ClientConfig.ConfigCache;
 import vnu.uet.tuan.uetsupporter.Listener.OnCancelRequest;
 import vnu.uet.tuan.uetsupporter.Model.Response.TinTuc;
 import vnu.uet.tuan.uetsupporter.R;

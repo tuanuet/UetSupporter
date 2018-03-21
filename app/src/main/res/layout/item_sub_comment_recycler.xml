@@ -9,7 +9,9 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:weightSum="10">
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -100,11 +102,6 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/recycle_sub"
-                />
         </LinearLayout>
 
     </LinearLayout>
