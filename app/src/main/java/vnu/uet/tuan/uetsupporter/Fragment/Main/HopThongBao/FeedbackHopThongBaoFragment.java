@@ -1,26 +1,26 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.annimon.stream.Stream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,9 +28,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import vnu.uet.tuan.uetsupporter.Adapter.RecyclerAdapterFeedBack;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
-import vnu.uet.tuan.uetsupporter.Model.DetailThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Response.Feedback;
-import vnu.uet.tuan.uetsupporter.Model.Response.Message;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.Feedback.IPresenterFeedbackLogic;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThongBao.Feedback.PresenterFeedbackLogic;
 import vnu.uet.tuan.uetsupporter.R;
@@ -41,7 +39,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBack {
+public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBack, SwipeRefreshLayout.OnRefreshListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -56,7 +54,8 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
     private List<Feedback> feedbackList;
     private AnnouncementNotification notification;
     private Feedback toFeedback = null;
-
+    private SwipeRefreshLayout refreshLayout;
+    private InputMethodManager imm;
     public FeedbackHopThongBaoFragment() {
         // Required empty public constructor
     }
@@ -84,7 +83,6 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         presenter.execute(notification.get_id());
 
     }
@@ -94,6 +92,8 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
     }
 
     private void initUI(View view) {
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         feedbackList = new ArrayList<>();
         btnFinish = (Button) view.findViewById(R.id.finish);
         totalReaction = (TextView) view.findViewById(R.id.total_reaction);
@@ -106,6 +106,8 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
         presenter= new PresenterFeedbackLogic(getContext(),this);
         adapter = new RecyclerAdapterFeedBack(getActivity(),feedbackList);
         mRecycler.setAdapter(adapter);
+        refreshLayout.setOnRefreshListener(this);
+
     }
 
     private void initListener(){
@@ -125,6 +127,24 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
                 to.setText(String.format(getString(R.string.feedback_to),feedback.getSender().getName()));
                 updateBottombar(true);
                 toFeedback = feedback;
+                textSend.requestFocus();
+                scrollTo();
+            }
+        });
+
+        textSend.setOnClickListener(v -> {
+            scrollTo();
+        });
+
+        textSend.setOnFocusChangeListener((v, hasFocus) -> {
+
+            if (!hasFocus) {
+                textSend.setFocusableInTouchMode(false);
+                if (imm != null) {
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+                }
+            } else {
+                scrollTo();
             }
         });
 
@@ -150,6 +170,32 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
             updateBottombar(false);
             toFeedback = null;
         });
+    }
+
+    private void scrollTo(){
+        LinearLayoutManager layoutManager = (LinearLayoutManager) mRecycler.getLayoutManager();
+        // you may want to play with the offset parameter
+        int scrollTo = 0;
+        if(toFeedback != null && toFeedback.getSubFeedback() != null){ //child
+            scrollTo = Stream.of(feedbackList)
+                    .filter(i -> i.getSubFeedback() == null)
+                    .findIndexed((index, f) -> f.get_id().equals(toFeedback.getSubFeedback()))
+                    .get()
+                    .getFirst();
+        }else if(toFeedback != null && toFeedback.getSubFeedback() == null){ //parent
+            scrollTo = Stream.of(feedbackList)
+                    .filter(i -> i.getSubFeedback() == null)
+                    .findIndexed((index, f) -> f.get_id().equals(toFeedback.get_id()))
+                    .get()
+                    .getFirst();
+        } else if(toFeedback == null) {
+            scrollTo = adapter.getItemCount() -1;
+        }
+        layoutManager.scrollToPositionWithOffset(scrollTo, 0);
+        textSend.setFocusableInTouchMode(true);
+        if (imm != null) {
+            imm.showSoftInput(textSend, InputMethodManager.SHOW_IMPLICIT);
+        }
     }
 
     private void updateBottombar(boolean isSub) {
@@ -205,5 +251,14 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
     public void onPostFailure(String failure) {
         Log.e(TAG,failure);
         Toast.makeText(getActivity(), failure, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRefresh() {
+        feedbackList.clear();
+        presenter.execute(notification.get_id());
+        if(refreshLayout.isRefreshing()){
+            refreshLayout.setRefreshing(false);
+        }
     }
 }

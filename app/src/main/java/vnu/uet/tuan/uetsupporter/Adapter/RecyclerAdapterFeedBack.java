@@ -41,23 +41,29 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
     }
 
     public void addAll(List<Feedback> list){
+
         this.list.addAll(list);
-        this.parentList.addAll(Stream.of(list)
+        this.parentList.clear();
+
+        this.parentList.addAll(Stream.of(this.list)
                 .filter(i->i.getSubFeedback()==null)
                 .toList());
-        notifyItemRangeInserted(this.list.size() - list.size(),list.size());
+        notifyDataSetChanged();
     }
+
     public void addOne(Feedback feedback){
         this.list.add(feedback);
+
         if(feedback.getSubFeedback() == null){
             this.parentList.add(feedback);
             notifyItemInserted(this.list.size() - 1);
         } else {
-            int parentOfSub = Stream.of(this.parentList)
-                    .findIndexed((index, f) -> f.get_id().equals(feedback.getSubFeedback()))
-                    .get()
-                    .getFirst();
-            notifyItemChanged(parentOfSub);
+//            int parentOfSub = Stream.of(this.parentList)
+//                    .findIndexed((index, f) -> f.get_id().equals(feedback.getSubFeedback()))
+//                    .get()
+//                    .getFirst();
+//            Log.e(TAG,parentOfSub+"");
+            notifyDataSetChanged();
         }
     }
 
@@ -76,7 +82,6 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
         }
         return null;
     }
-
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {

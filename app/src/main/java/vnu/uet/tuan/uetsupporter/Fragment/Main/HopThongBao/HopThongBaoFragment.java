@@ -1,11 +1,11 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,13 +28,11 @@ import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.View.Main.HopThongBao.MainHopThongBao.IViewHopThongBao;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
-import static java.lang.Integer.parseInt;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopThongBao.ClickListener,
-        IViewHopThongBao {
+        IViewHopThongBao, SwipeRefreshLayout.OnRefreshListener {
 
     private final String TAG = this.getClass().getSimpleName();
     private RecyclerView recyclerView;
@@ -43,6 +41,8 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     private ArrayList<AnnouncementNotification> list;
     private IPresenterHopThongBaoView presenterHopThongBaoLogic;
     private int reactionPostion = 0;
+    private SwipeRefreshLayout refreshLayout;
+
     public HopThongBaoFragment() {
         // Required empty public constructor
     }
@@ -58,6 +58,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     }
 
     private void initUI(View view) {
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -65,6 +66,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
         adapter = new RecyclerAdapterHopThongBao(getActivity(), list);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(this);
+        refreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
 
     @Override
     public void onReactionClick(int position, String id, int code) {
-        Log.e(TAG,"POSITION: "+position);
+        Log.e(TAG, "POSITION: " + position);
         presenterHopThongBaoLogic.react(id, code);
         this.reactionPostion = position;
     }
@@ -104,6 +106,9 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     public void OnGetHopThongBaoSuccess(List<AnnouncementNotification> notifications) {
         list.addAll(notifications);
         adapter.notifyItemInserted(list.size() - notifications.size());
+        if (refreshLayout.isRefreshing()) {
+            refreshLayout.setRefreshing(false);
+        }
     }
 
     @Override
@@ -115,7 +120,7 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
     public void OnReactionSuccess(int code) {
         AnnouncementNotification notification = list.get(reactionPostion);
         updateNotification(code, notification);
-        adapter.notifyItemChanged(reactionPostion,notification);
+        adapter.notifyItemChanged(reactionPostion, notification);
     }
 
     private void updateNotification(int code, AnnouncementNotification notification) {
@@ -165,4 +170,10 @@ public class HopThongBaoFragment extends Fragment implements RecyclerAdapterHopT
         Toast.makeText(getActivity(), fail, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onRefresh() {
+        list.clear();
+        adapter.notifyDataSetChanged();
+        presenterHopThongBaoLogic.executeRetrigerPushNotification();
+    }
 }
