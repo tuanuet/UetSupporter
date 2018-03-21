@@ -176,6 +176,14 @@
                         android:text="@string/total_reaction"
                         android:textSize="12sp"
                         android:maxLines="1"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/total_reply_feedback"
+                        android:gravity="right|bottom"
+                        android:layout_marginRight="15dp"
+                        android:textSize="12sp"
+                        android:text="@string/reply_feedback"/>
                 </LinearLayout>
 
             </LinearLayout>

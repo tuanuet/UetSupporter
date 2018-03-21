@@ -141,5 +141,7 @@
     <string name="reply">Trả lời</string>
     <string name="more">Khác</string>
     <string name="fail_authentication">Token của bạn đã hết hạn hãy đăng nhập lại!</string>
+    <string name="feedback_to">To: %s</string>
+    <string name="reply_feedback">%1$s lượt phản hồi</string>
 
 </resources>

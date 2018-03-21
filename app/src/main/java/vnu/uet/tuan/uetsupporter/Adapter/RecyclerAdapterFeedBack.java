@@ -51,8 +51,14 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
         this.list.add(feedback);
         if(feedback.getSubFeedback() == null){
             this.parentList.add(feedback);
+            notifyItemInserted(this.list.size() - 1);
+        } else {
+            int parentOfSub = Stream.of(this.parentList)
+                    .findIndexed((index, f) -> f.get_id().equals(feedback.getSubFeedback()))
+                    .get()
+                    .getFirst();
+            notifyItemChanged(parentOfSub);
         }
-        notifyItemInserted(this.list.size() - 1);
     }
 
     @Override
@@ -97,6 +103,22 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
                     .toList();
 
             RecyclerAdapterSubFeedBack adapter = new RecyclerAdapterSubFeedBack(context,subList);
+            adapter.setOnItemClickListener(new ClickListener() {
+                @Override
+                public void onItemClick(int position, View v) {
+
+                }
+
+                @Override
+                public void onItemLongClick(int position, View v) {
+
+                }
+
+                @Override
+                public void onReplyClick(Feedback feedback,int position, View v) {
+                    clickListener.onReplyClick(feedback,position, v);
+                }
+            });
             itemViewHolder.subView.setNestedScrollingEnabled(false);
             itemViewHolder.subView.setAdapter(adapter);
         }
@@ -105,6 +127,13 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         return parentList == null ? 0 : parentList.size();
+    }
+
+    public int getParentPosition(Feedback feedback) {
+        return Stream.of(this.parentList)
+                .findIndexed((index, f) -> f.get_id().equals(feedback.getSubFeedback()))
+                .get()
+                .getFirst();
     }
 
 
@@ -122,6 +151,10 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
             avatar = (ImageView) itemView.findViewById(R.id.avatar);
             subView = (RecyclerView) itemView.findViewById(R.id.recycle_sub);
 
+            itemView.findViewById(R.id.reply).setOnClickListener(v -> {
+                Log.e(TAG,parentList.get(getAdapterPosition()).toString());
+                clickListener.onReplyClick(parentList.get(getAdapterPosition()),getAdapterPosition(),v);
+            });
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -143,6 +176,8 @@ public class RecyclerAdapterFeedBack extends RecyclerView.Adapter {
         void onItemClick(int position, View v);
 
         void onItemLongClick(int position, View v);
+
+        void onReplyClick(Feedback feedback,int position, View v);
     }
 
     public ClickListener clickListener;

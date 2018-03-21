@@ -95,6 +95,10 @@ public class RecyclerAdapterSubFeedBack extends RecyclerView.Adapter {
             time = (TextView) itemView.findViewById(R.id.time);
             avatar = (ImageView) itemView.findViewById(R.id.avatar);
 
+            itemView.findViewById(R.id.reply).setOnClickListener(v -> {
+                clickListener.onReplyClick(list.get(getAdapterPosition()),getAdapterPosition(),v);
+            });
+
             itemView.setOnClickListener(this);
             itemView.setOnLongClickListener(this);
         }
@@ -111,16 +115,10 @@ public class RecyclerAdapterSubFeedBack extends RecyclerView.Adapter {
         }
     }
 
-    //Listener
-    public interface ClickListener {
-        void onItemClick(int position, View v);
 
-        void onItemLongClick(int position, View v);
-    }
+    public RecyclerAdapterFeedBack.ClickListener clickListener;
 
-    public ClickListener clickListener;
-
-    public void setOnItemClickListener(ClickListener clickListener) {
+    public void setOnItemClickListener(RecyclerAdapterFeedBack.ClickListener clickListener) {
         this.clickListener = clickListener;
     }
 }

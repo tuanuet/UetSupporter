@@ -46,6 +46,15 @@ public class AnnouncementNotification implements Serializable,INotification {
     private IReactable love;
     private IReactable wow;
     private IReactable surprise;
+    private int totalFeedback;
+
+    public int getTotalFeedback() {
+        return totalFeedback;
+    }
+
+    public void setTotalFeedback(int totalFeedback) {
+        this.totalFeedback = totalFeedback;
+    }
 
     public IReactable getAngry() {
         return angry;

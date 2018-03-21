@@ -47,7 +47,7 @@ public class PresenterHopThongBaoModel implements IPresenterHopThongBaoModel {
     public void getPushNotification(OnGetPushNotificationFinish listener) {
         ArrayList<AnnouncementNotification> list = new ArrayList<>();
         try {
-             list = Utils.getPushNotification(context);
+            list = Utils.getPushNotification(context);
         } catch (Exception e) {
             listener.OnFailure(e.getMessage());
         }
@@ -64,12 +64,13 @@ public class PresenterHopThongBaoModel implements IPresenterHopThongBaoModel {
             @Override
             public void onResponse(Call<ArrayList<ReactionResponse>> call, Response<ArrayList<ReactionResponse>> response) {
 
-                if(response.isSuccessful() && response.code() == 401){
+                if (response.isSuccessful() && response.code() == 401) {
                     listener.OnFailure(context.getResources().getString(R.string.fail_authentication));
 
-                } else if(response.isSuccessful() && response.code() < 400){
+                } else if (response.isSuccessful() && response.code() < 400) {
                     ArrayList<ReactionResponse> reactions = response.body();
                     for (int i = 0; i < reactions.size(); i++) {
+                        finalList.get(i).setTotalFeedback(reactions.get(i).getFeedbackCount());
                         if (reactions.get(i) != null) {
                             finalList.get(i).setAngry(reactions.get(i).getAngry());
                             finalList.get(i).setCry(reactions.get(i).getCry());
@@ -91,9 +92,9 @@ public class PresenterHopThongBaoModel implements IPresenterHopThongBaoModel {
 
             @Override
             public void onFailure(Call<ArrayList<ReactionResponse>> call, Throwable t) {
-                if(t != null){
+                if (t != null) {
                     listener.OnFailure(t.getMessage());
-                }else {
+                } else {
                     listener.OnFailure(context.getResources().getString(R.string.fail_download));
                 }
             }
@@ -109,16 +110,16 @@ public class PresenterHopThongBaoModel implements IPresenterHopThongBaoModel {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiTinTuc apiTinTuc = retrofit.create(ApiTinTuc.class);
-        RequestBody body = getBodyPushReact(_id,code);
+        RequestBody body = getBodyPushReact(_id, code);
         Call<Message> call = apiTinTuc.postReaction(body, Utils.getUserToken(context));
         call.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message> call, Response<Message> response) {
-                if (response.code() < 400 && response.isSuccessful()){
+                if (response.code() < 400 && response.isSuccessful()) {
                     Message message = response.body();
-                    if(message.getSuccess()){
+                    if (message.getSuccess()) {
                         listenerPush.OnReactSuccess(code);
-                    }else{
+                    } else {
                         listenerPush.OnReactFailure(message.getMessage());
                     }
                 }
@@ -127,25 +128,25 @@ public class PresenterHopThongBaoModel implements IPresenterHopThongBaoModel {
 
             @Override
             public void onFailure(Call<Message> call, Throwable t) {
-                if(t.getMessage()!= null){
+                if (t.getMessage() != null) {
                     listenerPush.OnReactFailure(t.getMessage());
-                }else {
+                } else {
                     listenerPush.OnReactFailure(context.getResources().getString(R.string.fail_download));
                 }
             }
         });
     }
 
-    private RequestBody getBodyPushReact(String _id,int code){
+    private RequestBody getBodyPushReact(String _id, int code) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("_id",_id);
-        map.put("code",code);
-        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(map)).toString());
+        map.put("_id", _id);
+        map.put("code", code);
+        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(map)).toString());
     }
 
-    private RequestBody getBodyFetchReact(String[] ids){
+    private RequestBody getBodyFetchReact(String[] ids) {
         Map<String, Object> map = new ArrayMap<>();
-        map.put("ids",ids);
-        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"),(new JSONObject(map)).toString());
+        map.put("ids", ids);
+        return RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), (new JSONObject(map)).toString());
     }
 }

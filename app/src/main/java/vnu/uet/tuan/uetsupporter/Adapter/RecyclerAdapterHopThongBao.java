@@ -95,6 +95,10 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
                             context.getResources().getString(R.string.total_reaction),
                             String.valueOf(Utils.getTotalReaction(notification)))
             );
+            itemViewHolder.total_feedback.setText(String.format(
+                    context.getResources().getString(R.string.reply_feedback),
+                    String.valueOf(notification.getTotalFeedback())
+            ));
 
             setupAvatarWithAuthor(itemViewHolder, notification);
 
@@ -156,14 +160,11 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         final String[] sampleImages = notification.getDescriptionImages();
         if (sampleImages.length != 0) {
             itemViewHolder.carouselView.setPageCount(sampleImages.length);
-            itemViewHolder.carouselView.setImageListener(new ImageListener() {
-                @Override
-                public void setImageForPosition(int position, ImageView imageView) {
-                    Glide.with(context).load(Config.hostname + sampleImages[position])
-                            .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                            .centerCrop()
-                            .into(imageView);
-                }
+            itemViewHolder.carouselView.setImageListener((position, imageView) -> {
+                Glide.with(context).load(Config.hostname + sampleImages[position])
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .centerCrop()
+                        .into(imageView);
             });
         } else {
             itemViewHolder.carouselView.setVisibility(View.GONE);
@@ -313,6 +314,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         ImageView avatar;
         TextView txt_loaithongbao;
         TextView txt_sender;
+        TextView total_feedback;
         CarouselView carouselView;
         ImageButton angry, cry, love, wow, surprise;
         TextView totalReaction;
@@ -329,7 +331,7 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
             txt_loaithongbao = (TextView) itemView.findViewById(R.id.recycle_item_loaithongbao);
             txt_sender = (TextView) itemView.findViewById(R.id.recycle_item_sender);
             img_read = (LinearLayout) itemView.findViewById(R.id.recycle_item_isread);
-            //image_header = (ImageView) itemView.findViewById(R.id.image_header);
+            total_feedback = (TextView) itemView.findViewById(R.id.total_reply_feedback);
             carouselView = (CarouselView) itemView.findViewById(R.id.carouselView);
 
             angry = (ImageButton) itemView.findViewById(R.id.ic_angry);

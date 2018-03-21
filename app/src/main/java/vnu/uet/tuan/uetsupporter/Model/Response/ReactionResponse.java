@@ -14,6 +14,7 @@ public class ReactionResponse {
     private Reaction love;
     private Reaction wow;
     private Reaction surprise;
+    private int feedbackCount;
 
     public ReactionResponse(String _id, Reaction angry, Reaction cry, Reaction love, Reaction wow, Reaction surprise) {
         this._id = _id;
@@ -25,6 +26,14 @@ public class ReactionResponse {
     }
 
     public ReactionResponse() {
+    }
+
+    public int getFeedbackCount() {
+        return feedbackCount;
+    }
+
+    public void setFeedbackCount(int feedbackCount) {
+        this.feedbackCount = feedbackCount;
     }
 
     public String get_id() {

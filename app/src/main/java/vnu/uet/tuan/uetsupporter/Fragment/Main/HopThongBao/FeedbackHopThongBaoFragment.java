@@ -3,6 +3,7 @@ package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThongBao;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,7 +45,7 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
 
     private final String TAG = this.getClass().getSimpleName();
 
-    private TextView totalReaction;
+    private TextView totalReaction,to;
     private RecyclerView mRecycler;
     private EditText textSend;
     private Button btnFinish;
@@ -53,6 +55,7 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
     private IPresenterFeedbackLogic presenter;
     private List<Feedback> feedbackList;
     private AnnouncementNotification notification;
+    private Feedback toFeedback = null;
 
     public FeedbackHopThongBaoFragment() {
         // Required empty public constructor
@@ -96,6 +99,7 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
         totalReaction = (TextView) view.findViewById(R.id.total_reaction);
         mRecycler = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         textSend = (EditText) view.findViewById(R.id.commenttext);
+        to = (TextView) view.findViewById(R.id.feedback_to);
         sendNow = (CircleImageView) view.findViewById(R.id.send);
         manager = new LinearLayoutManager(getActivity());
         mRecycler.setLayoutManager(manager);
@@ -115,12 +119,25 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
             public void onItemLongClick(int position, View v) {
 
             }
+
+            @Override
+            public void onReplyClick(Feedback feedback,int position, View v) {
+                to.setText(String.format(getString(R.string.feedback_to),feedback.getSender().getName()));
+                updateBottombar(true);
+                toFeedback = feedback;
+            }
         });
 
         sendNow.setOnClickListener(v -> {
-            String noiDung = textSend.getText().toString();
-            if (noiDung.trim().length() != 0) {
-                presenter.postFeedback(notification.get_id(),noiDung);
+            String noiDung = textSend.getText().toString().trim();
+            if (noiDung.length() != 0) {
+                if(toFeedback != null){
+                    String rootId = toFeedback.getSubFeedback() == null ? toFeedback.get_id() : toFeedback.getSubFeedback();
+                    presenter.postFeedback(notification.get_id(),noiDung,rootId);
+                } else {
+                    presenter.postFeedback(notification.get_id(),noiDung);
+                }
+
             }
         });
 
@@ -128,6 +145,30 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
             getActivity().finish();
             System.gc();
         });
+
+        to.setOnClickListener(v -> {
+            updateBottombar(false);
+            toFeedback = null;
+        });
+    }
+
+    private void updateBottombar(boolean isSub) {
+        if(isSub){
+            to.setVisibility(View.VISIBLE);
+            Rect bounds = new Rect();
+            CharSequence text = to.getText();
+            to.getPaint().getTextBounds(text.toString(), 0, text.length(), bounds);
+            int width = bounds.width() + 50;
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) textSend.getLayoutParams();
+            lp.setMargins(width,0,lp.rightMargin,0);
+            textSend.setLayoutParams(lp);
+        } else {
+            to.setVisibility(View.GONE);
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) textSend.getLayoutParams();
+            lp.setMargins(0,0,lp.rightMargin,0);
+            textSend.setLayoutParams(lp);
+        }
+
     }
 
     @Override
@@ -150,7 +191,14 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
     public void onPostSuccess(Feedback feedback) {
         adapter.addOne(feedback);
         textSend.setText("");
-        mRecycler.scrollToPosition(adapter.getItemCount() - 1);
+        if(feedback.getSubFeedback() == null){
+            mRecycler.scrollToPosition(adapter.getItemCount() - 1);
+        } else {
+            mRecycler.scrollToPosition(adapter.getParentPosition(feedback));
+        }
+        updateBottombar(false);
+        this.toFeedback = null;
+        textSend.clearFocus();
     }
 
     @Override
