@@ -43,13 +43,13 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
 
     private final String TAG = this.getClass().getSimpleName();
 
-    TextView totalReaction;
-    RecyclerView mRecycler;
-    EditText textSend;
-    Button btnFinish;
-    LinearLayoutManager manager;
-    CircleImageView sendNow;
-    RecyclerAdapterFeedBack adapter;
+    private TextView totalReaction;
+    private RecyclerView mRecycler;
+    private EditText textSend;
+    private Button btnFinish;
+    private LinearLayoutManager manager;
+    private CircleImageView sendNow;
+    private RecyclerAdapterFeedBack adapter;
     private IPresenterFeedbackLogic presenter;
     private List<Feedback> feedbackList;
     private AnnouncementNotification notification;
@@ -137,8 +137,7 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
 
     @Override
     public void onExecuteSuccess(List<Feedback> feedbacks) {
-        feedbackList.addAll(feedbacks);
-        adapter.notifyDataSetChanged();
+        adapter.addAll(feedbacks);
         mRecycler.scrollToPosition(adapter.getItemCount() - 1);
     }
 
@@ -149,8 +148,7 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
 
     @Override
     public void onPostSuccess(Feedback feedback) {
-        feedbackList.add(feedback);
-        adapter.notifyItemInserted(feedbackList.size()-1);
+        adapter.addOne(feedback);
         textSend.setText("");
         mRecycler.scrollToPosition(adapter.getItemCount() - 1);
     }

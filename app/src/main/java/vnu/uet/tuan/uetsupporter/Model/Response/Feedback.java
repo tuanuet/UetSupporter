@@ -13,8 +13,17 @@ public class Feedback {
     private String kindSender;
     private String content;
     private Sender sender;
+    private String subFeedback;
 
     public Feedback() {
+    }
+
+    public String getSubFeedback() {
+        return subFeedback;
+    }
+
+    public void setSubFeedback(String subFeedback) {
+        this.subFeedback = subFeedback;
     }
 
     public String get_id() {
@@ -63,5 +72,10 @@ public class Feedback {
 
     public void setSender(Sender sender) {
         this.sender = sender;
+    }
+
+    @Override
+    public String toString() {
+        return this._id+"===="+this.subFeedback;
     }
 }

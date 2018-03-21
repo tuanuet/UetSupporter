@@ -5,15 +5,19 @@ import android.support.v4.util.ArrayMap;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import vnu.uet.tuan.uetsupporter.ClientConfig.UserAgentInterceptor;
 import vnu.uet.tuan.uetsupporter.Model.Response.Feedback;
 import vnu.uet.tuan.uetsupporter.Model.Response.Feedback;
 import vnu.uet.tuan.uetsupporter.R;
@@ -31,8 +35,17 @@ public class PresenterFeedbackModel implements IPresenterFeedBackModel{
 
     public PresenterFeedbackModel(Context context) {
         this.context = context;
+
+        String UA = System.getProperty("http.agent");  // Get android user agent.
+        OkHttpClient client = new OkHttpClient
+                .Builder()
+                .addInterceptor(new UserAgentInterceptor(UA))
+                .build();
+
+
         retrofit = new Retrofit.Builder()
                 .baseUrl(Config.API_HOSTNAME)
+                .client(client)
                 // Sử dụng GSON cho việc parse và maps JSON data tới Object
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
