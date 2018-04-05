@@ -72,8 +72,9 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
 
     private AnnouncementNotification getMarkNotification(Map data) {
         AnnouncementNotification push = new AnnouncementNotification();
+        push.set_id((String) data.get(AnnouncementNotification._ID));
         push.setLink((String) data.get(AnnouncementNotification.LINK));
-        push.setNoiDung((String) data.get(AnnouncementNotification.NOIDUNG));
+        push.setNoiDung("");
         push.setRead(false);
         push.setCodeMucDoThongBao("canh_bao");
         push.setThoiGianNhan(new DateTime().toString());
@@ -84,6 +85,8 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setIdSender(String.valueOf(data.get(AnnouncementNotification.IDSENDER)));
         push.setTypeNotification(getIntFromString(String.valueOf(data.get(AnnouncementNotification.TYPENOTIFICATION))));
         push.setNameSender(String.valueOf(data.get(AnnouncementNotification.NAMESENDER)));
+        push.setDescription((String) data.get(AnnouncementNotification.NOIDUNG));
+        push.setDescriptionImages(Utils.convertStringToArrayFromServer(""));
         return push;
 
     }
@@ -131,7 +134,6 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
         push.setIdSender(String.valueOf(data.get(AnnouncementNotification.IDSENDER)));
         push.setTypeNotification(getIntFromString(String.valueOf(data.get(AnnouncementNotification.TYPENOTIFICATION))));
         push.setNameSender(String.valueOf(data.get(AnnouncementNotification.NAMESENDER)));
-        Log.e(TAG,(String) data.get(AnnouncementNotification.DESCRIPTION_IMAGES));
         push.setDescriptionImages(Utils.convertStringToArrayFromServer((String) data.get(AnnouncementNotification.DESCRIPTION_IMAGES)));
         return push;
     }

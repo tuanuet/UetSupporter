@@ -35,6 +35,8 @@ import vnu.uet.tuan.uetsupporter.Model.Download.LoaiThongBao;
 import vnu.uet.tuan.uetsupporter.Model.Download.MucDoThongBao;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.R;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
+import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
@@ -53,11 +55,13 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
     private ArrayList<MucDoThongBao> mucDoThongBaoList;
     private ArrayList<LoaiThongBao> loaiThongBaoList;
     private final String TAG = this.getClass().getSimpleName();
+    private PushNotificationSQLHelper sql;
 
     public RecyclerAdapterHopThongBao(Context context, ArrayList<AnnouncementNotification> list) {
         this.context = context;
         this.list = list;
         this.loaiThongBaoList = Utils.getAllLoaiThongBao(context);
+        this.sql = new PushNotificationSQLHelper(context);
     }
 
 
@@ -231,7 +235,6 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
 
         String urlAvatar = Config.API_HOSTNAME + "/api/avatar/" + notification.getIdSender();
         Glide.with(context).load(urlAvatar)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
                 .into(itemViewHolder.avatar);
 
@@ -282,14 +285,14 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         return list == null ? 0 : list.size();
     }
 
-    private void showPopup(View v, final int position) {
+    private void showPopup(View v, int position) {
         PopupMenu popupMenu = new PopupMenu(context, v);
         popupMenu.inflate(R.menu.hopthongbao_popup_menu);
         popupMenu.show();
         popupMenu.setOnMenuItemClickListener(item -> {
             switch (item.getItemId()) {
                 case R.id.action_delete:
-                    deleteitem(position);
+                    deleteItem(position);
                     break;
                 case R.id.action_share:
                     break;
@@ -298,9 +301,12 @@ public class RecyclerAdapterHopThongBao extends RecyclerView.Adapter {
         });
     }
 
-    private void deleteitem(int position) {
+    private void deleteItem(int position) {
+        AnnouncementNotification notification = list.get(position);
+        sql.removeByServerId(notification.get_id());
         this.list.remove(position);
-        this.notifyItemRemoved(position);
+        this.notifyDataSetChanged();
+
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder {

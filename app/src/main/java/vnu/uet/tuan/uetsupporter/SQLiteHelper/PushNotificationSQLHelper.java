@@ -107,8 +107,21 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
         // Delete All Rows
         db.delete(Contract.PushNotification.NAME_TABLE, null, null);
         db.close();
-
     }
+
+    public boolean removeByServerId(String _id) {
+        try {
+            SQLiteDatabase db = this.getWritableDatabase();
+            String sqlDetele = "DELETE FROM " + Contract.PushNotification.NAME_TABLE +
+                    "  WHERE " + Contract.Email._ID + " = \""+ _id + "\" ;";
+            Log.e(TAG,sqlDetele);
+            db.execSQL(sqlDetele);
+            return true;
+        }catch (Exception err){
+            return false;
+        }
+    }
+
     public int getCountNotificationNotRead() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "select * from " + Contract.PushNotification.NAME_TABLE + " where "

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">UetNotifier</string>
+    <string name="app_name">UETNotifier</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -22,7 +22,7 @@
     <string name="tkb">Thời Khóa Biểu</string>
     <string name="tuyendungt">Tuyển Dụng</string>
     <string name="pref_header_general">Tổng quan</string>
-    <string name="pref_header_notifications">Cài đặt nhắc nhở</string>
+    <string name="pref_header_notifications">Cài đặt thông báo</string>
     <string name="pref_title_vibrate">Rung</string>
     <string name="pref_title_ringtone">Nhạc chuông</string>
     <string name="pref_title_new_message_notifications">Thông Báo</string>

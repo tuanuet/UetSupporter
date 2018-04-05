@@ -10,6 +10,8 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -17,8 +19,6 @@ import android.util.Log;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 
 import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.text.Normalizer;
@@ -41,6 +41,7 @@ import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.Lecture;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
+import vnu.uet.tuan.uetsupporter.Model.Mail.MailUet;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.Contract;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.EmailSQLHelper;
@@ -516,5 +517,19 @@ public class Utils {
                 + (notification.getLove() != null ? notification.getLove().getLength() : 0)
                 + (notification.getWow() != null ? notification.getWow().getLength() : 0)
                 + (notification.getSurprise() != null ? notification.getSurprise().getLength() : 0);
+    }
+
+    public static int getEmailUnread(Context applicationContext) {
+        MailUet mail = MailUet.getInstance(
+                "14020521", "1391996")
+                .readEmails(Config.MailBox.Inbox.toString());
+        return mail.getUnReadMessageCount();
+    }
+
+    public static int getCountNewsInAday(Context applicationContext) {
+        MailUet mail = MailUet.getInstance(
+                "14020521", "1391996")
+                .readEmails(Config.MailBox.Inbox.toString());
+        return mail.getUnReadMessageCount();
     }
 }

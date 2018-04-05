@@ -102,16 +102,16 @@
                                     android:layout_alignParentTop="true"
                                     android:textSize="13sp"
                                     android:text="@string/email_date_receive" />
-                                <TextView
-                                    android:id="@+id/receiver"
-                                    android:layout_width="0dp"
-                                    android:layout_weight="5"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_alignParentTop="true"
-                                    android:textSize="13sp"
-                                    android:text="@string/email_receiver" />
+                                <!--<TextView-->
+                                    <!--android:id="@+id/receiver"-->
+                                    <!--android:layout_width="0dp"-->
+                                    <!--android:layout_weight="5"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:layout_alignParentLeft="true"-->
+                                    <!--android:layout_alignParentStart="true"-->
+                                    <!--android:layout_alignParentTop="true"-->
+                                    <!--android:textSize="13sp"-->
+                                    <!--android:text="@string/email_receiver" />-->
                             </LinearLayout>
 
                         </LinearLayout>

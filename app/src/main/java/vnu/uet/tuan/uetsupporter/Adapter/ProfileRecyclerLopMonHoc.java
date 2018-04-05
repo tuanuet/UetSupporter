@@ -60,7 +60,7 @@ public class ProfileRecyclerLopMonHoc extends RecyclerView.Adapter {
             }
 
             itemViewHolder.txt_lopmonhoc.setText(Utils.getTenLopMonHoc(lopMonHoc));
-//            itemViewHolder.txt_siso.setText(String.valueOf(lopMonHoc.getSizeClass()));
+            itemViewHolder.txt_siso.setText(String.valueOf((int) (Math.random() * 50) + 50));
         }
     }
 

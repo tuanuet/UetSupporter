@@ -66,40 +66,45 @@
                         android:src="@drawable/ic_more_horiz_black_24dp" />
                 </LinearLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingTop="10dp"
-                    android:weightSum="10">
+                    android:paddingTop="10dp">
 
                     <TextView
                         android:id="@+id/recycle_item_loaitintuc"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
                         android:text="TextView"
+                        android:layout_marginRight="5dp"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/special"
+                        android:layout_alignParentLeft="true"
                         android:textColor="@color/white" />
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:paddingTop="5dp"
+
+                        android:id="@+id/special"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
                         android:text="@string/newthongbao"
                         android:textColor="@color/white" />
 
                     <TextView
                         android:id="@+id/recycle_item_postat"
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="3"
                         android:text="20h30"
-                        android:paddingLeft="10dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_centerVertical="true"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/white"
-                        android:textSize="12sp" />
-                </LinearLayout>
+                        android:textSize="12sp"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

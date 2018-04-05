@@ -93,7 +93,6 @@ public class BroadcastPushNotification extends BroadcastReceiver {
 
         //setBage
         initShortcutBadger(context);
-
     }
 
     private void initShortcutBadger(Context context) {

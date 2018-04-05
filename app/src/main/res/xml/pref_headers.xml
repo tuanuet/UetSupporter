@@ -13,7 +13,7 @@
         android:title="@string/pref_header_notifications" />
     <header
         android:fragment="vnu.uet.tuan.uetsupporter.Activities.SettingsActivity$UserPreferenceFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_person_black_24dp"
         android:title="@string/pref_header_user" />
 
 </preference-headers>

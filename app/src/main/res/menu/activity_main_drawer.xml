@@ -7,16 +7,16 @@
             android:title="@string/nav_tintuc" />
         <item
             android:id="@+id/nav_hopthongbao"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_notifications_black_24dp"
             android:title="@string/nav_hopthongbao" />
 
         <item
             android:id="@+id/nav_hopthu"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_email_black"
             android:title="@string/nav_hopthu" />
         <item
             android:id="@+id/nav_myprofile"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/nav_myprofile" />
     </group>
 

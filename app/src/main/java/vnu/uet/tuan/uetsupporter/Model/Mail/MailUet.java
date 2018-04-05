@@ -126,6 +126,19 @@ public class MailUet {
         }
     }
 
+    public int getUnReadMessageCount() {
+        try {
+            if (inbox != null)
+                return inbox.getUnreadMessageCount();
+            else {
+                return 0;
+            }
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
     public ArrayList<Email> getMessage() throws Exception {
         Message messages[] = inbox.getMessages();
         messages = (Message[]) MailUet.reverse(messages);

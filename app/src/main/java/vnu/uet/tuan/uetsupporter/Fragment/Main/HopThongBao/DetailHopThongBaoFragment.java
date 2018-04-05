@@ -55,11 +55,10 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHopThongBao {
 
     private AnnouncementNotification notification;
-    private TextView title, time, sender, loaithongbao, receiver;
+    private TextView title, time, sender, loaithongbao;
     private WebView noidung;
     private ImageView avatar;
     private LinearLayout layout_attachfile;
-
     private ScrollView layout_scrollview;
     private LinearLayout layout_wait;
     private FloatingActionButton fab;
@@ -132,7 +131,6 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
         time = (TextView) view.findViewById(R.id.time);
         loaithongbao = (TextView) view.findViewById(R.id.loaithongbao);
         sender = (TextView) view.findViewById(R.id.sender);
-        receiver = (TextView) view.findViewById(R.id.receiver);
         avatar = (ImageView) view.findViewById(R.id.image_avatar);
         fab = (FloatingActionButton) view.findViewById(R.id.comment_now);
         layout_attachfile = (LinearLayout) view.findViewById(R.id.layout_attach);
@@ -197,9 +195,7 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
 
     private void setupAvatarWithAuthor() {
         String urlAvatar = Config.API_HOSTNAME + "/api/avatar/" + notification.getIdSender();
-        Log.e(TAG, urlAvatar);
         Glide.with(getActivity()).load(urlAvatar)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .centerCrop()
                 .into(avatar);
 

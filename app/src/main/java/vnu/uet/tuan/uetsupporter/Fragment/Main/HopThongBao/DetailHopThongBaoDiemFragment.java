@@ -86,32 +86,24 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         txt_tong = (TextView) view.findViewById(R.id.tong);
         pieChart1 = (PieChart) view.findViewById(R.id.chart);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> getActivity().finish());
         initPieChart();
 
-        btn_xemthem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (markResponse != null) {
+        btn_xemthem.setOnClickListener(v -> {
+            if (markResponse != null) {
 
-                    if (!isShow) {
-                        btn_xemthem.setText(getString(R.string.xemthem));
-                        for (int pos = 0; pos < markResponse.getLengthData(); pos++) {
-                            Log.e(TAG, markResponse.getLengthData() + "");
-                            createRow(markResponse.getStudent(pos),markResponse.getMarkMiddle(pos),markResponse.getMarkFinal(pos));
-                        }
-                    } else {
-                        btn_xemthem.setText(getString(R.string.thugon));
+                if (!isShow) {
+                    btn_xemthem.setText(getString(R.string.xemthem));
+                    for (int pos = 0; pos < markResponse.getLengthData(); pos++) {
+                        Log.e(TAG, markResponse.getLengthData() + "");
+                        createRow(markResponse.getStudent(pos),markResponse.getMarkMiddle(pos),markResponse.getMarkFinal(pos));
                     }
-
+                } else {
+                    btn_xemthem.setText(getString(R.string.thugon));
                 }
 
             }
+
         });
     }
 
@@ -254,12 +246,6 @@ public class DetailHopThongBaoDiemFragment extends Fragment implements OnChartVa
         s.setSpan(new StyleSpan(Typeface.ITALIC), 0, s.length(), 0);
         s.setSpan(new ForegroundColorSpan(Color.GRAY), 0, s.length(), 0);
         s.setSpan(new RelativeSizeSpan(1.3f), 0, s.length(), 0);
-
-//        s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 12, 0);
-//        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
-//        s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 15, 0);
-//        s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
-//        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);
         return s;
     }
 

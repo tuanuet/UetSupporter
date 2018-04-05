@@ -1,6 +1,8 @@
 package vnu.uet.tuan.uetsupporter.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -92,20 +94,61 @@ public class MainActivity extends AppCompatActivity
     }
 
     //load số lượng các notifi chưa được đọc
-    private void setupNumberForNav() {
+    private void setupAnnouncementNumberForNav() {
         navigationView.getMenu().getItem(1).setActionView(R.layout.nav_item_number);
         TextView homthu_number = (TextView) navigationView.getMenu().getItem(1)
                 .getActionView().findViewById(R.id.hopthu_number);
         homthu_number.setText(String.valueOf(Utils.getNumberOnNav(getApplicationContext())));
     }
 
+    //load số lượng các email chưa được đọc
+    @SuppressLint("StaticFieldLeak")
+    private void setupEmailNumberForNav() {
+        navigationView.getMenu().getItem(2).setActionView(R.layout.nav_item_number);
+        TextView homthu_number = (TextView) navigationView.getMenu().getItem(2)
+                .getActionView().findViewById(R.id.hopthu_number);
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return String.valueOf(Utils.getEmailUnread(getApplicationContext()));
+            }
 
+            @Override
+            protected void onPostExecute(String s) {
+                homthu_number.setText(s);
+            }
+        }.execute();
+    }
+
+    //load số lượng các email chưa được đọc
+    @SuppressLint("StaticFieldLeak")
+    private void setupNewNumberForNav() {
+        navigationView.getMenu().getItem(0).setActionView(R.layout.nav_item_number);
+        TextView homthu_number = (TextView) navigationView.getMenu().getItem(0)
+                .getActionView().findViewById(R.id.hopthu_number);
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                return String.valueOf(
+                        0
+//                        Utils.getEmailUnread(getApplicationContext())
+                );
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                homthu_number.setText(s);
+            }
+        }.execute();
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        setupNumberForNav();
+        setupAnnouncementNumberForNav();
+        setupEmailNumberForNav();
+        setupNewNumberForNav();
         initShortcutBadger();
     }
 
