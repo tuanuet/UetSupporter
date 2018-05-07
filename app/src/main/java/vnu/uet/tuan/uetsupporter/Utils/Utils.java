@@ -52,7 +52,7 @@ import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.SQLFather;
 import vnu.uet.tuan.uetsupporter.config.Config;
 
-import static vnu.uet.tuan.uetsupporter.config.Config.JSON;
+import static vnu.uet.tuan.uetsupporter.config.Config.JSON;import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Administrator on 14/01/2017.
@@ -216,6 +216,15 @@ public class Utils {
             cursor.moveToNext();
         }
         return list;
+    }
+
+
+
+    // nextInt is normally exclusive of the top value,
+    // so add 1 to make it inclusive
+    public static int randomInt(int minimum, int minValue, int maxValue){
+        Random rn = new Random();
+        return minimum + rn.nextInt(maxValue - minValue + 1);
     }
 
     public static ArrayList<AnnouncementNotification> getPushNotification(Context context) {

@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,7 +22,9 @@ import vnu.uet.tuan.uetsupporter.Model.Download.LoaiTinTuc;
 import vnu.uet.tuan.uetsupporter.Model.NewNotification;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 
+import vnu.uet.tuan.uetsupporter.Model.Response.Feedback;
 import vnu.uet.tuan.uetsupporter.SQLiteHelper.PushNotificationSQLHelper;
+import vnu.uet.tuan.uetsupporter.TemplateNotification.FeedbackMessageNotification;
 import vnu.uet.tuan.uetsupporter.TemplateNotification.NewMessageNotification;
 import vnu.uet.tuan.uetsupporter.TemplateNotification.ThongBaoMessageNotification;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
@@ -43,6 +46,8 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
 //        export const KIND_ANNOUNCEMENT_NOTIFICATION = 1;
 //        export const KIND_NEW_NOTIFICATION = 2;
 //        export const KIND_MARK_NOTIFICATION = 3;
+//        export const KIND_FEEDBACK_NOTIFICATION = 4;
+        Log.d(TAG,data.toString());
 
         Integer kindNotification = Integer.parseInt((String) data.get(AnnouncementNotification.TYPENOTIFICATION));
         //lưu vao database
@@ -63,6 +68,11 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 AnnouncementNotification announcementNotification = getMarkNotification(data);
                 int pos = db.insertOne(announcementNotification);
                 ThongBaoMessageNotification.notify(getApplicationContext(), announcementNotification, pos);
+            }
+            case 4: {
+                Feedback feedback = Feedback.fromMap(data);
+                EventBus.getDefault().post(feedback);
+                FeedbackMessageNotification.notify(getApplicationContext(),feedback);
             }
         }
 

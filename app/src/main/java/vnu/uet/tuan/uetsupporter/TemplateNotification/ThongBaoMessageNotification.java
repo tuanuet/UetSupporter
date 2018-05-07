@@ -68,7 +68,8 @@ public class ThongBaoMessageNotification {
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
-        mNotificationManager.notify(Config.IDNOTICATION, mBuilder.build());
+        int NOTIFICATION_ID = Utils.randomInt(0,1,10000);
+        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
     }
 
     protected static PendingIntent getPendingIntent(Context context, String action, AnnouncementNotification notification, int position) {

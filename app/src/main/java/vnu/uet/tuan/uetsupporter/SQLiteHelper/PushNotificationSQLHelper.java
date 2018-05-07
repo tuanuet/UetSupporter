@@ -19,6 +19,8 @@ import java.util.Date;
 import vnu.uet.tuan.uetsupporter.Model.AnnouncementNotification;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 
+import static vnu.uet.tuan.uetsupporter.Utils.Utils.convertStringToArray;
+
 /**
  * Created by Vu Minh Tuan on 2/16/2017.
  */
@@ -158,5 +160,40 @@ public class PushNotificationSQLHelper extends SQLiteOpenHelper {
             cs.moveToNext();
         }
         return result;
+    }
+
+    public AnnouncementNotification getAnnouncementById(String _id) {
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            String query = "select * from " + Contract.PushNotification.NAME_TABLE
+                    + " where " + Contract.PushNotification.SERVER_ID + " = \"" + _id+"\"";
+
+            Cursor cursor = db.rawQuery(query, null);
+            AnnouncementNotification announcementNotification;
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                announcementNotification = new AnnouncementNotification();
+                announcementNotification.setTieuDe(cursor.getString(Contract.PushNotification.tieu_de));
+                announcementNotification.setNoiDung(cursor.getString(Contract.PushNotification.noi_dung));
+                announcementNotification.setLink(cursor.getString(Contract.PushNotification.link_page));
+                announcementNotification.setThoiGianNhan(cursor.getString(Contract.PushNotification.thoi_gian_nhan));
+                announcementNotification.setIdLoaiThongBao(cursor.getString(Contract.PushNotification.id_loai_thong_bao));
+                announcementNotification.setIdMucDoThongBao(cursor.getString(Contract.PushNotification.id_muc_do_thong_bao));
+                announcementNotification.setCodeMucDoThongBao(cursor.getString(Contract.PushNotification.code_muc_do_thong_bao));
+                announcementNotification.setHasFile(cursor.getInt(Contract.PushNotification.has_file) == 1);
+                announcementNotification.setIdSender(cursor.getString(Contract.PushNotification.id_sender));
+                announcementNotification.setNameSender(cursor.getString(Contract.PushNotification.name_sender));
+                announcementNotification.setRead(cursor.getInt(Contract.PushNotification.is_read) == 1);
+                announcementNotification.setTypeNotification(cursor.getInt(Contract.PushNotification.type_notification));
+                announcementNotification.setDescription(cursor.getString(Contract.PushNotification.description));
+                announcementNotification.set_id(cursor.getString(Contract.PushNotification.server_id));
+                announcementNotification.setDescriptionImages(convertStringToArray(cursor.getString(Contract.PushNotification.description_images)));
+                return announcementNotification;
+            } else {
+                return null;
+            }
+        }catch (Exception ex) {
+            return null;
+        }
     }
 }

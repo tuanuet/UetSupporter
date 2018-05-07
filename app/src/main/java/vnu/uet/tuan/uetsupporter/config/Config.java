@@ -21,7 +21,7 @@ public class Config {
     public static final String USER_TOKEN = "user_token";
     public static final String CAN_BE_FIREBASE_TOKEN = "can be firebase token";
     public static final String IS_RUN_FIRST_TIME = "run first time";
-    /**í
+    /**
      * ===================================================
      */
     public static final String POSITION_LOPMONHOC = "positionlopmonhoc";

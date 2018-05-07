@@ -151,8 +151,9 @@ public class InboxMessageNotification {
     private static void notify(final Context context, final Notification notification) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
+        int NOTIFICATION_ID = Utils.randomInt(0,1,10000);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            nm.notify(NOTIFICATION_TAG, 0, notification);
+            nm.notify(NOTIFICATION_TAG, NOTIFICATION_ID, notification);
         } else {
             nm.notify(NOTIFICATION_TAG.hashCode(), notification);
         }
@@ -166,8 +167,9 @@ public class InboxMessageNotification {
     public static void cancel(final Context context) {
         final NotificationManager nm = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
+        int NOTIFICATION_ID = Utils.randomInt(0,1,10000);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            nm.cancel(NOTIFICATION_TAG, 0);
+            nm.cancel(NOTIFICATION_TAG, NOTIFICATION_ID);
         } else {
             nm.cancel(NOTIFICATION_TAG.hashCode());
         }

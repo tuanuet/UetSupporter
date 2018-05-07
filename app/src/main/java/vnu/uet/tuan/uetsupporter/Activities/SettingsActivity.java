@@ -296,6 +296,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     }
 
                     // register
+                    Log.e("SUB",registers.length +"");
                     for (String rg : registers){
                         Log.e("SUB",rg.trim());
                         FirebaseMessaging.getInstance().subscribeToTopic(rg.trim());
@@ -319,9 +320,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                     for (int i=0;i<thongbao.getEntryValues().length;i++){
                         FirebaseMessaging.getInstance().unsubscribeFromTopic(String.valueOf(thongbao.getEntryValues()[i]));
                     }
-
-                    Log.e(TAG,"LENGTH REGISTER: "+ registers[0]);
                     // register
+                    Log.e("SUB",registers.length +"");
                     for (String rg : registers){
                         Log.e("SUB",rg.trim());
                         try{

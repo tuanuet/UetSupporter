@@ -104,24 +104,18 @@ public class DetailHopThongBaoFragment extends Fragment implements IViewDetailHo
     }
 
     private void initListener(){
-        noidung.setDownloadListener(new DownloadListener() {
+        noidung.setDownloadListener((url, userAgent, contentDisposition, mimetype, contentLength) -> {
+            DownloadManager.Request request = new DownloadManager.Request(
+                    Uri.parse(url));
 
-            @Override
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimetype,
-                                        long contentLength) {
-                DownloadManager.Request request = new DownloadManager.Request(
-                        Uri.parse(url));
+            request.allowScanningByMediaScanner();
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, Uri.parse(url).getLastPathSegment());
+            DownloadManager dm = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+            dm.enqueue(request);
+            Toast.makeText(getContext(), "Downloading File", //To notify the Client that the file is being downloaded
+                    Toast.LENGTH_LONG).show();
 
-                request.allowScanningByMediaScanner();
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED); //Notify client once download is completed!
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, Uri.parse(url).getLastPathSegment());
-                DownloadManager dm = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-                dm.enqueue(request);
-                Toast.makeText(getContext(), "Downloading File", //To notify the Client that the file is being downloaded
-                        Toast.LENGTH_LONG).show();
-
-            }
         });
     }
 

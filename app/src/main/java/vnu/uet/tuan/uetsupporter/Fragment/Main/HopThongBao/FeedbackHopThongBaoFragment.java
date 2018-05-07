@@ -22,6 +22,10 @@ import android.widget.Toast;
 
 import com.annimon.stream.Stream;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,6 +67,29 @@ public class FeedbackHopThongBaoFragment extends Fragment implements IViewFeedBa
 
     private void getData() {
         this.notification = (AnnouncementNotification) getArguments().getSerializable(Config.KEY_PUSHNOTIFICATION);
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessage(Feedback feedback) {
+        adapter.addOne(feedback);
+        if(feedback.getSubFeedback() == null){
+            mRecycler.scrollToPosition(adapter.getItemCount() - 1);
+        } else {
+            mRecycler.scrollToPosition(adapter.getParentPosition(feedback));
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
