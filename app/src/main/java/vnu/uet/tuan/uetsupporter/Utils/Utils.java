@@ -324,23 +324,28 @@ public class Utils {
     }
     public static String getThoiGian(Context context, String strDate) {
         DateTime date = new DateTime();
-
-        if (strDate != null) {
-            date = new DateTime(strDate);
-        }
-        int diffInDays = (int)( (new Date().getTime() - date.getMillis())
-                / (1000 * 60 * 60 * 24) );
-        if(diffInDays == 1){
-            return context.getString(R.string.string_yesterday);
-        } else if(diffInDays == 0) {
-            if(new DateTime().getDayOfMonth() != date.getDayOfMonth()){
-                return context.getString(R.string.string_yesterday);
-            }else {
-                return date.toString("hh:mm a");
+        try{
+            if (strDate != null) {
+                date = new DateTime(strDate);
             }
-        } else {
-            return date.toString("dd 'Thg' M YYYY");
+        } catch (Exception e){
+
+        } finally {
+            int diffInDays = (int)( (new Date().getTime() - date.getMillis())
+                    / (1000 * 60 * 60 * 24) );
+            if(diffInDays == 1){
+                return context.getString(R.string.string_yesterday);
+            } else if(diffInDays == 0) {
+                if(new DateTime().getDayOfMonth() != date.getDayOfMonth()){
+                    return context.getString(R.string.string_yesterday);
+                }else {
+                    return date.toString("hh:mm a");
+                }
+            } else {
+                return date.toString("dd 'Thg' M YYYY");
+            }
         }
+
 
     }
 
@@ -540,5 +545,13 @@ public class Utils {
                 "14020521", "1391996")
                 .readEmails(Config.MailBox.Inbox.toString());
         return mail.getUnReadMessageCount();
+    }
+
+    public static String getReplyTitle(String title) {
+        if(title.indexOf("Re") > 0){
+            return title;
+        }else{
+            return "Re: "+ title;
+        }
     }
 }

@@ -3,6 +3,7 @@ package vnu.uet.tuan.uetsupporter.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 import vnu.uet.tuan.uetsupporter.Animation.RecyclerAnim;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
+import vnu.uet.tuan.uetsupporter.Model.Mail.MailUet;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 
@@ -91,7 +93,7 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
 
             itemViewHolder.reply_now.setOnClickListener(v -> Toast.makeText(context, "Reply", Toast.LENGTH_SHORT).show());
 
-            itemViewHolder.tool.setOnClickListener(v -> showPopup(v));
+            itemViewHolder.tool.setOnClickListener(v -> showPopup(v,position));
 
         }
 
@@ -103,10 +105,22 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
         return list == null ? 0 : list.size();
     }
 
-    private void showPopup(View v) {
+    private void showPopup(View v,final int position) {
         PopupMenu popupMenu = new PopupMenu(context, v);
         popupMenu.inflate(R.menu.hopthongbao_popup_menu);
         popupMenu.show();
+        popupMenu.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.action_delete:
+                    list.remove(position);
+                    this.notifyDataSetChanged();
+                    //new DeleteEmail().execute(position);
+                    break;
+                case R.id.action_share:
+                    break;
+            }
+            return true;
+        });
     }
 
     public class ItemViewHolder extends RecyclerView.ViewHolder
@@ -156,5 +170,30 @@ public class RecyclerAdapterInboxAndSentMessage extends RecyclerView.Adapter {
 
     public void setOnItemClickListener(RecyclerAdapterInboxAndSentMessage.ClickListener clickListener) {
         this.clickListener = clickListener;
+    }
+
+    private class DeleteEmail extends AsyncTask<Integer,Void,Integer>{
+        @Override
+        protected Integer doInBackground(Integer... integers) {
+            Email email = list.get(integers[0]);
+            Log.d(TAG,integers[0]+"--"+email.getPosition());
+            if(MailUet.getInstance("14020521","1391996").deleteEmail(email.getPosition())){
+                return integers[0];
+            }else {
+                return -1;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Integer position) {
+            if(position > -1){
+                Log.e(TAG,list.size()+"");
+                list.remove(position);
+                Log.e(TAG,list.size()+"");
+                notifyDataSetChanged();
+            }else {
+                Toast.makeText(context, "Some thing went wrong!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

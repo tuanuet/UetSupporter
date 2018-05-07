@@ -8,6 +8,10 @@ import okhttp3.MediaType;
 
 
 public class Config {
+    public static final String REPLY_EMAIL_FROM = "REPLY_EMAIL_FROM";
+    public static final String REPLY_EMAIL_CONTENT = "REPLY_EMAIL_CONTENT";
+    public static final String REPLY_EMAIL_TITLE = "REPLY_EMAIL_TITLE";
+
     public static final String EMAIL = "email";
     public static final String PASSWORD = "password";
     public static final String TENSINHVIEN = "name";
@@ -37,8 +41,8 @@ public class Config {
     /**
      * ===================================================
      */
-    public static String hostname = "http://192.168.18.99:3000";
-//    public static String hostname = "http://ec2-18-218-196-243.us-east-2.compute.amazonaws.com";
+//    public static String hostname = "http://192.168.18.99:3000";
+    public static String hostname = "http://ec2-18-218-196-243.us-east-2.compute.amazonaws.com";
 
     public static final String KEY_URL = "keyurl";
     public static final String GET_INFORMATION_USER = hostname + "/sinhvien/profile";

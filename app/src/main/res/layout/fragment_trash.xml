@@ -4,10 +4,15 @@
     android:layout_height="match_parent"
     tools:context="vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu.TrashFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/title_trash" />
+        android:id="@+id/swiperefresh">
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recycler" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

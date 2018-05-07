@@ -68,11 +68,13 @@ public class MyFirebaseMessageService extends FirebaseMessagingService {
                 AnnouncementNotification announcementNotification = getMarkNotification(data);
                 int pos = db.insertOne(announcementNotification);
                 ThongBaoMessageNotification.notify(getApplicationContext(), announcementNotification, pos);
+                break;
             }
             case 4: {
                 Feedback feedback = Feedback.fromMap(data);
                 EventBus.getDefault().post(feedback);
                 FeedbackMessageNotification.notify(getApplicationContext(),feedback);
+                break;
             }
         }
 

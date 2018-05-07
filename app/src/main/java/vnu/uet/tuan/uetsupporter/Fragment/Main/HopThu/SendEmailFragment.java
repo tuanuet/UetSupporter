@@ -1,6 +1,7 @@
 package vnu.uet.tuan.uetsupporter.Fragment.Main.HopThu;
 
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,12 +14,14 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.SendEmail.IPresenterSendEmailModel;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.SendEmail.IPresenterSendEmailView;
 import vnu.uet.tuan.uetsupporter.Presenter.Main.HopThu.SendEmail.PresenterSendEmailLogic;
 import vnu.uet.tuan.uetsupporter.R;
 import vnu.uet.tuan.uetsupporter.Utils.Utils;
 import vnu.uet.tuan.uetsupporter.View.Main.HopThu.SendEmail.IViewSendEmail;
+import vnu.uet.tuan.uetsupporter.config.Config;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +41,24 @@ public class SendEmailFragment extends Fragment implements IViewSendEmail{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_send_email, container, false);
         setHasOptionsMenu(true);
+
+        Intent intent = getActivity().getIntent();
         initUI(view);
+
+        if(intent.hasExtra(Config.REPLY_EMAIL_TITLE)){
+            String _title = intent.getStringExtra(Config.REPLY_EMAIL_TITLE);
+            title.setText(Utils.getReplyTitle(_title));
+        }
+        if(intent.hasExtra(Config.REPLY_EMAIL_CONTENT)) {
+            String _content = intent.getStringExtra(Config.REPLY_EMAIL_CONTENT);
+            content.setText(_content.replaceAll("\n","\n>"));
+
+        }
+        if(intent.hasExtra(Config.REPLY_EMAIL_FROM)) {
+            String _from = intent.getStringExtra(Config.REPLY_EMAIL_FROM);
+            to.setText(_from);
+        }
+
         return view;
     }
 

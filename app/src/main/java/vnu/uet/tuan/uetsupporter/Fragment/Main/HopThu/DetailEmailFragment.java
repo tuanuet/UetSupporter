@@ -40,6 +40,7 @@ import java.io.InputStream;
 import javax.mail.BodyPart;
 import javax.mail.MessagingException;
 
+import vnu.uet.tuan.uetsupporter.Activities.SendMailActivity;
 import vnu.uet.tuan.uetsupporter.Activities.SettingsActivity;
 import vnu.uet.tuan.uetsupporter.Animation.Fab;
 import vnu.uet.tuan.uetsupporter.Model.Mail.Email;
@@ -54,7 +55,7 @@ import vnu.uet.tuan.uetsupporter.config.Config;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
+public class DetailEmailFragment extends Fragment implements IViewDetailEmail, View.OnClickListener {
 
     private final String TAG = this.getClass().getSimpleName();
 
@@ -63,6 +64,7 @@ public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
     private WebView webView;
     private LinearLayout layout_html, layout_attach;
     private IPresenterDetailEmailView presenter;
+    private Email _email;
 
     public DetailEmailFragment() {
         // Required empty public constructor
@@ -103,6 +105,7 @@ public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
         fab.setImageResource(R.drawable.ic_action_write_email);
         fab.setRippleColor(getResources().getColor(R.color.theme_primary_dark));
         fab.setBackgroundColor(getResources().getColor(R.color.theme_primary_dark));
+        fab.setOnClickListener(this);
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
@@ -267,6 +270,7 @@ public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
     @Override
     public void onExecuteSuccess(Email email) {
         updateUI(email);
+        this._email = email;
     }
 
     @Override
@@ -286,5 +290,18 @@ public class DetailEmailFragment extends Fragment implements IViewDetailEmail {
     public void onDestroyView() {
         super.onDestroyView();
         presenter.cancelLoadEmail();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+                Intent intent = new Intent(getActivity(), SendMailActivity.class);
+                intent.putExtra(Config.REPLY_EMAIL_FROM,this._email.getFrom());
+                intent.putExtra(Config.REPLY_EMAIL_CONTENT,this._email.getContent());
+                intent.putExtra(Config.REPLY_EMAIL_TITLE,this._email.getTitle());
+                startActivity(intent);
+                break;
+        }
     }
 }

@@ -85,8 +85,8 @@
     <string name="nav_hopthongbao">Hộp thông báo</string>
     <string name="nav_hopthu">Hộp thư</string>
     <string name="title_sent">Thư đã gửi</string>
-    <string name="title_drafts">Thư Nháp</string>
-    <string name="title_trash">Trash</string>
+    <string name="title_drafts">Thư nháp</string>
+    <string name="title_trash">Thư xóa</string>
     <string name="sync_account_type">tuan.uet.vnu</string>
     <string name="content_authority">vnu.uet.tuan.uetsupporter</string>
     <string name="testtext">You said %1$s and lorem
